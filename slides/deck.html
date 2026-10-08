@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When is an LP enough?</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* ---- P3 slide-specific layout (uses theme tokens only) ---- */
+  .algos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .algos .card { display: flex; flex-direction: column; padding: 16px 20px 18px; }
+  .algos .chip { font-size: 16px; }
+  .algos .who { font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .algos svg { width: 100%; height: 185px; margin: 8px 0 8px; }
+  .algos .how { font-size: 19px; line-height: 1.38; margin: 0 0 10px; min-height: 54px; }
+  .exps { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 24px; margin-top: 4px; }
+  .exps .card { padding: 20px 24px; min-height: 172px; }
+  .exps h2 { font-size: 24px; }
+  .exps .head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .exps .id { font-size: 26px; font-weight: 800; color: var(--accent); }
+  .exps dl { margin: 0; display: grid; grid-template-columns: 84px 1fr; row-gap: 10px; }
+  .exps dt { font-size: 13.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; padding-top: 3px; }
+  .exps dd { margin: 0; font-size: 20px; line-height: 1.38; }
+  .exps dd.expect { color: var(--good); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- ============ 0 · TITLE ============ -->
+  <section class="slide title" data-owner="P1">
+    <div class="kicker">CS4234 Mini-Project · Trailer</div>
+    <h1>When is an LP enough?</h1>
+    <p class="sub">Total unimodularity and exact integer optimisation</p>
+    <div class="names">Yee Hern · Yock Cheng · Feilin · Daryl</div>
+    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+  </section>
+
+  <!-- ============ 1 · THE PROBLEM (P1) ============ -->
+  <section class="slide" data-owner="P1">
+    <div class="kicker">1 · The problem</div>
+    <h1>Same LP, two graphs: why is one answer integral?</h1>
+    <div class="placeholder">P1 · Yee Hern: C₃ vs C₄ vertex cover LP outputs; "ILP NP-hard, LP polynomial: when is LP = ILP?"</div>
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P1 · Yee Hern</span></div>
+    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+  </section>
+
+  <!-- ============ 2 · KEY TECHNIQUE: TU (P1) ============ -->
+  <section class="slide" data-owner="P1">
+    <div class="kicker">2 · Key technique</div>
+    <h1>Total unimodularity makes every vertex integral</h1>
+    <div class="placeholder">P1 · Yee Hern: vertex = A<sub>B</sub><sup>−1</sup>b, Cramer's rule, TU definition, Hoffman–Kruskal, bipartite ⇔ TU</div>
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P1 · Yee Hern</span></div>
+    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+  </section>
+
+  <!-- ============ 3 · RECOGNISING TU (P2) ============ -->
+  <section class="slide" data-owner="P2">
+    <div class="kicker">3 · Recognising TU</div>
+    <h1>How do we tell whether a matrix is TU?</h1>
+    <div class="placeholder">P2 · Yock Cheng: brute force vs Ghouila-Houri vs Seymour decomposition (CMR); sufficient conditions</div>
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P2 · Yock Cheng</span></div>
+    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+  </section>
+
+  <!-- ============ 4 · SOLVING THE LP (P3) ============ -->
+  <section class="slide" data-owner="P3">
+    <div class="kicker">4 · Solving the LP</div>
+    <h1>Three LP algorithms: polynomial in theory vs fast in practice</h1>
+
+    <!-- timeline with the two transition questions -->
+    <svg viewBox="0 0 1152 46" width="100%" height="46" role="img" aria-label="Timeline 1947, 1979, 1984 with transitions">
+      <line x1="184" y1="32" x2="968" y2="32" stroke="var(--line)" stroke-width="3"/>
+      <g fill="var(--accent)"><circle cx="184" cy="32" r="6"/><circle cx="576" cy="32" r="6"/><circle cx="968" cy="32" r="6"/></g>
+      <g font-size="15" font-weight="700" fill="var(--accent)" text-anchor="middle">
+        <text x="184" y="16">1947</text><text x="576" y="16">1979</text><text x="968" y="16">1984</text>
+      </g>
+      <g font-size="15" font-style="italic" fill="var(--muted)" text-anchor="middle">
+        <text x="380" y="22">polynomial at all? →</text><text x="772" y="22">fast in practice too? →</text>
+      </g>
+    </svg>
+
+    <div class="algos">
+      <!-- Simplex -->
+      <div class="card">
+        <h2>Simplex</h2>
+        <div class="who">Dantzig</div>
+        <svg viewBox="0 0 300 150" role="img" aria-label="Klee–Minty cube: simplex path visits all 8 vertices">
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+          <!-- all 12 cube edges -->
+          <g stroke="var(--line)" stroke-width="2">
+            <line x1="60" y1="130" x2="160" y2="130"/><line x1="120" y1="95" x2="220" y2="95"/>
+            <line x1="60" y1="50" x2="160" y2="50"/><line x1="120" y1="15" x2="220" y2="15"/>
+            <line x1="60" y1="130" x2="120" y2="95"/><line x1="160" y1="130" x2="220" y2="95"/>
+            <line x1="60" y1="50" x2="120" y2="15"/><line x1="160" y1="50" x2="220" y2="15"/>
+            <line x1="60" y1="130" x2="60" y2="50"/><line x1="160" y1="130" x2="160" y2="50"/>
+            <line x1="120" y1="95" x2="120" y2="15"/><line x1="220" y1="95" x2="220" y2="15"/>
+          </g>
+          <!-- Gray-code path 000→100→110→010→011→111→101→001 -->
+          <g stroke="var(--accent)" stroke-width="2.6" fill="none" marker-end="url(#arr)">
+            <line x1="64" y1="130" x2="154" y2="130"/><line x1="163" y1="127" x2="215" y2="97"/>
+            <line x1="215" y1="95" x2="126" y2="95"/><line x1="120" y1="91" x2="120" y2="21"/>
+            <line x1="124" y1="15" x2="214" y2="15"/><line x1="216" y1="18" x2="165" y2="47"/>
+            <line x1="156" y1="50" x2="66" y2="50"/>
+          </g>
+          <circle cx="60" cy="130" r="6" fill="var(--muted)"/><circle cx="60" cy="50" r="6" fill="var(--good)"/>
+          <text x="52" y="146" font-size="13" fill="var(--muted)" text-anchor="end">start</text>
+          <text x="52" y="54" font-size="13" fill="var(--good)" text-anchor="end">opt</text>
+          <text x="192" y="132" font-size="13" fill="var(--muted)">Klee–Minty</text>
+          <text x="192" y="147" font-size="13" fill="var(--muted)">n = 3: 7 pivots</text>
+        </svg>
+        <p class="how">Walk to a better neighbouring vertex until none is better</p>
+        <div><span class="chip warn">Worst case: 2ⁿ − 1 pivots</span><span class="chip good">Fast in practice</span></div>
+      </div>
+
+      <!-- Ellipsoid -->
+      <div class="card">
+        <h2>Ellipsoid</h2>
+        <div class="who">Khachiyan</div>
+        <svg viewBox="0 0 300 150" role="img" aria-label="Shrinking ellipsoids around the feasible region">
+          <ellipse cx="140" cy="75" rx="125" ry="66" fill="none" stroke="var(--muted)" stroke-width="2"/>
+          <line x1="140" y1="5" x2="140" y2="145" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 4"/>
+          <ellipse cx="190" cy="76" rx="78" ry="50" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+          <ellipse cx="203" cy="78" rx="44" ry="32" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-dasharray="6 3"/>
+          <polygon points="188,70 220,62 230,88 198,98" fill="var(--good-soft)" stroke="var(--good)" stroke-width="2"/>
+          <circle cx="140" cy="75" r="3.5" fill="var(--muted)"/>
+          <text x="22" y="80" font-size="13" fill="var(--muted)">cut through</text>
+          <text x="22" y="96" font-size="13" fill="var(--muted)">the centre</text>
+        </svg>
+        <p class="how">Cut through the centre, keep the feasible half, wrap it in a smaller ellipsoid</p>
+        <div><span class="chip good">Polynomial: O(n⁴L)</span><span class="chip warn">Slow in practice</span></div>
+      </div>
+
+      <!-- Interior point -->
+      <div class="card">
+        <h2>Interior point</h2>
+        <div class="who">Karmarkar</div>
+        <svg viewBox="0 0 300 150" role="img" aria-label="Path through the interior of the polytope towards the optimum">
+          <polygon points="60,130 40,60 120,15 230,35 255,115" fill="var(--grey-soft)" stroke="var(--muted)" stroke-width="2"/>
+          <path d="M95,110 C130,95 150,80 175,62 S215,42 226,38" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-dasharray="1 0"/>
+          <g fill="var(--accent)"><circle cx="95" cy="110" r="4"/><circle cx="135" cy="92" r="4"/><circle cx="168" cy="67" r="4"/><circle cx="200" cy="48" r="4"/></g>
+          <circle cx="230" cy="35" r="6" fill="var(--good)"/>
+          <text x="238" y="30" font-size="13" fill="var(--good)">opt</text>
+          <text x="88" y="100" font-size="13" fill="var(--muted)" text-anchor="end">start</text>
+        </svg>
+        <p class="how">Follow a path through the inside of the polytope towards the optimum</p>
+        <div><span class="chip good">Polynomial: O(n³·⁵L)</span><span class="chip good">Fast in practice</span></div>
+      </div>
+    </div>
+
+    <p class="small" style="margin:16px 0 0">n = variables, L = input size in bits; operation counts for m = O(n) constraints. Interior point may stop off a vertex when optima tie → tested in E3.</p>
+
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P3 · Feilin</span></div>
+    <aside class="notes">
+      <p><i>≈ 60 s · full script in script/P3.md</i></p>
+      <p>Once A is TU, we still have to <b>solve</b> the LP. Lecture 7 named three algorithms. Here's how each works, and how fast it is.</p>
+      <p><b>Simplex</b>, Dantzig, 1947, keeps moving to a <b>better neighbouring vertex</b>. It's fast in practice. But Klee and Minty built a squashed cube where it visits <b>every</b> vertex: 2 to the n pivots. <b>Exponential</b> in the worst case.</p>
+      <p>So: is LP polynomial <b>at all</b>? Khachiyan said <b>yes</b> in 1979, with the <b>ellipsoid method</b>. Cut the ellipsoid through its centre, keep the feasible half, and wrap it in a smaller one. <b>Polynomial</b>, but too slow to use.</p>
+      <p><b>Interior point</b> methods, Karmarkar, 1984, get <b>both</b>. They move through the <b>inside</b> of the polytope: polynomial, and fast. The catch: they may not stop at a vertex. We'll test that in E3.</p>
+      <p>Daryl will now show where TU problems come up.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 5 · APPLICATIONS (P4) ============ -->
+  <section class="slide" data-owner="P4">
+    <div class="kicker">5 · Applications</div>
+    <h1>Where TU makes the LP exact</h1>
+    <div class="placeholder">P4 · Daryl: max-flow, bipartite matching and König via LP duality, shift scheduling (interval matrix)</div>
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
+    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+  </section>
+
+  <!-- ============ 6 · EMPIRICAL EVALUATION (P3) ============ -->
+  <section class="slide" data-owner="P3">
+    <div class="kicker">6 · Empirical evaluation (planned)</div>
+    <h1>Four experiments, each testing a prediction</h1>
+
+    <div class="exps">
+      <div class="card">
+        <div class="head"><span class="id">E1</span><h2>What happens when we leave TU?</h2></div>
+        <dl>
+          <dt>Setup</dt><dd>Bipartite graphs; add odd-cycle edges one at a time</dd>
+          <dt>Expect</dt><dd class="expect">Fractional values appear, but only ½ (Nemhauser–Trotter)</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <div class="head"><span class="id">E2</span><h2>How costly is recognising TU?</h2></div>
+        <dl>
+          <dt>Setup</dt><dd>Brute force vs Ghouila-Houri vs CMR on growing matrices</dd>
+          <dt>Expect</dt><dd class="expect">Exponential vs polynomial runtime</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <div class="head"><span class="id">E3</span><h2>Does the LP algorithm matter?</h2></div>
+        <dl>
+          <dt>Setup</dt><dd>TU graphs with tied optima; simplex vs interior point ± crossover</dd>
+          <dt>Expect</dt><dd class="expect">Simplex always integral; interior point alone may not be</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <div class="head"><span class="id">E4</span><h2>If the LP is exact, should we use it?</h2></div>
+        <dl>
+          <dt>Setup</dt><dd>Max-flow, matching: LP vs Dinic / Hopcroft–Karp</dd>
+          <dt>Expect</dt><dd class="expect">Same optimum; specialised algorithms faster</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div style="margin-top:22px">
+      <span class="chip outline">Python</span><span class="chip outline">HiGHS (simplex, interior point, branch-and-bound)</span><span class="chip outline">networkx</span><span class="chip outline">CMR</span><span class="chip outline">code + data on GitHub</span>
+    </div>
+
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P3 · Feilin</span></div>
+    <aside class="notes">
+      <p><i>≈ 55 s · full script in script/P3.md</i></p>
+      <p>So how will we <b>test</b> this? Four experiments, each checking a <b>prediction</b>.</p>
+      <p><b>E1</b>: what happens when we <b>leave</b> TU? We take bipartite graphs and add odd-cycle edges one at a time. Fractional values should appear, but <b>only halves</b>, by Nemhauser–Trotter.</p>
+      <p><b>E2</b>: how costly is <b>recognising</b> TU? We time brute force and Ghouila-Houri, which should be exponential, against the polynomial CMR library.</p>
+      <p><b>E3</b>: does the <b>LP algorithm</b> matter? On TU graphs with tied optima, we run simplex and interior point, with and without crossover, and count the integral answers.</p>
+      <p><b>E4</b>: if the LP is exact, should we <b>just use it</b>? We compare it with Dinic and Hopcroft–Karp. Same answer expected, but slower.</p>
+      <p>All code will be on GitHub. Back to Daryl.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 7 · SCOPE & ROADMAP (P4) ============ -->
+  <section class="slide" data-owner="P4">
+    <div class="kicker">7 · Scope and roadmap</div>
+    <h1>What we will cover, and what we will not</h1>
+    <div class="placeholder">P4 · Daryl: in scope / out of scope, frontier (Seymour, bimodular and Δ-modular ILP), timeline</div>
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
+    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+  </section>
+
+</div>
+
+<div class="notes-panel"></div>
+<div class="nav">
+  <button id="prev">←</button> <span id="count"></span> <button id="next">→</button>
+  · <button id="toggleNotes">N notes</button> <button id="toggleTheme">T theme</button>
+</div>
+<script src="deck.js"></script>
+</body>
+</html>
