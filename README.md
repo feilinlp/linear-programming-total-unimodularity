@@ -88,7 +88,7 @@ Terminology: say "interior point method (IPM)", "dual simplex", "crossover", "br
 | 3 | Recognising TU: brute force, Ghouila-Houri, Seymour decomposition (CMR) | P2 · Yock Cheng | 1:30 |
 | 4 | Solving the LP: simplex, ellipsoid, interior point; complexity; Klee–Minty | P3 · Feilin | 1:00 |
 | 5 | Applications: max-flow, bipartite matching and König, shift scheduling | P4 · Daryl | 0:45 |
-| 6 | Empirical evaluation: E1–E4 | P3 · Feilin | 1:00 |
+| 6 | Empirical evaluation, 2 slides: E1–E2 (theory), E3–E4 (practice) | P3 · Feilin | 1:00 |
 | 7 | Scope and roadmap; frontier | P4 · Daryl | 1:00 |
 
 If we go over time, merge slides 5 and 7.
