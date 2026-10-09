@@ -27,31 +27,806 @@
 <body>
 <div class="stage">
 
+  <!-- =========================================================
+      P1: TITLE + FOUR CONTENT SLIDES
+      Following slides should be numbered:
+      5 Recognising TU, 6 Solving the LP, 7 Applications,
+      8 Empirical evaluation, 9 Scope and roadmap.
+      ========================================================= -->
+
   <!-- ============ 0 · TITLE ============ -->
   <section class="slide title" data-owner="P1">
     <div class="kicker">CS4234 Mini-Project · Trailer</div>
     <h1>When is an LP enough?</h1>
-    <p class="sub">Total unimodularity and exact integer optimisation</p>
-    <div class="names">Yee Hern · Yock Cheng · Feilin · Daryl</div>
-    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+    <p class="sub">
+      Total unimodularity and exact integer optimisation
+    </p>
+    <div class="names">
+      Yee Hern · Yock Cheng · Feilin · Daryl
+    </div>
+
+    <aside class="notes">
+      <p>
+        Our project asks when an LP relaxation can solve an integer
+        optimisation problem exactly. We will study total unimodularity,
+        using vertex cover as our running example.
+      </p>
+    </aside>
   </section>
+
 
   <!-- ============ 1 · THE PROBLEM (P1) ============ -->
-  <section class="slide" data-owner="P1">
-    <div class="kicker">1 · The problem</div>
-    <h1>Same LP, two graphs: why is one answer integral?</h1>
-    <div class="placeholder">P1 · Yee Hern: C₃ vs C₄ vertex cover LP outputs; "ILP NP-hard, LP polynomial: when is LP = ILP?"</div>
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P1 · Yee Hern</span></div>
-    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+  <section
+    class="slide"
+    data-owner="P1"
+    style="padding:0; overflow:hidden;"
+  >
+    <svg
+      viewBox="0 0 1280 720"
+      width="1280"
+      height="720"
+      style="flex:0 0 auto;"
+      role="img"
+      aria-label="Vertex cover on C3 and C4: the triangle has LP optimum 1.5 and integer optimum 2, while both optima are 2 on the four-cycle."
+    >
+      <!-- Heading -->
+      <text
+        x="64" y="66"
+        font-size="15"
+        font-weight="700"
+        fill="var(--accent)"
+      >1 · THE PROBLEM</text>
+
+      <text
+        x="64" y="113"
+        font-size="38"
+        font-weight="700"
+        fill="var(--ink)"
+      >Vertex cover: C₃ versus C₄</text>
+
+      <text
+        x="64" y="158"
+        font-size="21"
+        fill="var(--ink)"
+      >Choose the fewest vertices so that every edge has a chosen endpoint.</text>
+
+      <!-- Model summary -->
+      <rect
+        x="64" y="183"
+        width="1152" height="48"
+        rx="8"
+        fill="var(--grey-soft)"
+      />
+
+      <g font-size="19" fill="var(--ink)">
+        <text x="82" y="214">Integer model: choose 0 or 1</text>
+        <text x="464" y="214">LP: allow values from 0 to 1</text>
+        <text x="846" y="214">Each edge: xᵤ + xᵥ ≥ 1</text>
+      </g>
+
+      <!-- Comparison panels -->
+      <g fill="var(--slide)" stroke="var(--line)">
+        <rect x="64" y="253" width="564" height="303" rx="12"/>
+        <rect x="652" y="253" width="564" height="303" rx="12"/>
+      </g>
+
+      <g font-size="23" font-weight="700" fill="var(--ink)">
+        <text x="84" y="289">Triangle C₃</text>
+        <text x="672" y="289">4-cycle C₄</text>
+      </g>
+
+      <!-- Graph edges -->
+      <g
+        fill="none"
+        stroke="var(--muted)"
+        stroke-width="3"
+      >
+        <path d="M225 346 L143 489 L307 489 Z"/>
+        <path d="M767 346 H918 V489 H767 Z"/>
+      </g>
+
+      <!-- Triangle vertices -->
+      <g
+        fill="var(--warn-soft)"
+        stroke="var(--warn)"
+        stroke-width="2.5"
+      >
+        <circle cx="225" cy="346" r="24"/>
+        <circle cx="143" cy="489" r="24"/>
+        <circle cx="307" cy="489" r="24"/>
+      </g>
+
+      <g
+        font-size="27"
+        font-weight="700"
+        fill="var(--warn)"
+        text-anchor="middle"
+      >
+        <text x="225" y="355">½</text>
+        <text x="143" y="498">½</text>
+        <text x="307" y="498">½</text>
+      </g>
+
+      <!-- C4 selected vertices -->
+      <g
+        fill="var(--good-soft)"
+        stroke="var(--good)"
+        stroke-width="2.5"
+      >
+        <circle cx="767" cy="346" r="24"/>
+        <circle cx="918" cy="489" r="24"/>
+      </g>
+
+      <g
+        font-size="27"
+        font-weight="700"
+        fill="var(--good)"
+        text-anchor="middle"
+      >
+        <text x="767" y="355">1</text>
+        <text x="918" y="498">1</text>
+      </g>
+
+      <!-- C4 unselected vertices -->
+      <g
+        fill="var(--slide)"
+        stroke="var(--muted)"
+        stroke-width="2.5"
+      >
+        <circle cx="918" cy="346" r="24"/>
+        <circle cx="767" cy="489" r="24"/>
+      </g>
+
+      <g
+        font-size="27"
+        font-weight="700"
+        fill="var(--muted)"
+        text-anchor="middle"
+      >
+        <text x="918" y="355">0</text>
+        <text x="767" y="498">0</text>
+      </g>
+
+      <!-- Vertex labels -->
+      <g font-size="16" fill="var(--muted)">
+        <text x="225" y="312" text-anchor="middle">v₁</text>
+        <text x="111" y="495" text-anchor="end">v₂</text>
+        <text x="340" y="495">v₃</text>
+
+        <text x="767" y="312" text-anchor="middle">v₁</text>
+        <text x="918" y="312" text-anchor="middle">v₂</text>
+        <text x="951" y="495">v₃</text>
+        <text x="734" y="495" text-anchor="end">v₄</text>
+      </g>
+
+      <!-- Optimum values -->
+      <g
+        font-size="14"
+        font-weight="700"
+        fill="var(--muted)"
+      >
+        <text x="390" y="348">LP MINIMUM</text>
+        <text x="390" y="445">INTEGER MINIMUM</text>
+        <text x="1000" y="348">LP MINIMUM</text>
+        <text x="1000" y="445">INTEGER MINIMUM</text>
+      </g>
+
+      <text
+        x="390" y="397"
+        font-size="38"
+        font-weight="700"
+        fill="var(--warn)"
+      >1.5</text>
+
+      <text
+        x="1000" y="397"
+        font-size="38"
+        font-weight="700"
+        fill="var(--good)"
+      >2</text>
+
+      <g font-size="34" font-weight="700" fill="var(--ink)">
+        <text x="390" y="490">2</text>
+        <text x="1000" y="490">2</text>
+      </g>
+
+      <text
+        x="225" y="539"
+        font-size="17"
+        font-weight="700"
+        fill="var(--warn)"
+        text-anchor="middle"
+      >Fractional optimum</text>
+
+      <text
+        x="842" y="539"
+        font-size="17"
+        font-weight="700"
+        fill="var(--good)"
+        text-anchor="middle"
+      >An integer optimum</text>
+
+      <!-- Research question -->
+      <rect
+        x="64" y="590"
+        width="1152" height="55"
+        rx="8"
+        fill="var(--accent-soft)"
+      />
+      <rect
+        x="64" y="590"
+        width="4" height="55"
+        fill="var(--accent)"
+      />
+
+      <text
+        x="84" y="625"
+        font-size="23"
+        font-weight="700"
+        fill="var(--accent)"
+      >Our question: when does solving the LP give an integer optimum?</text>
+    </svg>
+
+    <div class="footer">
+      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>P1 · Yee Hern</span>
+    </div>
+
+    <aside class="notes">
+      <p><i>About 40 seconds.</i></p>
+
+      <p>
+        Vertex cover chooses the fewest vertices that touch every edge.
+        The integer model uses zero or one, while the LP allows fractions.
+      </p>
+
+      <p>
+        On the triangle, one-half at every vertex satisfies all edge
+        constraints and costs 1.5. An actual cover needs two vertices.
+        On the four-cycle, choosing opposite vertices costs two,
+        which is also the LP minimum.
+      </p>
+
+      <p>
+        Vertex cover is NP-hard in general, while LP has polynomial-time
+        algorithms. What structure makes the relaxation exact, so that
+        an integer optimum is available from the LP?
+      </p>
+
+      <p>
+        Background: all halves are also optimal on C₄. The displayed
+        integer solution is one optimal solution, not the only one.
+      </p>
+    </aside>
   </section>
 
-  <!-- ============ 2 · KEY TECHNIQUE: TU (P1) ============ -->
-  <section class="slide" data-owner="P1">
-    <div class="kicker">2 · Key technique</div>
-    <h1>Total unimodularity makes every vertex integral</h1>
-    <div class="placeholder">P1 · Yee Hern: vertex = A<sub>B</sub><sup>−1</sup>b, Cramer's rule, TU definition, Hoffman–Kruskal, bipartite ⇔ TU</div>
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P1 · Yee Hern</span></div>
-    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+
+  <!-- ============ 2 · TU DEFINITION AND EXAMPLES (P1) ============ -->
+  <section
+    class="slide"
+    data-owner="P1"
+    style="padding:0; overflow:hidden;"
+  >
+    <svg
+      viewBox="0 0 1280 720"
+      width="1280"
+      height="720"
+      style="flex:0 0 auto;"
+      role="img"
+      aria-label="Definition of total unimodularity. The identity and C4 incidence matrices are TU. The C3 incidence matrix has determinant 2 and is not TU."
+    >
+      <text
+        x="64" y="66"
+        font-size="15"
+        font-weight="700"
+        fill="var(--accent)"
+      >2 · KEY TECHNIQUE</text>
+
+      <text
+        x="64" y="113"
+        font-size="38"
+        font-weight="700"
+        fill="var(--ink)"
+      >Total unimodularity (TU)</text>
+
+      <!-- Definition -->
+      <rect
+        x="64" y="142"
+        width="1152" height="85"
+        rx="8"
+        fill="var(--grey-soft)"
+      />
+
+      <g font-size="25" font-weight="700" fill="var(--ink)">
+        <text x="84" y="177">
+          A matrix is totally unimodular if every square submatrix
+        </text>
+        <text x="84" y="211">
+          has determinant −1, 0 or 1.
+        </text>
+      </g>
+
+      <!-- Three examples -->
+      <g stroke="var(--line)" stroke-width="1">
+        <line x1="433" y1="276" x2="433" y2="568"/>
+        <line x1="847" y1="276" x2="847" y2="568"/>
+      </g>
+
+      <g
+        font-size="24"
+        font-weight="700"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >
+        <text x="237" y="294">Identity matrix</text>
+        <text x="640" y="294">4-cycle C₄</text>
+        <text x="1044" y="294">Triangle C₃</text>
+      </g>
+
+      <g font-size="28" fill="var(--ink)">
+        <text x="90" y="411">I₂ =</text>
+        <text x="458" y="427">A₄ =</text>
+        <text x="862" y="428">A₃ =</text>
+      </g>
+
+      <!-- Identity matrix brackets -->
+      <path
+        d="M185 347 H177 V455 H185
+          M289 347 H297 V455 H289"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="2"
+      />
+
+      <g
+        font-size="30"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >
+        <text x="212 262" y="387">10</text>
+        <text x="212 262" y="437">01</text>
+      </g>
+
+      <!-- C4 matrix brackets -->
+      <path
+        d="M542 321 H534 V513 H542
+          M738 321 H746 V513 H738"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="2"
+      />
+
+      <g
+        font-size="28"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >
+        <text x="568 616 664 712" y="358">1100</text>
+        <text x="568 616 664 712" y="404">0110</text>
+        <text x="568 616 664 712" y="450">0011</text>
+        <text x="568 616 664 712" y="496">1001</text>
+      </g>
+
+      <!-- C3 matrix brackets -->
+      <path
+        d="M970 346 H962 V492 H970
+          M1118 346 H1126 V492 H1118"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="2"
+      />
+
+      <g
+        font-size="28"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >
+        <text x="996 1044 1092" y="383">110</text>
+        <text x="996 1044 1092" y="429">011</text>
+        <text x="996 1044 1092" y="475">101</text>
+      </g>
+
+      <!-- Classification -->
+      <g
+        font-size="24"
+        font-weight="700"
+        fill="var(--good)"
+        text-anchor="middle"
+      >
+        <text x="237" y="554">TU</text>
+        <text x="640" y="554">TU</text>
+      </g>
+
+      <text
+        x="1044" y="554"
+        font-size="22"
+        font-weight="700"
+        fill="var(--warn)"
+        text-anchor="middle"
+      >Not TU: det(A₃) = 2</text>
+    </svg>
+
+    <div class="footer">
+      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>P1 · Yee Hern</span>
+    </div>
+
+    <aside class="notes">
+      <p><i>About 25 seconds.</i></p>
+
+      <p>
+        A matrix is totally unimodular if every square submatrix has
+        determinant minus one, zero or one. The identity matrix is a
+        simple example. The four-cycle's vertex-cover matrix is also TU.
+        The triangle matrix has determinant two, so it fails the definition.
+      </p>
+
+      <p>
+        Next, we will see how the graph's edge constraints produce
+        these matrices.
+      </p>
+
+      <p>
+        A square submatrix comes from choosing the same number of rows
+        and columns. They need not be consecutive. The definition concerns
+        every square submatrix, not just the full determinant.
+      </p>
+
+      <p>
+        Source:
+        <a href="https://theory.stanford.edu/~jvondrak/MATH233B-2017/lec3.pdf">
+          Jan Vondrák, Totally Unimodular Matrices,
+          Stanford Math 233B, Lecture 3.
+        </a>
+      </p>
+    </aside>
+  </section>
+
+
+  <!-- ============ 3 · MATRIX FORMULATION (P1) ============ -->
+  <section
+    class="slide"
+    data-owner="P1"
+    style="padding:0; overflow:hidden;"
+  >
+    <svg
+      viewBox="0 0 1280 720"
+      width="1280"
+      height="720"
+      style="flex:0 0 auto;"
+      role="img"
+      aria-label="The four edge constraints of C4 become A4 x greater than or equal to the all-ones vector. Minimise the sum of the vertex values, with every variable between zero and one."
+    >
+      <text
+        x="64" y="66"
+        font-size="15"
+        font-weight="700"
+        fill="var(--accent)"
+      >3 · MATRIX FORMULATION</text>
+
+      <text
+        x="64" y="113"
+        font-size="38"
+        font-weight="700"
+        fill="var(--ink)"
+      >Vertex cover in matrix form</text>
+
+      <text
+        x="64" y="160"
+        font-size="23"
+        fill="var(--ink)"
+      >C₄: one row per edge, one column per vertex.</text>
+
+      <!-- Individual edge constraints -->
+      <text
+        x="84" y="237"
+        font-size="23"
+        font-weight="700"
+        fill="var(--ink)"
+      >Edge constraints</text>
+
+      <text
+        x="84" y="299"
+        font-size="29"
+        fill="var(--accent)"
+      >x₁ + x₂ ≥ 1</text>
+
+      <g font-size="29" fill="var(--ink)">
+        <text x="84" y="349">x₂ + x₃ ≥ 1</text>
+        <text x="84" y="399">x₃ + x₄ ≥ 1</text>
+        <text x="84" y="449">x₄ + x₁ ≥ 1</text>
+      </g>
+
+      <line
+        x1="385" y1="221"
+        x2="385" y2="479"
+        stroke="var(--line)"
+        stroke-width="1"
+      />
+
+      <!-- Column labels -->
+      <g
+        font-size="18"
+        fill="var(--muted)"
+        text-anchor="middle"
+      >
+        <text x="601.5" y="245">v₁</text>
+        <text x="654.5" y="245">v₂</text>
+        <text x="707.5" y="245">v₃</text>
+        <text x="760.5" y="245">v₄</text>
+      </g>
+
+      <text
+        x="448" y="380"
+        font-size="28"
+        fill="var(--ink)"
+      >A₄x =</text>
+
+      <!-- Highlight the row corresponding to edge (1,2) -->
+      <rect
+        x="569" y="265"
+        width="224" height="50"
+        rx="4"
+        fill="var(--accent-soft)"
+      />
+
+      <!-- Coefficient matrix -->
+      <path
+        d="M573 261 H565 V469 H573
+          M789 261 H797 V469 H789"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="2"
+      />
+
+      <text
+        x="601.5 654.5 707.5 760.5"
+        y="300"
+        font-size="29"
+        fill="var(--accent)"
+        text-anchor="middle"
+      >1100</text>
+
+      <g
+        font-size="29"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >
+        <text x="601.5 654.5 707.5 760.5" y="350">0110</text>
+        <text x="601.5 654.5 707.5 760.5" y="400">0011</text>
+        <text x="601.5 654.5 707.5 760.5" y="450">1001</text>
+      </g>
+
+      <text
+        x="831" y="380"
+        font-size="30"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >×</text>
+
+      <!-- Variable vector -->
+      <path
+        d="M873 261 H865 V469 H873
+          M925 261 H933 V469 H925"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="2"
+      />
+
+      <g
+        font-size="29"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >
+        <text x="899" y="300">x₁</text>
+        <text x="899" y="350">x₂</text>
+        <text x="899" y="400">x₃</text>
+        <text x="899" y="450">x₄</text>
+      </g>
+
+      <text
+        x="968" y="380"
+        font-size="32"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >≥</text>
+
+      <!-- Right-hand side -->
+      <path
+        d="M1011 261 H1003 V469 H1011
+          M1049 261 H1057 V469 H1049"
+        fill="none"
+        stroke="var(--ink)"
+        stroke-width="2"
+      />
+
+      <g
+        font-size="29"
+        fill="var(--ink)"
+        text-anchor="middle"
+      >
+        <text x="1030" y="300">1</text>
+        <text x="1030" y="350">1</text>
+        <text x="1030" y="400">1</text>
+        <text x="1030" y="450">1</text>
+      </g>
+
+      <!-- Complete LP -->
+      <rect
+        x="64" y="510"
+        width="1152" height="87"
+        rx="8"
+        fill="var(--grey-soft)"
+      />
+
+      <text
+        x="84" y="546"
+        font-size="27"
+        font-weight="700"
+        fill="var(--ink)"
+      >Minimise 1ᵀx     subject to A₄x ≥ 1 and 0 ≤ x ≤ 1.</text>
+
+      <text
+        x="84" y="579"
+        font-size="21"
+        fill="var(--muted)"
+      >1 is the all-ones vector, so 1ᵀx sums the vertex values.</text>
+    </svg>
+
+    <div class="footer">
+      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>P1 · Yee Hern</span>
+    </div>
+
+    <aside class="notes">
+      <p><i>About 30 seconds.</i></p>
+
+      <p>
+        For C₄, write one constraint per edge. The first is x₁ plus x₂
+        at least one. Its coefficients give the highlighted matrix row:
+        one, one, zero, zero. Doing this for every edge gives A₄x at least
+        the all-ones vector.
+      </p>
+
+      <p>
+        We minimise the sum of the vertex values and keep each between
+        zero and one. This is the same vertex-cover LP, written in
+        matrix form.
+      </p>
+
+      <p>
+        The columns correspond to vertices v₁, v₂, v₃, v₄.
+        The rows correspond to edges (1,2), (2,3), (3,4), (4,1).
+        All vector inequalities apply coordinatewise.
+      </p>
+    </aside>
+  </section>
+
+
+  <!-- ============ 4 · KEY RESULTS / PAGE 5 (P1) ============ -->
+  <section
+    class="slide"
+    data-owner="P1"
+    style="padding:0; overflow:hidden;"
+  >
+    <svg
+      viewBox="0 0 1280 720"
+      width="1280"
+      height="720"
+      style="flex:0 0 auto;"
+      role="img"
+      aria-label="Statements of the Hoffman–Kruskal theorem and the equivalence between bipartiteness and total unimodularity of the unsigned incidence matrix."
+    >
+      <text
+        x="64" y="66"
+        font-size="15"
+        font-weight="700"
+        fill="var(--accent)"
+      >4 · KEY RESULTS</text>
+
+      <text
+        x="64" y="113"
+        font-size="38"
+        font-weight="700"
+        fill="var(--ink)"
+      >Two results we plan to study</text>
+
+      <!-- Hoffman–Kruskal -->
+      <text
+        x="64" y="194"
+        font-size="29"
+        font-weight="700"
+        fill="var(--accent)"
+      >Hoffman–Kruskal theorem</text>
+
+      <text
+        x="64" y="249"
+        font-size="25"
+        fill="var(--ink)"
+      >Let A be an integer matrix and P(b) = {x ≥ 0 : Ax ≤ b}.</text>
+
+      <text
+        x="64" y="302"
+        font-size="29"
+        font-weight="700"
+        fill="var(--ink)"
+      >A is TU ⇔ P(b) has only integer vertices</text>
+
+      <text
+        x="64" y="345"
+        font-size="26"
+        fill="var(--ink)"
+      >for every integer right-hand side b.</text>
+
+      <line
+        x1="64" y1="389"
+        x2="1216" y2="389"
+        stroke="var(--line)"
+        stroke-width="1"
+      />
+
+      <!-- Bipartite iff unsigned incidence matrix is TU -->
+      <text
+        x="64" y="448"
+        font-size="29"
+        font-weight="700"
+        fill="var(--accent)"
+      >Bipartite graphs and total unimodularity</text>
+
+      <g font-size="24" fill="var(--ink)">
+        <text x="64" y="498">
+          Let G be an undirected, loopless graph and B its unsigned
+        </text>
+        <text x="64" y="534">
+          edge–vertex incidence matrix.
+        </text>
+      </g>
+
+      <text
+        x="64" y="598"
+        font-size="32"
+        font-weight="700"
+        fill="var(--ink)"
+      >G is bipartite ⇔ B is TU</text>
+    </svg>
+
+    <div class="footer">
+      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>P1 · Yee Hern</span>
+    </div>
+
+    <aside class="notes">
+      <p><i>About 30 seconds.</i></p>
+
+      <p>
+        We plan to study two results. Hoffman–Kruskal characterises TU
+        through integer vertices for every integer right-hand side.
+        The second result says a graph is bipartite exactly when its
+        unsigned incidence matrix is TU.
+      </p>
+
+      <p>
+        Together, these connect the graph structure to the existence
+        of an integer LP optimum. We will develop these results in
+        our report. Yock Cheng will now discuss recognising TU.
+      </p>
+
+      <p>
+        Here, a vertex means a corner of the feasible region.
+        The unsigned incidence matrix has one row per edge and one
+        column per vertex, with entry 1 at each endpoint and 0 elsewhere.
+      </p>
+
+      <p>
+        Sources:
+        <a href="https://ocw.mit.edu/courses/15-083j-integer-programming-and-combinatorial-optimization-fall-2009/21984f599b1e793a2ce1bfec0fec6bfc_MIT15_083JF09_lec16.pdf">
+          MIT 15.083J, Lecture 16: Geometry
+        </a>;
+        <a href="https://theory.stanford.edu/~jvondrak/MATH233B-2017/lec3.pdf">
+          Stanford Math 233B, Lecture 3: Totally Unimodular Matrices
+        </a>.
+      </p>
+    </aside>
   </section>
 
   <!-- ============ 3 · RECOGNISING TU (P2) ============ -->
