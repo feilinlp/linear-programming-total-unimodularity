@@ -854,14 +854,159 @@
     </aside>
   </section>
 
-  <!-- ============ 3 · RECOGNISING TU (P2) ============ -->
+  <!-- ============ RECOGNISING TU (P2) · 1 OF 2 ============ -->
   <section class="slide" data-owner="P2">
-    <div class="kicker">3 · Recognising TU</div>
-    <h1>How Do We Tell Whether a Matrix Is TU?</h1>
-    <div class="placeholder">P2 · Yock Cheng: brute force vs Ghouila-Houri vs Seymour decomposition (CMR); sufficient conditions</div>
+    <div class="kicker">Recognising TU · 1 of 2</div>
+    <h1>How Do We Check Whether a Matrix Is TU?</h1>
+
+    <svg viewBox="0 0 1152 460" width="100%" height="460" role="img" aria-label="Two exhaustive TU tests: brute force checks every square submatrix; Ghouila-Houri checks every row subset for a valid signing. The triangle has determinant 2. Alternating signs on all four rows of the C4 edge-vertex matrix sum to zero; this is only one subset example.">
+      <g fill="var(--slide)" stroke="var(--line)">
+        <rect x="0" y="0" width="552" height="452" rx="12"/>
+        <rect x="576" y="0" width="576" height="452" rx="12"/>
+      </g>
+      <g font-size="25" font-weight="700" fill="var(--ink)">
+        <text x="24" y="38">1. Brute-force determinants</text>
+        <text x="600" y="38">2. Ghouila-Houri: row signing</text>
+      </g>
+      <g font-size="20" fill="var(--ink)">
+        <text x="24" y="78">Choose k rows and k columns.</text>
+        <text x="24" y="108">Check det ∈ {−1, 0, 1} for every choice.</text>
+        <text x="600" y="78">∀ row subsets R, ∃ signs sᵢ ∈ {−1, +1}.</text>
+        <text x="600" y="108" class="math">∑ᵢ∈R sᵢ Aᵢⱼ ∈ {−1, 0, 1}, ∀ columns j</text>
+      </g>
+      <text x="24" y="156" font-size="16" fill="var(--muted)">C₃ · one failing submatrix is enough</text>
+      <g fill="none" stroke="var(--muted)" stroke-width="2.5">
+        <path d="M86 186 L40 268 L132 268 Z"/>
+      </g>
+      <g fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2">
+        <circle cx="86" cy="186" r="10"/><circle cx="40" cy="268" r="10"/><circle cx="132" cy="268" r="10"/>
+      </g>
+      <path d="M199 179 H191 V292 H199 M313 179 H321 V292 H313" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <g font-size="27" text-anchor="middle" fill="var(--ink)">
+        <text x="216 256 296" y="207">110</text>
+        <text x="216 256 296" y="244">011</text>
+        <text x="216 256 296" y="281">101</text>
+      </g>
+      <g fill="var(--warn)" font-weight="700">
+        <text x="350" y="223" font-size="24">det = 2</text>
+        <text x="350" y="257" font-size="20">Not TU</text>
+      </g>
+      <text x="600" y="156" font-size="16" fill="var(--muted)">C₄ · example: select all four rows</text>
+      <g font-size="22" font-weight="700" fill="var(--accent)" text-anchor="middle">
+        <text x="624" y="196">+</text><text x="624" y="229">−</text>
+        <text x="624" y="262">+</text><text x="624" y="295">−</text>
+      </g>
+      <path d="M661 171 H653 V307 H661 M811 171 H819 V307 H811" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <g font-size="24" text-anchor="middle" fill="var(--ink)">
+        <text x="676 716 756 796" y="196">1100</text>
+        <text x="676 716 756 796" y="229">0110</text>
+        <text x="676 716 756 796" y="262">0011</text>
+        <text x="676 716 756 796" y="295">1001</text>
+      </g>
+      <text x="850" y="230" font-size="18" fill="var(--muted)">Signed sum</text>
+      <text x="850" y="266" font-size="25" font-weight="700" fill="var(--good)">(0, 0, 0, 0)</text>
+      <foreignObject x="24" y="311" width="504" height="53">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="math">
+          <math xmlns="http://www.w3.org/1998/Math/MathML" mathsize="22px" aria-label="Number of square submatrices equals the sum, k equals 1 to minimum of m and n, of m choose k times n choose k">
+            <mrow>
+              <mtext># checks = </mtext>
+              <munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>min</mi><mo>(</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo>)</mo></mrow></munderover>
+              <mo>(</mo><mfrac linethickness="0"><mi>m</mi><mi>k</mi></mfrac><mo>)</mo>
+              <mo>(</mo><mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac><mo>)</mo>
+            </mrow>
+          </math>
+        </div>
+      </foreignObject>
+      <text x="600" y="336" font-size="17" fill="var(--muted)">One subset shown; direct search: 3ᵐ configurations.</text>
+      <g fill="var(--warn-soft)">
+        <rect x="24" y="370" width="504" height="58" rx="8"/>
+        <rect x="600" y="370" width="528" height="58" rx="8"/>
+      </g>
+      <g font-size="19" font-weight="700" fill="var(--warn)">
+        <text x="40" y="394">Exponential: too many submatrices</text>
+        <text x="40" y="418" font-size="16">Directly follows the TU definition.</text>
+        <text x="616" y="394">Exponential: exhaustive subsets and signs</text>
+        <text x="616" y="418" font-size="16">An equivalent characterisation of TU.</text>
+      </g>
+    </svg>
+
     <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P2 · Yock Cheng</span></div>
-    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+    <aside class="notes">
+      <p><i>≈ 45 s · full script in script/P2.md</i></p>
+      <p>First check that entries lie in {−1, 0, 1}; otherwise a 1×1 submatrix already fails. Brute force chooses every k-row, k-column pair and checks its determinant exactly. One failure rejects the matrix; acceptance requires all sizes and choices.</p>
+      <p>For an m×n matrix, the number of nonempty square submatrices is Σ from k=1 to min(m,n) of binom(m,k)binom(n,k). On square matrices this is binom(2n,n)−1: exponential. The bottleneck is enumeration, not the cost of one determinant. Early rejection can make individual non-TU instances quick.</p>
+      <p>Ghouila-Houri characterises TU by a signing condition for every row subset. Signs may differ between subsets. The displayed C₄ calculation is (+row 1)−row 2+row 3−row 4=(0,0,0,0), using P1's edge-row, vertex-column convention. It is an illustration, not a complete certificate.</p>
+      <p>For direct enumeration each row is omitted, positive or negative: 3 choices per row. Transposition can reduce the enumerated dimension. The exponential label applies to this implementation, not to TU recognition in general.</p>
+      <p>Sources: <a href="https://ethz.ch/content/dam/ethz/special-interest/math/operations-research/ifor-dam/documents/lecture2.pdf">ETH Zürich, Combinatorial Optimization, Lecture 2</a>; <a href="https://discopt.github.io/cmr/tu.html">CMR TU recognition documentation</a>. No measured results are shown.</p>
+    </aside>
   </section>
+
+  <!-- ============ RECOGNISING TU (P2) · 2 OF 2 ============ -->
+  <section class="slide" data-owner="P2">
+    <div class="kicker">Recognising TU · 2 of 2</div>
+    <h1>Can We Recognise TU in Polynomial Time?</h1>
+    <p class="muted">Seymour's decomposition theorem leads to a polynomial-time TU test.</p>
+
+    <svg viewBox="0 0 1152 400" width="100%" height="400" role="img" aria-label="Schematic block forms: a 1-sum has zero off-diagonal blocks; a 2-sum has one rank-one connector a b transpose; a distributed 3-sum has two rank-one connectors a b transpose and c d transpose. Permitted splits are repeated until network, transposed network or exceptional pieces can be recognised; signing and interface conditions are checked. Recognition is polynomial-time via CMR.">
+      <text x="0" y="23" font-size="20" fill="var(--ink)">1. Recursively split each piece using valid 1-, 2- or 3-sums.</text>
+      <g transform="translate(0,42)">
+        <rect width="368" height="214" rx="12" fill="var(--slide)" stroke="var(--line)"/>
+        <text x="184" y="30" font-size="24" font-weight="700" text-anchor="middle" fill="var(--accent)">1-sum</text>
+        <rect x="193" y="51" width="76" height="43" rx="4" fill="var(--accent-soft)"/>
+        <rect x="99" y="99" width="76" height="43" rx="4" fill="var(--accent-soft)"/>
+        <path d="M94 49 H86 V145 H94 M274 49 H282 V145 H274" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <g class="math" font-size="26" text-anchor="middle" fill="var(--ink)">
+          <text x="137" y="80">A₁</text><text x="231" y="80">0</text>
+          <text x="137" y="128">0</text><text x="231" y="128">A₂</text>
+        </g>
+        <text x="184" y="174" font-size="18" text-anchor="middle" fill="var(--ink)">Independent pieces</text>
+        <text x="184" y="200" font-size="16" text-anchor="middle" fill="var(--muted)">Off-diagonal rank: 0</text>
+      </g>
+      <g transform="translate(392,42)">
+        <rect width="368" height="214" rx="12" fill="var(--slide)" stroke="var(--line)"/>
+        <text x="184" y="30" font-size="24" font-weight="700" text-anchor="middle" fill="var(--accent)">2-sum</text>
+        <rect x="193" y="51" width="76" height="43" rx="4" fill="var(--accent-soft)"/>
+        <rect x="99" y="99" width="76" height="43" rx="4" fill="var(--accent-soft)"/>
+        <path d="M94 49 H86 V145 H94 M274 49 H282 V145 H274" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <g class="math" font-size="26" text-anchor="middle" fill="var(--ink)">
+          <text x="137" y="80">A₁</text><text x="231" y="80">abᵀ</text>
+          <text x="137" y="128">0</text><text x="231" y="128">A₂</text>
+        </g>
+        <text x="184" y="174" font-size="18" text-anchor="middle" fill="var(--ink)">One rank-1 connection</text>
+        <text x="184" y="200" font-size="16" text-anchor="middle" fill="var(--muted)">Off-diagonal rank: 1</text>
+      </g>
+      <g transform="translate(784,42)">
+        <rect width="368" height="214" rx="12" fill="var(--slide)" stroke="var(--line)"/>
+        <text x="184" y="30" font-size="24" font-weight="700" text-anchor="middle" fill="var(--accent)">3-sum</text>
+        <rect x="193" y="51" width="76" height="43" rx="4" fill="var(--accent-soft)"/>
+        <rect x="99" y="99" width="76" height="43" rx="4" fill="var(--accent-soft)"/>
+        <path d="M94 49 H86 V145 H94 M274 49 H282 V145 H274" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <g class="math" font-size="26" text-anchor="middle" fill="var(--ink)">
+          <text x="137" y="80">A₁</text><text x="231" y="80">abᵀ</text>
+          <text x="137" y="128">cdᵀ</text><text x="231" y="128">A₂</text>
+        </g>
+        <text x="184" y="174" font-size="18" text-anchor="middle" fill="var(--ink)">Two rank-1 connections</text>
+        <text x="184" y="200" font-size="16" text-anchor="middle" fill="var(--muted)">Off-diagonal rank: 1 + 1</text>
+      </g>
+      <text x="0" y="281" font-size="16" fill="var(--muted)">Schematic forms after permutations/pivots · nonzero abᵀ has rank 1 · 3-sum: distributed-rank form.</text>
+      <text x="0" y="315" font-size="20" fill="var(--ink)">2. At the leaves, test network, transposed network or exceptional pieces.</text>
+      <text x="0" y="347" font-size="20" fill="var(--ink)">3. All children TU + valid sum conditions ⇒ parent TU; repeat up to A.</text>
+      <rect x="0" y="367" width="1152" height="33" rx="8" fill="var(--good-soft)"/>
+      <text x="576" y="390" font-size="20" font-weight="700" text-anchor="middle" fill="var(--good)">Polynomial-time recognition · Our project uses Seymour via CMR</text>
+    </svg>
+
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P2 · Yock Cheng</span></div>
+    <aside class="notes">
+      <p><i>≈ 45 s including handoff · full script in script/P2.md</i></p>
+      <p>The block diagrams illustrate the interfaces, not full definitions of the sum operations. Verified against CMR's definitions and Nägele et al., Definition 13 and Theorem 15. The two rank-one connector form is a valid distributed-rank 3-sum illustration; it does not show every 3-sum form. A₁ and A₂ denote diagonal blocks of A. The vectors a, b, c, d are local connector vectors; abᵀ is their outer product, not the LP right-hand side b. Each nonzero outer product has rank one because its columns are multiples of one vector.</p>
+      <p>A 1-sum has no connection between the diagonal blocks. A 2-sum has one rank-one off-diagonal connection. The illustrated distributed-rank 3-sum has one rank-one connection in each direction; another 3-sum form concentrates rank two in one off-diagonal block. Valid decompositions additionally require appropriate sizes, interface entries and signing. Low rank by itself does not certify TU, and child matrices can include interface rows/columns beyond the displayed diagonal blocks.</p>
+      <p>Seymour's theorem concerns regular matroids: graphic, cographic and R₁₀ building blocks under structured sums. At matrix level, recognition uses network matrices, transposes, exceptional forms and allowed transformations. Recursively find permitted separations, recognise the terminal pieces, and check the interface and signing conditions. This leads to a polynomial-time TU recogniser.</p>
+      <p>Recursion proceeds on each constructed child, including its required interface rows/columns. Stop when a child is recognised as a base class or a failure is detected. For valid signed sum constructions, TU of all children implies TU of the parent; apply this bottom-up to certify A. Testing only the diagonal blocks A₁ and A₂ is insufficient. CMR also verifies the signing, so regularity of the unsigned support alone is insufficient for the original signed matrix. The diagrams are schematic rather than actual CMR output.</p>
+      <p>Handoff: For our project, we will use Seymour-based recognition through CMR. Feilin will now discuss how we solve the LP once we know the matrix is TU.</p>
+      <p>Sources: <a href="https://discopt.github.io/cmr/seymour_decomposition.html">CMR Seymour decomposition documentation</a>; <a href="https://discopt.github.io/cmr/tu.html">CMR TU recognition documentation</a>; <a href="https://link.springer.com/article/10.1007/s10107-024-02148-2">Nägele et al., Advances on strictly Δ-modular IPs, Section 4, Definition 13 and Theorem 15</a>.</p>
+    </aside>
+  </section>
+
 
   <!-- ============ 4 · SOLVING THE LP (P3) ============ -->
   <section class="slide" data-owner="P3">
