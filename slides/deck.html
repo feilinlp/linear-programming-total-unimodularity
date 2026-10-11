@@ -23,6 +23,30 @@
   .exps dt { font-size: 13.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; padding-top: 3px; }
   .exps dd { margin: 0; font-size: 20px; line-height: 1.38; }
   .exps dd.expect { color: var(--good); }
+  /* ---- P4 slide-specific layout (uses theme tokens only) ---- */
+  .plan { display: flex; align-items: center; gap: 12px; background: var(--grey-soft); border-radius: 8px; padding: 10px 18px; font-size: 19px; margin: -4px 0 20px; }
+  .plan .step { font-weight: 600; }
+  .plan .arrow { color: var(--muted); }
+  .apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .apps .card { display: flex; flex-direction: column; padding: 16px 20px 18px; }
+  .apps .chip { font-size: 16px; }
+  .apps .who { font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .apps svg { width: 100%; height: 190px; margin: 8px 0 8px; }
+  .apps .how { font-size: 19px; line-height: 1.38; margin: 0 0 10px; min-height: 54px; }
+  .map svg { width: 100%; display: block; }
+  .scope { display: grid; grid-template-columns: 130px 1fr; row-gap: 6px; align-items: baseline; margin: 14px 0 0; }
+  .scope dt { font-size: 13.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  .scope dd { margin: 0; }
+  .scope .chip { font-size: 15px; }
+  .uses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 24px; margin-bottom: 10px; }
+  .use { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 5px; }
+  .use.span2 { grid-column: span 2; }
+  .cmp td { font-size: 19px; }
+  .cmp td:first-child { font-weight: 600; width: 26%; }
+  .cmp td .chip { font-size: 15px; }
+  .cmp tr.grp td { font-size: 13.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-weight: 700; padding-top: 14px; border-bottom: 2px solid var(--accent); }
+  .cmp tr.contrast td { color: var(--muted); }
+  .cmp-note { margin: 22px 0 0; }
 </style>
 </head>
 <body>
@@ -940,10 +964,160 @@
   <!-- ============ 5 · APPLICATIONS (P4) ============ -->
   <section class="slide" data-owner="P4">
     <div class="kicker">5 · Applications</div>
-    <h1>Where TU Makes the LP Exact</h1>
-    <div class="placeholder">P4 · Daryl: max-flow, bipartite matching and König via LP duality, shift scheduling (interval matrix)</div>
+    <h1>When Is TU Useful?</h1>
+
+    <div class="plan">
+      <span class="muted">For each problem, we will:</span>
+      <span class="step">model it as an LP</span><span class="arrow">→</span>
+      <span class="step">find its constraint matrix</span><span class="arrow">→</span>
+      <span class="step">prove the matrix is TU</span>
+    </div>
+
+    <div class="uses">
+      <div class="use span2">Use 1 · Explains known algorithms</div>
+      <div class="use">Use 2 · No known shortcut</div>
+    </div>
+
+    <div class="apps">
+      <!-- Max-flow -->
+      <div class="card">
+        <h2>Max-flow</h2>
+        <div class="who">Lecture 6: integrality theorem</div>
+        <svg viewBox="0 0 300 150" role="img" aria-label="Small flow network s, a, b, t carrying an integral flow of value 3">
+          <defs><marker id="p4arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+          <g stroke="var(--muted)" stroke-width="2.2" marker-end="url(#p4arr)">
+            <line x1="56" y1="69" x2="132" y2="37"/><line x1="56" y1="81" x2="132" y2="113"/>
+            <line x1="166" y1="36" x2="242" y2="68"/><line x1="166" y1="114" x2="242" y2="82"/>
+            <line x1="150" y1="48" x2="150" y2="100"/>
+          </g>
+          <g stroke-width="2.5">
+            <circle cx="40" cy="75" r="16" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="150" cy="30" r="16" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="150" cy="120" r="16" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="260" cy="75" r="16" fill="var(--slide)" stroke="var(--muted)"/>
+          </g>
+          <g font-size="15" fill="var(--ink)" text-anchor="middle" font-weight="600">
+            <text x="40" y="80">s</text><text x="150" y="35">a</text><text x="150" y="125">b</text><text x="260" y="80">t</text>
+          </g>
+          <g font-size="16" font-weight="700" fill="var(--good)" text-anchor="middle">
+            <text x="88" y="42">2</text><text x="88" y="120">1</text><text x="212" y="42">2</text><text x="212" y="120">1</text>
+          </g>
+          <text x="162" y="80" font-size="15" font-weight="700" fill="var(--muted)">0</text>
+          <text x="150" y="148" font-size="13" fill="var(--muted)" text-anchor="middle">integer capacities ⇒ integer flow</text>
+        </svg>
+        <p class="how">Directed incidence matrix: one +1 and one −1 per column</p>
+        <div><span class="chip good">Integral flows (L6)</span></div>
+      </div>
+
+      <!-- Bipartite matching and vertex cover -->
+      <div class="card">
+        <h2>Matching &amp; vertex cover</h2>
+        <div class="who">Bipartite graphs, e.g. C₄</div>
+        <svg viewBox="0 0 300 150" role="img" aria-label="C4: matching edges v1v2 and v3v4, vertex cover v1 and v3; both have size 2">
+          <g stroke="var(--muted)" stroke-width="2.2">
+            <line x1="220" y1="35" x2="220" y2="110"/><line x1="80" y1="110" x2="80" y2="35"/>
+          </g>
+          <g stroke="var(--accent)" stroke-width="5" stroke-linecap="round">
+            <line x1="80" y1="35" x2="220" y2="35"/><line x1="220" y1="110" x2="80" y2="110"/>
+          </g>
+          <g stroke-width="2.5">
+            <circle cx="80" cy="35" r="18" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="220" cy="110" r="18" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="220" cy="35" r="18" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="80" cy="110" r="18" fill="var(--slide)" stroke="var(--muted)"/>
+          </g>
+          <g font-size="14" font-weight="600" text-anchor="middle">
+            <text x="80" y="40" fill="var(--good)">v₁</text><text x="220" y="115" fill="var(--good)">v₃</text>
+            <text x="220" y="40" fill="var(--muted)">v₂</text><text x="80" y="115" fill="var(--muted)">v₄</text>
+          </g>
+          <g font-size="13" text-anchor="middle">
+            <text x="150" y="28" fill="var(--accent)" font-weight="600">matching</text>
+            <text x="150" y="148" fill="var(--muted)">max matching 2 = min cover 2</text>
+          </g>
+        </svg>
+        <p class="how">Bipartite incidence matrix, plus LP duality</p>
+        <div><span class="chip good">König's theorem</span></div>
+      </div>
+
+      <!-- Shift scheduling -->
+      <div class="card">
+        <h2>Shift scheduling</h2>
+        <div class="who">No classic specialised algorithm</div>
+        <svg viewBox="0 0 300 150" role="img" aria-label="Hours by shifts matrix: day shifts have consecutive ones, an overnight shift wraps around from the last hour to the first">
+          <text x="115" y="12" font-size="12" fill="var(--muted)" text-anchor="middle">shifts →</text>
+          <text x="26" y="74" font-size="12" fill="var(--muted)" text-anchor="middle" transform="rotate(-90 26 74)">hours →</text>
+          <g stroke="var(--line)" stroke-width="1.5" fill="var(--slide)">
+            <rect x="40" y="20" width="30" height="18"/><rect x="70" y="20" width="30" height="18"/><rect x="100" y="20" width="30" height="18"/><rect x="130" y="20" width="30" height="18"/><rect x="160" y="20" width="30" height="18"/>
+            <rect x="40" y="38" width="30" height="18"/><rect x="70" y="38" width="30" height="18"/><rect x="100" y="38" width="30" height="18"/><rect x="130" y="38" width="30" height="18"/><rect x="160" y="38" width="30" height="18"/>
+            <rect x="40" y="56" width="30" height="18"/><rect x="70" y="56" width="30" height="18"/><rect x="100" y="56" width="30" height="18"/><rect x="130" y="56" width="30" height="18"/><rect x="160" y="56" width="30" height="18"/>
+            <rect x="40" y="74" width="30" height="18"/><rect x="70" y="74" width="30" height="18"/><rect x="100" y="74" width="30" height="18"/><rect x="130" y="74" width="30" height="18"/><rect x="160" y="74" width="30" height="18"/>
+            <rect x="40" y="92" width="30" height="18"/><rect x="70" y="92" width="30" height="18"/><rect x="100" y="92" width="30" height="18"/><rect x="130" y="92" width="30" height="18"/><rect x="160" y="92" width="30" height="18"/>
+            <rect x="40" y="110" width="30" height="18"/><rect x="70" y="110" width="30" height="18"/><rect x="100" y="110" width="30" height="18"/><rect x="130" y="110" width="30" height="18"/><rect x="160" y="110" width="30" height="18"/>
+          </g>
+          <g stroke="var(--good)" stroke-width="1.5" fill="var(--good-soft)">
+            <rect x="40" y="20" width="30" height="18"/><rect x="40" y="38" width="30" height="18"/><rect x="40" y="56" width="30" height="18"/>
+            <rect x="70" y="38" width="30" height="18"/><rect x="70" y="56" width="30" height="18"/><rect x="70" y="74" width="30" height="18"/>
+            <rect x="100" y="56" width="30" height="18"/><rect x="100" y="74" width="30" height="18"/><rect x="100" y="92" width="30" height="18"/>
+            <rect x="130" y="74" width="30" height="18"/><rect x="130" y="92" width="30" height="18"/><rect x="130" y="110" width="30" height="18"/>
+          </g>
+          <g stroke="var(--warn)" stroke-width="1.5" fill="var(--warn-soft)">
+            <rect x="160" y="92" width="30" height="18"/><rect x="160" y="110" width="30" height="18"/><rect x="160" y="20" width="30" height="18"/>
+          </g>
+          <g font-size="12" font-weight="700" text-anchor="middle" fill="var(--good)">
+            <text x="55" y="33">1</text><text x="55" y="51">1</text><text x="55" y="69">1</text>
+            <text x="85" y="51">1</text><text x="85" y="69">1</text><text x="85" y="87">1</text>
+            <text x="115" y="69">1</text><text x="115" y="87">1</text><text x="115" y="105">1</text>
+            <text x="145" y="87">1</text><text x="145" y="105">1</text><text x="145" y="123">1</text>
+          </g>
+          <g font-size="12" font-weight="700" text-anchor="middle" fill="var(--warn)">
+            <text x="175" y="105">1</text><text x="175" y="123">1</text><text x="175" y="33">1</text>
+          </g>
+          <g font-size="13" font-weight="600">
+            <text x="202" y="52" fill="var(--good)">day shifts:</text><text x="202" y="68" fill="var(--good)">consecutive 1s</text>
+            <text x="202" y="100" fill="var(--warn)">overnight:</text><text x="202" y="116" fill="var(--warn)">wraps around</text>
+          </g>
+          <text x="150" y="147" font-size="13" fill="var(--muted)" text-anchor="middle">each column is one shift</text>
+        </svg>
+        <p class="how">Interval matrix: consecutive 1s in every column</p>
+        <div><span class="chip good">LP alone is exact</span></div>
+      </div>
+    </div>
+
     <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
-    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+    <aside class="notes">
+      <p><i>≈ 35 s · full script in script/P4.md</i></p>
+      <p>So when is TU <b>useful</b>? In two ways.</p>
+      <p><b>First</b>, it explains algorithms we already know. Max-flow's matrix is a directed incidence matrix, so Lecture 6's integrality theorem follows. Bipartite matching, like our C₄, is TU, and with LP duality it gives <b>König's theorem</b>.</p>
+      <p><b>Second</b>, it solves problems with <b>no known shortcut</b>. In shift scheduling each shift covers consecutive hours, so the matrix is TU and the LP alone gives the schedule.</p>
+      <p>For each problem, we'll write the LP, find its matrix, and prove it is TU.</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-owner="P4">
+    <div class="kicker">5 · Applications</div>
+    <h1>What We Will Compare</h1>
+
+    <table class="cmp">
+      <tr><th>Problem</th><th>LP + TU against</th><th>We expect</th></tr>
+      <tr class="grp"><td colspan="3">Use 1 · Known algorithms</td></tr>
+      <tr class="contrast"><td>Max-flow, matching</td><td>Edmonds–Karp / Dinic, Hopcroft–Karp</td><td><span class="chip outline">Feilin's E4</span></td></tr>
+      <tr><td>Vertex cover (bipartite)</td><td>König: cover from a max matching</td><td><span class="chip good">Min cover = max matching = LP</span></td></tr>
+      <tr class="grp"><td colspan="3">Use 2 · No known shortcut</td></tr>
+      <tr><td>Shift scheduling</td><td>Generic ILP solver (B&amp;B)</td><td><span class="chip good">Same optimum</span><span class="chip good">No branching needed</span></td></tr>
+      <tr><td>Overnight shifts</td><td>Same LP, but shifts wrap around: not TU</td><td><span class="chip warn">LP fractional, like C₃</span></td></tr>
+    </table>
+
+    <p class="callout cmp-note">TU tells us when the plain LP is enough, and when it is not.</p>
+
+    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
+    <aside class="notes">
+      <p><i>≈ 30 s · full script in script/P4.md</i></p>
+      <p>What will we compare? Flow and matching against Dinic and Hopcroft–Karp is Feilin's E4, coming next.</p>
+      <p>For vertex cover, König builds the cover from a maximum matching. We expect its size to <b>equal</b> the matching and the LP optimum.</p>
+      <p>Scheduling has no specialised algorithm, so we compare against a generic ILP solver: same optimum, but <b>no branching</b> needed.</p>
+      <p>And a contrast: let shifts wrap past midnight, and TU <b>breaks</b>. The LP gives fractions, exactly like C₃.</p>
+      <p>Feilin will show how we'll test all this.</p>
+    </aside>
   </section>
 
   <!-- ============ 6 · EMPIRICAL EVALUATION (P3) ============ -->
@@ -1094,13 +1268,91 @@
     </aside>
   </section>
 
-  <!-- ============ 7 · SCOPE & ROADMAP (P4) ============ -->
+  <!-- ============ 7 · BIG PICTURE AND SCOPE (P4) ============ -->
   <section class="slide" data-owner="P4">
-    <div class="kicker">7 · Scope and roadmap</div>
-    <h1>What We Will Cover, and What We Will Not</h1>
-    <div class="placeholder">P4 · Daryl: in scope / out of scope, frontier (Seymour, bimodular and Δ-modular ILP), timeline</div>
+    <div class="kicker">7 · Big picture and scope</div>
+    <h1>One Property Ties It All Together</h1>
+
+    <div class="map">
+      <svg viewBox="0 0 1152 380" height="380" role="img" aria-label="Mind map: total unimodularity at the centre, linked to the six parts of the talk, with two cross-links: overnight shifts give the C3 LP again, and simplex returns a vertex, which Hoffman–Kruskal makes integral">
+        <defs>
+          <marker id="p4warnArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--warn)"/></marker>
+          <marker id="p4goodArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--good)"/></marker>
+        </defs>
+
+        <!-- spokes -->
+        <g stroke="var(--line)" stroke-width="3">
+          <line x1="576" y1="190" x2="150" y2="44"/><line x1="576" y1="190" x2="576" y2="44"/><line x1="576" y1="190" x2="1002" y2="44"/>
+          <line x1="576" y1="190" x2="1002" y2="336"/><line x1="576" y1="190" x2="576" y2="336"/><line x1="576" y1="190" x2="150" y2="336"/>
+        </g>
+
+        <!-- cross-links -->
+        <path d="M426,336 H372 Q363,336 363,327 V53 Q363,44 354,44 H305" fill="none" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#p4warnArr)"/>
+        <path d="M852,336 H798 Q789,336 789,327 V53 Q789,44 780,44 H731" fill="none" stroke="var(--good)" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#p4goodArr)"/>
+        <g transform="rotate(-90 363 190)">
+          <rect x="268" y="176" width="190" height="28" rx="14" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="1.5"/>
+          <text x="363" y="195" font-size="14" font-weight="700" fill="var(--warn)" text-anchor="middle">overnight shifts = C₃</text>
+        </g>
+        <g transform="rotate(-90 789 190)">
+          <rect x="689" y="176" width="200" height="28" rx="14" fill="var(--good-soft)" stroke="var(--good)" stroke-width="1.5"/>
+          <text x="789" y="195" font-size="14" font-weight="700" fill="var(--good)" text-anchor="middle">simplex vertex ⇒ integral</text>
+        </g>
+
+        <!-- centre -->
+        <rect x="426" y="140" width="300" height="100" rx="50" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"/>
+        <text x="576" y="176" font-size="22" font-weight="700" fill="var(--accent)" text-anchor="middle">Total unimodularity</text>
+        <text x="576" y="203" font-size="16" fill="var(--ink)" text-anchor="middle">A TU, b integral</text>
+        <text x="576" y="225" font-size="16" fill="var(--ink)" text-anchor="middle">⇒ LP optimum = ILP optimum</text>
+
+        <!-- nodes -->
+        <g fill="var(--slide)" stroke="var(--line)" stroke-width="2">
+          <rect x="0" y="0" width="300" height="88" rx="12"/><rect x="426" y="0" width="300" height="88" rx="12"/><rect x="852" y="0" width="300" height="88" rx="12"/>
+          <rect x="852" y="292" width="300" height="88" rx="12"/><rect x="426" y="292" width="300" height="88" rx="12"/><rect x="0" y="292" width="300" height="88" rx="12"/>
+        </g>
+        <g fill="var(--accent)">
+          <circle cx="26" cy="26" r="14"/><circle cx="452" cy="26" r="14"/><circle cx="878" cy="26" r="14"/>
+          <circle cx="878" cy="318" r="14"/><circle cx="452" cy="318" r="14"/><circle cx="26" cy="318" r="14"/>
+        </g>
+        <g font-size="15" font-weight="700" fill="var(--slide)" text-anchor="middle">
+          <text x="26" y="31">1</text><text x="452" y="31">2</text><text x="878" y="31">3</text>
+          <text x="878" y="323">4</text><text x="452" y="323">5</text><text x="26" y="323">6</text>
+        </g>
+        <g font-size="19" font-weight="700" fill="var(--ink)">
+          <text x="50" y="32">The problem</text><text x="476" y="32">Key results</text><text x="902" y="32">Recognising TU</text>
+          <text x="902" y="324">Solving the LP</text><text x="476" y="324">Applications</text><text x="50" y="324">Experiments</text>
+        </g>
+        <g font-size="15.5" fill="var(--ink)">
+          <text x="18" y="60">C₄ integral, C₃ gives halves</text>
+          <text x="444" y="60">Hoffman–Kruskal · bipartite ⇔ TU</text>
+          <text x="870" y="60">Brute force · Ghouila-Houri · CMR</text>
+          <text x="870" y="352">Simplex · ellipsoid · interior point</text>
+          <text x="444" y="352">Flows · matching · shifts</text>
+          <text x="18" y="352">E1–E4: test each prediction</text>
+        </g>
+        <g font-size="13" fill="var(--muted)">
+          <text x="18" y="78">Yee Hern</text><text x="444" y="78">Yee Hern</text><text x="870" y="78">Yock Cheng</text>
+          <text x="870" y="370">Feilin</text><text x="444" y="370">Daryl</text><text x="18" y="370">Feilin</text>
+        </g>
+      </svg>
+    </div>
+
+    <dl class="scope">
+      <dt>Out of scope</dt>
+      <dd><span class="chip grey">Proof of Seymour's theorem</span><span class="chip grey">Implementing Seymour or ellipsoid</span><span class="chip grey">TDI</span><span class="chip grey">Non-bipartite matching polytope</span></dd>
+      <dt>Frontier</dt>
+      <dd><span class="chip outline">Bimodular ILP: strongly polynomial (2017)</span><span class="chip outline">Δ-modular ILP: open in general</span></dd>
+      <dt>Timeline</dt>
+      <dd><span class="chip outline">Experiments · Week 11</span><span class="chip outline">Draft · Week 12</span><span class="chip outline">Report · 13 Nov</span></dd>
+    </dl>
+
     <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
-    <aside class="notes"><p>Placeholder: owner to fill.</p></aside>
+    <aside class="notes">
+      <p><i>≈ 60 s · full script in script/P4.md</i></p>
+      <p>To finish, here is how the pieces fit. Everything hangs on <b>one property</b>: if A is TU and b is integral, the LP optimum <b>is</b> the integer optimum.</p>
+      <p>We start from C₃ versus C₄, prove the key results, learn to recognise TU, solve the LP, apply it, and test every prediction.</p>
+      <p>Two links tie it together. Overnight shifts give <b>exactly</b> the C₃ LP again, so TU is fragile and must be checked. And simplex always stops at a vertex, which Hoffman–Kruskal makes <b>integral</b>.</p>
+      <p>We leave out Seymour's proof, implementing Seymour or ellipsoid, and TDI. Our conclusion will point to the frontier: bimodular and Δ-modular integer programs. Experiments by Week 11, report on 13 November. Thank you.</p>
+    </aside>
   </section>
 
 </div>
