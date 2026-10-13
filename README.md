@@ -97,7 +97,7 @@ If we go over time, merge slides 5 and 7.
 
 | | Why | Setup | Prediction |
 |---|---|---|---|
-| **E1** | What happens as we leave the TU world? | Random bipartite graphs; add odd-cycle edges one at a time; solve VC and matching LPs and the ILP (HiGHS B&B) | 0% fractional while bipartite; afterwards values stay in {0, ½, 1} (Nemhauser–Trotter 1975); LP/IP gap grows |
+| **E1** | Is TU necessary? (TU is sufficient, but non-TU instances can still be exact) | Random bipartite graphs; add odd-cycle edges one at a time; solve VC and matching LPs with simplex and the ILP (HiGHS B&B) | Exact while bipartite; many non-bipartite instances stay exact; gap grows with odd cycles; fractional values are ½ (Nemhauser–Trotter 1975) |
 | **E2** | How do we recognise TU in practice? | Brute-force determinants vs Ghouila-Houri vs CMR on growing TU and non-TU matrices | First two exponential, CMR polynomial |
 | **E3** | Does the LP algorithm matter? | TU instances with tied optima (even cycles, K_{n,n}, grids); HiGHS dual simplex vs IPM with crossover vs IPM without crossover | Simplex and IPM+crossover always integral; IPM without crossover can return the fractional centre of the optimal face |
 | **E4** | If the LP is exact, should we just use it? | Max-flow and bipartite matching; HiGHS LP vs Dinic / Hopcroft–Karp | Same optimum; specialised algorithms faster |

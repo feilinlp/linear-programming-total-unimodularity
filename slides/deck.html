@@ -1268,40 +1268,42 @@
   <!-- ============ 6 · EMPIRICAL EVALUATION (P3) ============ -->
   <section class="slide" data-owner="P3">
     <div class="kicker">6 · Empirical evaluation</div>
-    <h1>Testing the Theory: Integrality and Recognising TU</h1>
+    <h1>Testing the Theory: Is TU Needed, and Can We Detect It?</h1>
 
     <div class="exps">
       <div class="card">
-        <div class="head"><span class="id">E1</span><h2>What happens when we leave TU?</h2></div>
-        <svg class="fig" viewBox="0 0 520 190" role="img" aria-label="Path a-b-c has integral LP (0,1,0); adding edge a-c makes a triangle with LP (1/2,1/2,1/2)">
+        <div class="head"><span class="id">E1</span><h2>Is TU necessary?</h2></div>
+        <svg class="fig" viewBox="0 0 520 190" role="img" aria-label="Square with a diagonal is not bipartite but its LP is exact (1,0,1,0); the triangle is not bipartite and its LP is fractional (1/2,1/2,1/2)">
           <g stroke="var(--muted)" stroke-width="2.5">
-            <line x1="60" y1="140" x2="120" y2="45"/><line x1="120" y1="45" x2="180" y2="140"/>
-            <line x1="340" y1="140" x2="400" y2="45"/><line x1="400" y1="45" x2="460" y2="140"/>
+            <line x1="80" y1="40" x2="180" y2="40"/><line x1="180" y1="40" x2="180" y2="140"/>
+            <line x1="180" y1="140" x2="80" y2="140"/><line x1="80" y1="140" x2="80" y2="40"/>
+            <line x1="340" y1="140" x2="400" y2="40"/><line x1="400" y1="40" x2="460" y2="140"/>
           </g>
+          <line x1="80" y1="40" x2="180" y2="140" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 5"/>
           <line x1="340" y1="140" x2="460" y2="140" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 5"/>
           <g stroke-width="2.5">
-            <circle cx="60" cy="140" r="17" fill="var(--slide)" stroke="var(--muted)"/>
-            <circle cx="120" cy="45" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
-            <circle cx="180" cy="140" r="17" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="80" cy="40" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="180" cy="40" r="17" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="180" cy="140" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="80" cy="140" r="17" fill="var(--slide)" stroke="var(--muted)"/>
             <circle cx="340" cy="140" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
-            <circle cx="400" cy="45" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
+            <circle cx="400" cy="40" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
             <circle cx="460" cy="140" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
           </g>
           <g font-size="16" font-weight="700" text-anchor="middle">
-            <text x="60" y="146" fill="var(--muted)">0</text><text x="120" y="51" fill="var(--good)">1</text><text x="180" y="146" fill="var(--muted)">0</text>
-            <text x="340" y="146" fill="var(--warn)">½</text><text x="400" y="51" fill="var(--warn)">½</text><text x="460" y="146" fill="var(--warn)">½</text>
+            <text x="80" y="46" fill="var(--good)">1</text><text x="180" y="46" fill="var(--muted)">0</text>
+            <text x="180" y="146" fill="var(--good)">1</text><text x="80" y="146" fill="var(--muted)">0</text>
+            <text x="340" y="146" fill="var(--warn)">½</text><text x="400" y="46" fill="var(--warn)">½</text><text x="460" y="146" fill="var(--warn)">½</text>
           </g>
-          <g font-size="14" fill="var(--muted)" text-anchor="middle">
-            <text x="120" y="182">bipartite · LP = 1 = ILP</text>
-            <text x="400" y="182">odd cycle · LP = 1.5 &lt; ILP = 2</text>
-            <text x="260" y="84" fill="var(--warn)" font-weight="600">+ odd-cycle edge</text>
+          <g font-size="14" text-anchor="middle" font-weight="600">
+            <text x="130" y="182" fill="var(--good)">not bipartite · LP = ILP = 2</text>
+            <text x="400" y="182" fill="var(--warn)">not bipartite · LP = 1.5 &lt; ILP = 2</text>
           </g>
-          <line x1="215" y1="95" x2="300" y2="95" stroke="var(--warn)" stroke-width="2.5"/>
-          <path d="M300,95 l-10,-6 v12 z" fill="var(--warn)"/>
+          <text x="265" y="96" font-size="15" fill="var(--muted)" text-anchor="middle" font-style="italic">vs</text>
         </svg>
         <dl>
           <dt>Setup</dt><dd>Random bipartite graphs, adding odd-cycle edges one at a time</dd>
-          <dt>Expect</dt><dd class="expect">Fractional values appear, but only ½ (Nemhauser–Trotter)</dd>
+          <dt>Expect</dt><dd class="expect">Many non-TU graphs stay exact, so TU is sufficient but not necessary</dd>
         </dl>
       </div>
 
@@ -1334,7 +1336,7 @@
     <aside class="notes">
       <p><i>≈ 28 s · full script in script/P3.md</i></p>
       <p>So how will we <b>test</b> this? Four experiments, each checking a <b>prediction</b>.</p>
-      <p><b>E1</b>: what happens when we <b>leave</b> TU? We take bipartite graphs and add odd-cycle edges one at a time. Close a path into a triangle and we get halves. Nemhauser–Trotter says <b>only ever halves</b>.</p>
+      <p><b>E1</b>: is TU <b>necessary</b>? We add odd-cycle edges to bipartite graphs. A square with a diagonal isn't bipartite, yet its LP is still exact. A triangle's isn't. We measure how often the LP stays exact.</p>
       <p><b>E2</b>: how costly is <b>recognising</b> TU? We time brute force and Ghouila-Houri, which should be exponential, against the polynomial CMR library.</p>
     </aside>
   </section>
