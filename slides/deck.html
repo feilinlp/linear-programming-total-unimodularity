@@ -1245,11 +1245,11 @@
     <table class="cmp">
       <tr><th>Problem</th><th>LP + TU against</th><th>We expect</th></tr>
       <tr class="grp"><td colspan="3">Use 1 · Known algorithms</td></tr>
-      <tr class="contrast"><td>Max-flow, matching</td><td>Edmonds–Karp / Dinic, Hopcroft–Karp</td><td><span class="chip outline">Feilin's E4</span></td></tr>
-      <tr><td>Vertex cover (bipartite)</td><td>König: cover from a max matching</td><td><span class="chip good">Min cover = max matching = LP</span></td></tr>
+      <tr><td>Max-flow</td><td>Edmonds–Karp / Dinic</td><td><span class="chip good">Same optimum</span><span class="chip grey">Specialised faster</span></td></tr>
+      <tr><td>Matching <span class="muted">(vertex cover via König)</span></td><td>Hopcroft–Karp</td><td><span class="chip good">Same optimum</span><span class="chip grey">Specialised faster</span></td></tr>
       <tr class="grp"><td colspan="3">Use 2 · No known shortcut</td></tr>
       <tr><td>Shift scheduling</td><td>Generic ILP solver (B&amp;B)</td><td><span class="chip good">Same optimum</span><span class="chip good">No branching needed</span></td></tr>
-      <tr><td>Overnight shifts</td><td>Same LP, but shifts wrap around: not TU</td><td><span class="chip warn">LP fractional, like C₃</span></td></tr>
+      <tr><td>Overnight shifts</td><td>Same LP, but shifts wrap around: not TU</td><td><span class="chip warn">LP can be fractional, like C₃</span></td></tr>
     </table>
 
     <p class="callout cmp-note">TU tells us when the plain LP is enough, and when it is not.</p>
@@ -1257,10 +1257,10 @@
     <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
     <aside class="notes">
       <p><i>≈ 30 s · full script in script/P4.md</i></p>
-      <p>What will we compare? Flow and matching against Dinic and Hopcroft–Karp is Feilin's E4, coming next.</p>
-      <p>For vertex cover, König builds the cover from a maximum matching. We expect its size to <b>equal</b> the matching and the LP optimum.</p>
+      <p>What will we compare? Max-flow: the LP against Edmonds–Karp and Dinic. Matching: the LP against Hopcroft–Karp, with the vertex cover read off by König's theorem.</p>
+      <p>For both we expect the <b>same optimum</b>, but the specialised algorithms to be <b>faster</b>.</p>
       <p>Scheduling has no specialised algorithm, so we compare against a generic ILP solver: same optimum, but <b>no branching</b> needed.</p>
-      <p>And a contrast: let shifts wrap past midnight, and TU <b>breaks</b>. The LP gives fractions, exactly like C₃.</p>
+      <p>And a contrast: let shifts wrap past midnight, and TU <b>breaks</b>. The LP <b>can</b> then give fractions, exactly like C₃.</p>
       <p>Feilin will show how we'll test all this.</p>
     </aside>
   </section>
@@ -1486,8 +1486,6 @@
     <dl class="scope">
       <dt>Out of scope</dt>
       <dd><span class="chip grey">Proof of Seymour's theorem</span><span class="chip grey">Implementing Seymour or ellipsoid</span><span class="chip grey">TDI</span><span class="chip grey">Non-bipartite matching polytope</span></dd>
-      <dt>Frontier</dt>
-      <dd><span class="chip outline">Bimodular ILP: strongly polynomial (2017)</span><span class="chip outline">Δ-modular ILP: open in general</span></dd>
       <dt>Timeline</dt>
       <dd><span class="chip outline">Experiments · Week 11</span><span class="chip outline">Draft · Week 12</span><span class="chip outline">Report · 13 Nov</span></dd>
     </dl>
@@ -1498,7 +1496,7 @@
       <p>To finish, here is how the pieces fit. Everything hangs on <b>one property</b>: if A is TU and b is integral, the LP optimum <b>is</b> the integer optimum.</p>
       <p>We start from C₃ versus C₄, prove the key results, learn to recognise TU, solve the LP, apply it, and test every prediction.</p>
       <p>Two links tie it together. Overnight shifts give <b>exactly</b> the C₃ LP again, so TU is fragile and must be checked. And simplex always stops at a vertex, which Hoffman–Kruskal makes <b>integral</b>.</p>
-      <p>We leave out Seymour's proof, implementing Seymour or ellipsoid, and TDI. Our conclusion will point to the frontier: bimodular and Δ-modular integer programs. Experiments by Week 11, report on 13 November. Thank you.</p>
+      <p>We leave out Seymour's proof, implementing Seymour or ellipsoid, and TDI. Experiments by Week 11, report on 13 November. Thank you.</p>
     </aside>
   </section>
 
