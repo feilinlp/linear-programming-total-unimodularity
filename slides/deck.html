@@ -924,7 +924,7 @@
       </g>
       <g font-size="19" font-weight="700" fill="var(--warn)">
         <text x="40" y="394">Exponential: too many submatrices</text>
-        <text x="40" y="418" font-size="16">Directly follows the TU definition.</text>
+        <text x="40" y="418" font-size="16">Number of checks grows exponentially in the worst case.</text>
         <text x="616" y="394">Exponential: exhaustive subsets and signs</text>
         <text x="616" y="418" font-size="16">An equivalent characterisation of TU.</text>
       </g>
@@ -934,7 +934,7 @@
     <aside class="notes">
       <p><i>≈ 45 s · full script in script/P2.md</i></p>
       <p>First check that entries lie in {−1, 0, 1}; otherwise a 1×1 submatrix already fails. Brute force chooses every k-row, k-column pair and checks its determinant exactly. One failure rejects the matrix; acceptance requires all sizes and choices.</p>
-      <p>For an m×n matrix, the number of nonempty square submatrices is Σ from k=1 to min(m,n) of binom(m,k)binom(n,k). On square matrices this is binom(2n,n)−1: exponential. The bottleneck is enumeration, not the cost of one determinant. Early rejection can make individual non-TU instances quick.</p>
+      <p>For an m×n matrix, the number of nonempty square submatrices is Σ from k=1 to min(m,n) of binom(m,k)binom(n,k). The number of checks grows exponentially in the worst case. The bottleneck is enumeration, not the cost of one determinant. Early rejection can make individual non-TU instances quick.</p>
       <p>Ghouila-Houri characterises TU by a signing condition for every row subset. Signs may differ between subsets. The displayed C₄ calculation is (+row 1)−row 2+row 3−row 4=(0,0,0,0), using P1's edge-row, vertex-column convention. It is an illustration, not a complete certificate.</p>
       <p>For direct enumeration each row is omitted, positive or negative: 3 choices per row. Transposition can reduce the enumerated dimension. The exponential label applies to this implementation, not to TU recognition in general.</p>
       <p>Sources: <a href="https://ethz.ch/content/dam/ethz/special-interest/math/operations-research/ifor-dam/documents/lecture2.pdf">ETH Zürich, Combinatorial Optimization, Lecture 2</a>; <a href="https://discopt.github.io/cmr/tu.html">CMR TU recognition documentation</a>. No measured results are shown.</p>
