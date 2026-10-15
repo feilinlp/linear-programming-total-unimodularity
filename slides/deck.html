@@ -1245,11 +1245,11 @@
     <table class="cmp">
       <tr><th>Problem</th><th>LP + TU against</th><th>We expect</th></tr>
       <tr class="grp"><td colspan="3">Use 1 · Known algorithms</td></tr>
-      <tr class="contrast"><td>Max-flow, matching</td><td>Edmonds–Karp / Dinic, Hopcroft–Karp</td><td><span class="chip outline">Feilin's E4</span></td></tr>
-      <tr><td>Vertex cover (bipartite)</td><td>König: cover from a max matching</td><td><span class="chip good">Min cover = max matching = LP</span></td></tr>
+      <tr><td>Max-flow</td><td>Edmonds–Karp / Dinic</td><td><span class="chip good">Same optimum</span><span class="chip grey">Specialised faster</span></td></tr>
+      <tr><td>Matching <span class="muted">(vertex cover via König)</span></td><td>Hopcroft–Karp</td><td><span class="chip good">Same optimum</span><span class="chip grey">Specialised faster</span></td></tr>
       <tr class="grp"><td colspan="3">Use 2 · No known shortcut</td></tr>
       <tr><td>Shift scheduling</td><td>Generic ILP solver (B&amp;B)</td><td><span class="chip good">Same optimum</span><span class="chip good">No branching needed</span></td></tr>
-      <tr><td>Overnight shifts</td><td>Same LP, but shifts wrap around: not TU</td><td><span class="chip warn">LP fractional, like C₃</span></td></tr>
+      <tr><td>Overnight shifts</td><td>Same LP, but shifts wrap around: not TU</td><td><span class="chip warn">LP can be fractional, like C₃</span></td></tr>
     </table>
 
     <p class="callout cmp-note">TU tells us when the plain LP is enough, and when it is not.</p>
@@ -1257,10 +1257,10 @@
     <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
     <aside class="notes">
       <p><i>≈ 30 s · full script in script/P4.md</i></p>
-      <p>What will we compare? Flow and matching against Dinic and Hopcroft–Karp is Feilin's E4, coming next.</p>
-      <p>For vertex cover, König builds the cover from a maximum matching. We expect its size to <b>equal</b> the matching and the LP optimum.</p>
+      <p>What will we compare? Max-flow: the LP against Edmonds–Karp and Dinic. Matching: the LP against Hopcroft–Karp, with the vertex cover read off by König's theorem.</p>
+      <p>For both we expect the <b>same optimum</b>, but the specialised algorithms to be <b>faster</b>.</p>
       <p>Scheduling has no specialised algorithm, so we compare against a generic ILP solver: same optimum, but <b>no branching</b> needed.</p>
-      <p>And a contrast: let shifts wrap past midnight, and TU <b>breaks</b>. The LP gives fractions, exactly like C₃.</p>
+      <p>And a contrast: let shifts wrap past midnight, and TU <b>breaks</b>. The LP <b>can</b> then give fractions, exactly like C₃.</p>
       <p>Feilin will show how we'll test all this.</p>
     </aside>
   </section>
@@ -1268,40 +1268,42 @@
   <!-- ============ 6 · EMPIRICAL EVALUATION (P3) ============ -->
   <section class="slide" data-owner="P3">
     <div class="kicker">6 · Empirical evaluation</div>
-    <h1>Testing the Theory: Integrality and Recognising TU</h1>
+    <h1>Testing the Theory: Is TU Needed, and Can We Detect It?</h1>
 
     <div class="exps">
       <div class="card">
-        <div class="head"><span class="id">E1</span><h2>What happens when we leave TU?</h2></div>
-        <svg class="fig" viewBox="0 0 520 190" role="img" aria-label="Path a-b-c has integral LP (0,1,0); adding edge a-c makes a triangle with LP (1/2,1/2,1/2)">
+        <div class="head"><span class="id">E1</span><h2>Is TU necessary?</h2></div>
+        <svg class="fig" viewBox="0 0 520 190" role="img" aria-label="Square with a diagonal is not bipartite but its LP is exact (1,0,1,0); the triangle is not bipartite and its LP is fractional (1/2,1/2,1/2)">
           <g stroke="var(--muted)" stroke-width="2.5">
-            <line x1="60" y1="140" x2="120" y2="45"/><line x1="120" y1="45" x2="180" y2="140"/>
-            <line x1="340" y1="140" x2="400" y2="45"/><line x1="400" y1="45" x2="460" y2="140"/>
+            <line x1="80" y1="40" x2="180" y2="40"/><line x1="180" y1="40" x2="180" y2="140"/>
+            <line x1="180" y1="140" x2="80" y2="140"/><line x1="80" y1="140" x2="80" y2="40"/>
+            <line x1="340" y1="140" x2="400" y2="40"/><line x1="400" y1="40" x2="460" y2="140"/>
           </g>
+          <line x1="80" y1="40" x2="180" y2="140" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 5"/>
           <line x1="340" y1="140" x2="460" y2="140" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 5"/>
           <g stroke-width="2.5">
-            <circle cx="60" cy="140" r="17" fill="var(--slide)" stroke="var(--muted)"/>
-            <circle cx="120" cy="45" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
-            <circle cx="180" cy="140" r="17" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="80" cy="40" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="180" cy="40" r="17" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="180" cy="140" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="80" cy="140" r="17" fill="var(--slide)" stroke="var(--muted)"/>
             <circle cx="340" cy="140" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
-            <circle cx="400" cy="45" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
+            <circle cx="400" cy="40" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
             <circle cx="460" cy="140" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
           </g>
           <g font-size="16" font-weight="700" text-anchor="middle">
-            <text x="60" y="146" fill="var(--muted)">0</text><text x="120" y="51" fill="var(--good)">1</text><text x="180" y="146" fill="var(--muted)">0</text>
-            <text x="340" y="146" fill="var(--warn)">½</text><text x="400" y="51" fill="var(--warn)">½</text><text x="460" y="146" fill="var(--warn)">½</text>
+            <text x="80" y="46" fill="var(--good)">1</text><text x="180" y="46" fill="var(--muted)">0</text>
+            <text x="180" y="146" fill="var(--good)">1</text><text x="80" y="146" fill="var(--muted)">0</text>
+            <text x="340" y="146" fill="var(--warn)">½</text><text x="400" y="46" fill="var(--warn)">½</text><text x="460" y="146" fill="var(--warn)">½</text>
           </g>
-          <g font-size="14" fill="var(--muted)" text-anchor="middle">
-            <text x="120" y="182">bipartite · LP = 1 = ILP</text>
-            <text x="400" y="182">odd cycle · LP = 1.5 &lt; ILP = 2</text>
-            <text x="260" y="84" fill="var(--warn)" font-weight="600">+ odd-cycle edge</text>
+          <g font-size="14" text-anchor="middle" font-weight="600">
+            <text x="130" y="182" fill="var(--good)">not bipartite · LP = ILP = 2</text>
+            <text x="400" y="182" fill="var(--warn)">not bipartite · LP = 1.5 &lt; ILP = 2</text>
           </g>
-          <line x1="215" y1="95" x2="300" y2="95" stroke="var(--warn)" stroke-width="2.5"/>
-          <path d="M300,95 l-10,-6 v12 z" fill="var(--warn)"/>
+          <text x="265" y="96" font-size="15" fill="var(--muted)" text-anchor="middle" font-style="italic">vs</text>
         </svg>
         <dl>
           <dt>Setup</dt><dd>Random bipartite graphs, adding odd-cycle edges one at a time</dd>
-          <dt>Expect</dt><dd class="expect">Fractional values appear, but only ½ (Nemhauser–Trotter)</dd>
+          <dt>Expect</dt><dd class="expect">Many non-TU graphs stay exact, so TU is sufficient but not necessary</dd>
         </dl>
       </div>
 
@@ -1334,7 +1336,7 @@
     <aside class="notes">
       <p><i>≈ 28 s · full script in script/P3.md</i></p>
       <p>So how will we <b>test</b> this? Four experiments, each checking a <b>prediction</b>.</p>
-      <p><b>E1</b>: what happens when we <b>leave</b> TU? We take bipartite graphs and add odd-cycle edges one at a time. Close a path into a triangle and we get halves. Nemhauser–Trotter says <b>only ever halves</b>.</p>
+      <p><b>E1</b>: is TU <b>necessary</b>? We add odd-cycle edges to bipartite graphs. A square with a diagonal isn't bipartite, yet its LP is still exact. A triangle's isn't. We measure how often the LP stays exact.</p>
       <p><b>E2</b>: how costly is <b>recognising</b> TU? We time brute force and Ghouila-Houri, which should be exponential, against the polynomial CMR library.</p>
     </aside>
   </section>
@@ -1484,8 +1486,6 @@
     <dl class="scope">
       <dt>Out of scope</dt>
       <dd><span class="chip grey">Proof of Seymour's theorem</span><span class="chip grey">Implementing Seymour or ellipsoid</span><span class="chip grey">TDI</span><span class="chip grey">Non-bipartite matching polytope</span></dd>
-      <dt>Frontier</dt>
-      <dd><span class="chip outline">Bimodular ILP: strongly polynomial (2017)</span><span class="chip outline">Δ-modular ILP: open in general</span></dd>
       <dt>Timeline</dt>
       <dd><span class="chip outline">Experiments · Week 11</span><span class="chip outline">Draft · Week 12</span><span class="chip outline">Report · 13 Nov</span></dd>
     </dl>
@@ -1496,7 +1496,7 @@
       <p>To finish, here is how the pieces fit. Everything hangs on <b>one property</b>: if A is TU and b is integral, the LP optimum <b>is</b> the integer optimum.</p>
       <p>We start from C₃ versus C₄, prove the key results, learn to recognise TU, solve the LP, apply it, and test every prediction.</p>
       <p>Two links tie it together. Overnight shifts give <b>exactly</b> the C₃ LP again, so TU is fragile and must be checked. And simplex always stops at a vertex, which Hoffman–Kruskal makes <b>integral</b>.</p>
-      <p>We leave out Seymour's proof, implementing Seymour or ellipsoid, and TDI. Our conclusion will point to the frontier: bimodular and Δ-modular integer programs. Experiments by Week 11, report on 13 November. Thank you.</p>
+      <p>We leave out Seymour's proof, implementing Seymour or ellipsoid, and TDI. Experiments by Week 11, report on 13 November. Thank you.</p>
     </aside>
   </section>
 
