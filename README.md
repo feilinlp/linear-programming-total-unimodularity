@@ -1,4 +1,4 @@
-# When is an LP enough? Total unimodularity and exact integer optimisation
+# Linear Programming and Total Unimodularity
 
 CS4234 Optimization Algorithms (NUS, AY2026/27 Semester 1, instructor Diptarka Chakraborty). Group mini-project.
 
@@ -80,27 +80,29 @@ Terminology: say "interior point method (IPM)", "dual simplex", "crossover", "br
 
 **Trailer outline (8:00 cap; target ≈ 7:15, leaving 45 s spare):**
 
-| # | Slide | Presenter | Time |
+| # | Section (number shown above each slide title) | Slides | Presenter |
 |---|---|---|---|
-| 0 | Title | – | – |
-| 1 | The problem: C₃ vs C₄, "ILP NP-hard, LP polynomial: when is LP = ILP?" | P1 · Yee Hern | 1:00 |
-| 2 | Key technique: TU, Cramer's rule, Hoffman–Kruskal, bipartite ⇔ incidence matrix TU | P1 · Yee Hern | 1:00 |
-| 3 | Recognising TU: brute force, Ghouila-Houri, Seymour decomposition (CMR) | P2 · Yock Cheng | 1:30 |
-| 4 | Solving the LP: simplex, ellipsoid, interior point; complexity; Klee–Minty | P3 · Feilin | 1:00 |
-| 5 | Applications: max-flow, bipartite matching and König, shift scheduling | P4 · Daryl | 0:45 |
-| 6 | Empirical evaluation, 2 slides: E1–E2 (theory), E3–E4 (practice) | P3 · Feilin | 1:00 |
-| 7 | Scope and roadmap; frontier | P4 · Daryl | 1:00 |
+| – | Title | 1 | – |
+| 1 | The problem: vertex cover on C₃ vs C₄ | 1 | P1 · Yee Hern |
+| 2 | Key technique: total unimodularity | 1 | P1 · Yee Hern |
+| 3 | Matrix formulation of vertex cover | 1 | P1 · Yee Hern |
+| 4 | Key results: Hoffman–Kruskal, bipartite ⇔ TU | 1 | P1 · Yee Hern |
+| 5 | Recognising TU: brute force, Ghouila-Houri, Seymour decomposition (CMR) | 2 | P2 · Yock Cheng |
+| 6 | Solving the LP: simplex, ellipsoid, interior point; complexity; Klee–Minty | 1 | P3 · Feilin |
+| 7 | Applications: max-flow, matching and König, shift scheduling; what we will compare | 2 | P4 · Daryl |
+| 8 | Empirical evaluation: E1–E2 (theory), E3–E4 (practice) | 2 | P3 · Feilin |
+| 9 | Big picture and scope | 1 | P4 · Daryl |
 
-If we go over time, merge slides 5 and 7.
+Each presenter has about 2:00. Sections that span two slides keep the same number on both. If we go over time, each presenter trims their own script.
 
 **Planned experiments** (tools: Python, HiGHS via `highspy`/SciPy, networkx, CMR):
 
 | | Why | Setup | Prediction |
 |---|---|---|---|
-| **E1** | Is TU necessary? (TU is sufficient, but non-TU instances can still be exact) | Random bipartite graphs; add odd-cycle edges one at a time; solve VC and matching LPs with simplex and the ILP (HiGHS B&B) | Exact while bipartite; many non-bipartite instances stay exact; gap grows with odd cycles; fractional values are ½ (Nemhauser–Trotter 1975) |
+| **E1** | Is TU necessary? (TU is sufficient, but non-TU instances can still be exact) | Random non-bipartite graphs (matrix not TU); solve the VC LP with simplex and the ILP (HiGHS B&B) | A clear share of graphs still has LP = ILP, so TU is not necessary; when not exact, fractional values are ½ (Nemhauser–Trotter 1975) |
 | **E2** | How do we recognise TU in practice? | Brute-force determinants vs Ghouila-Houri vs CMR on growing TU and non-TU matrices | First two exponential, CMR polynomial |
 | **E3** | Does the LP algorithm matter? | TU instances with tied optima (even cycles, K_{n,n}, grids); HiGHS dual simplex vs IPM with crossover vs IPM without crossover | Simplex and IPM+crossover always integral; IPM without crossover can return the fractional centre of the optimal face |
-| **E4** | If the LP is exact, should we just use it? | Max-flow and bipartite matching; HiGHS LP vs Dinic / Hopcroft–Karp | Same optimum; specialised algorithms faster |
+| **E4** | Generic LP or specialised algorithm? | Max-flow and bipartite matching; HiGHS LP vs Dinic / Hopcroft–Karp | Same optimum; specialised algorithms faster |
 
 The group plan says to commit to 1–2 of these; agree the final set before Week 9.
 

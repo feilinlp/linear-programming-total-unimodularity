@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>When is an LP enough?</title>
+<title>Linear Programming and Total Unimodularity</title>
 <link rel="stylesheet" href="theme.css">
 <style>
   /* ---- P3 slide-specific layout (uses theme tokens only) ---- */
@@ -290,7 +290,7 @@
     </svg>
 
     <div class="footer">
-      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span>
       <span>P1 · Yee Hern</span>
     </div>
 
@@ -469,7 +469,7 @@
     </svg>
 
     <div class="footer">
-      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span>
       <span>P1 · Yee Hern</span>
     </div>
 
@@ -696,7 +696,7 @@
     </svg>
 
     <div class="footer">
-      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span>
       <span>P1 · Yee Hern</span>
     </div>
 
@@ -813,7 +813,7 @@
     </svg>
 
     <div class="footer">
-      <span>CS4234 Mini-Project · When is an LP enough?</span>
+      <span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span>
       <span>P1 · Yee Hern</span>
     </div>
 
@@ -853,7 +853,7 @@
 
   <!-- ============ RECOGNISING TU (P2) · 1 OF 2 ============ -->
   <section class="slide" data-owner="P2">
-    <div class="kicker">Recognising TU · 1 of 2</div>
+    <div class="kicker">5 · Recognising TU</div>
     <h1>How Do We Check Whether a Matrix Is TU?</h1>
 
     <svg viewBox="0 0 1152 460" width="100%" height="460" role="img" aria-label="Two exhaustive TU tests: brute force checks every square submatrix; Ghouila-Houri checks every row subset for a valid signing. The triangle has determinant 2. Alternating signs on all four rows of the C4 edge-vertex matrix sum to zero; this is only one subset example.">
@@ -927,7 +927,7 @@
       </g>
     </svg>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P2 · Yock Cheng</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P2 · Yock Cheng</span></div>
     <aside class="notes">
       <p><i>≈ 45 s · full script in script/P2.md</i></p>
       <p>First check that entries lie in {−1, 0, 1}; otherwise a 1×1 submatrix already fails. Brute force chooses every k-row, k-column pair and checks its determinant exactly. One failure rejects the matrix; acceptance requires all sizes and choices.</p>
@@ -940,7 +940,7 @@
 
   <!-- ============ RECOGNISING TU (P2) · 2 OF 2 ============ -->
   <section class="slide" data-owner="P2">
-    <div class="kicker">Recognising TU · 2 of 2</div>
+    <div class="kicker">5 · Recognising TU</div>
     <h1>Can We Recognise TU in Polynomial Time?</h1>
     <p class="muted">Seymour's decomposition theorem leads to a polynomial-time TU test.</p>
 
@@ -992,7 +992,7 @@
       <text x="576" y="390" font-size="20" font-weight="700" text-anchor="middle" fill="var(--good)">Polynomial-time recognition · Our project uses Seymour via CMR</text>
     </svg>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P2 · Yock Cheng</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P2 · Yock Cheng</span></div>
     <aside class="notes">
       <p><i>≈ 45 s including handoff · full script in script/P2.md</i></p>
       <p>The block diagrams illustrate the interfaces, not full definitions of the sum operations. Verified against CMR's definitions and Nägele et al., Definition 13 and Theorem 15. The two rank-one connector form is a valid distributed-rank 3-sum illustration; it does not show every 3-sum form. A₁ and A₂ denote diagonal blocks of A. The vectors a, b, c, d are local connector vectors; abᵀ is their outer product, not the LP right-hand side b. Each nonzero outer product has rank one because its columns are multiples of one vector.</p>
@@ -1007,7 +1007,7 @@
 
   <!-- ============ 4 · SOLVING THE LP (P3) ============ -->
   <section class="slide" data-owner="P3">
-    <div class="kicker">4 · Solving the LP</div>
+    <div class="kicker">6 · Solving the LP</div>
     <h1>Three LP Algorithms: Polynomial in Theory vs Fast in Practice</h1>
 
     <!-- timeline with the two transition questions -->
@@ -1092,7 +1092,7 @@
 
     <p class="small" style="margin:18px 0 0; font-size:16px"><span class="math">n</span> = number of variables &nbsp;&nbsp;·&nbsp;&nbsp; <span class="math">L</span> = input size in bits</p>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P3 · Feilin</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P3 · Feilin</span></div>
     <aside class="notes">
       <p><i>≈ 60 s · full script in script/P3.md</i></p>
       <p>Once A is TU, we still have to <b>solve</b> the LP. Here are three algorithms: how each works, and how fast it is.</p>
@@ -1105,7 +1105,7 @@
 
   <!-- ============ 5 · APPLICATIONS (P4) ============ -->
   <section class="slide" data-owner="P4">
-    <div class="kicker">5 · Applications</div>
+    <div class="kicker">7 · Applications</div>
     <h1>When Is TU Useful?</h1>
 
     <div class="plan">
@@ -1225,7 +1225,7 @@
       </div>
     </div>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P4 · Daryl</span></div>
     <aside class="notes">
       <p><i>≈ 35 s · full script in script/P4.md</i></p>
       <p>So when is TU <b>useful</b>? In two ways.</p>
@@ -1236,7 +1236,7 @@
   </section>
 
   <section class="slide" data-owner="P4">
-    <div class="kicker">5 · Applications</div>
+    <div class="kicker">7 · Applications</div>
     <h1>What We Will Compare</h1>
 
     <table class="cmp">
@@ -1251,7 +1251,7 @@
 
     <p class="callout cmp-note">TU tells us when the plain LP is enough, and when it is not.</p>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P4 · Daryl</span></div>
     <aside class="notes">
       <p><i>≈ 30 s · full script in script/P4.md</i></p>
       <p>What will we compare? Max-flow: the LP against Edmonds–Karp and Dinic. Matching: the LP against Hopcroft–Karp, with the vertex cover read off by König's theorem.</p>
@@ -1264,43 +1264,39 @@
 
   <!-- ============ 6 · EMPIRICAL EVALUATION (P3) ============ -->
   <section class="slide" data-owner="P3">
-    <div class="kicker">6 · Empirical evaluation</div>
+    <div class="kicker">8 · Empirical evaluation</div>
     <h1>Testing the Theory: Is TU Needed, and Can We Detect It?</h1>
 
     <div class="exps">
       <div class="card">
         <div class="head"><span class="id">E1</span><h2>Is TU necessary?</h2></div>
-        <svg class="fig" viewBox="0 0 520 190" role="img" aria-label="Square with a diagonal is not bipartite but its LP is exact (1,0,1,0); the triangle is not bipartite and its LP is fractional (1/2,1/2,1/2)">
+        <svg class="fig" viewBox="0 0 520 190" role="img" aria-label="A square with a diagonal: its matrix is not TU, yet the LP optimum equals the integer optimum">
           <g stroke="var(--muted)" stroke-width="2.5">
-            <line x1="80" y1="40" x2="180" y2="40"/><line x1="180" y1="40" x2="180" y2="140"/>
-            <line x1="180" y1="140" x2="80" y2="140"/><line x1="80" y1="140" x2="80" y2="40"/>
-            <line x1="340" y1="140" x2="400" y2="40"/><line x1="400" y1="40" x2="460" y2="140"/>
+            <line x1="60" y1="35" x2="170" y2="35"/><line x1="170" y1="35" x2="170" y2="145"/>
+            <line x1="170" y1="145" x2="60" y2="145"/><line x1="60" y1="145" x2="60" y2="35"/>
           </g>
-          <line x1="80" y1="40" x2="180" y2="140" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 5"/>
-          <line x1="340" y1="140" x2="460" y2="140" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 5"/>
+          <line x1="60" y1="35" x2="170" y2="145" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 5"/>
           <g stroke-width="2.5">
-            <circle cx="80" cy="40" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
-            <circle cx="180" cy="40" r="17" fill="var(--slide)" stroke="var(--muted)"/>
-            <circle cx="180" cy="140" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
-            <circle cx="80" cy="140" r="17" fill="var(--slide)" stroke="var(--muted)"/>
-            <circle cx="340" cy="140" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
-            <circle cx="400" cy="40" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
-            <circle cx="460" cy="140" r="17" fill="var(--warn-soft)" stroke="var(--warn)"/>
+            <circle cx="60" cy="35" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="170" cy="35" r="17" fill="var(--slide)" stroke="var(--muted)"/>
+            <circle cx="170" cy="145" r="17" fill="var(--good-soft)" stroke="var(--good)"/>
+            <circle cx="60" cy="145" r="17" fill="var(--slide)" stroke="var(--muted)"/>
           </g>
           <g font-size="16" font-weight="700" text-anchor="middle">
-            <text x="80" y="46" fill="var(--good)">1</text><text x="180" y="46" fill="var(--muted)">0</text>
-            <text x="180" y="146" fill="var(--good)">1</text><text x="80" y="146" fill="var(--muted)">0</text>
-            <text x="340" y="146" fill="var(--warn)">½</text><text x="400" y="46" fill="var(--warn)">½</text><text x="460" y="146" fill="var(--warn)">½</text>
+            <text x="60" y="41" fill="var(--good)">1</text><text x="170" y="41" fill="var(--muted)">0</text>
+            <text x="170" y="151" fill="var(--good)">1</text><text x="60" y="151" fill="var(--muted)">0</text>
           </g>
-          <g font-size="14" text-anchor="middle" font-weight="600">
-            <text x="130" y="182" fill="var(--good)">not bipartite · LP = ILP = 2</text>
-            <text x="400" y="182" fill="var(--warn)">not bipartite · LP = 1.5 &lt; ILP = 2</text>
-          </g>
-          <text x="265" y="96" font-size="15" fill="var(--muted)" text-anchor="middle" font-style="italic">vs</text>
+          <text x="115" y="184" font-size="14" fill="var(--muted)" text-anchor="middle">square + diagonal</text>
+          <rect x="235" y="22" width="275" height="62" rx="10" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="1.5"/>
+          <text x="255" y="48" font-size="17" font-weight="700" fill="var(--warn)">Matrix is not TU</text>
+          <text x="255" y="70" font-size="14" fill="var(--muted)">the diagonal creates a triangle</text>
+          <rect x="235" y="100" width="275" height="62" rx="10" fill="var(--good-soft)" stroke="var(--good)" stroke-width="1.5"/>
+          <text x="255" y="126" font-size="17" font-weight="700" fill="var(--good)">Yet LP = ILP = 2</text>
+          <text x="255" y="148" font-size="14" fill="var(--muted)">the LP is still exact</text>
         </svg>
         <dl>
-          <dt>Setup</dt><dd>Random bipartite graphs, adding odd-cycle edges one at a time</dd>
-          <dt>Expect</dt><dd class="expect">Many non-TU graphs stay exact, so TU is sufficient but not necessary</dd>
+          <dt>Setup</dt><dd>Random non-bipartite graphs, solving the LP and the integer program</dd>
+          <dt>Expect</dt><dd class="expect">LP often still exact, so TU is sufficient but not necessary</dd>
         </dl>
       </div>
 
@@ -1329,17 +1325,17 @@
       </div>
     </div>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P3 · Feilin</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P3 · Feilin</span></div>
     <aside class="notes">
       <p><i>≈ 28 s · full script in script/P3.md</i></p>
-      <p>So how will we <b>test</b> this? Four experiments, each checking a <b>prediction</b>.</p>
-      <p><b>E1</b>: is TU <b>necessary</b>? We add odd-cycle edges to bipartite graphs. A square with a diagonal isn't bipartite, yet its LP is still exact. A triangle's isn't. We measure how often the LP stays exact.</p>
+      <p>Now, <b>four experiments</b>, each testing a <b>prediction</b>.</p>
+      <p><b>E1</b>: is TU <b>necessary</b>? Take a square with a diagonal. The diagonal makes a triangle, so its matrix is <b>not</b> TU. Yet the LP still finds the integer optimum. We'll test random non-bipartite graphs and count how often the LP stays exact.</p>
       <p><b>E2</b>: how costly is <b>recognising</b> TU? We time brute force and Ghouila-Houri, which should be exponential, against the polynomial CMR library.</p>
     </aside>
   </section>
 
   <section class="slide" data-owner="P3">
-    <div class="kicker">6 · Empirical evaluation</div>
+    <div class="kicker">8 · Empirical evaluation</div>
     <h1>Testing the Practice: Solver Choice and Speed</h1>
 
     <div class="exps">
@@ -1374,7 +1370,7 @@
       </div>
 
       <div class="card">
-        <div class="head"><span class="id">E4</span><h2>If the LP is exact, should we use it?</h2></div>
+        <div class="head"><span class="id">E4</span><h2>Generic LP or specialised algorithm?</h2></div>
         <svg class="fig" viewBox="0 0 520 190" role="img" aria-label="Same instance solved by the LP and by Dinic or Hopcroft-Karp, then compared on value and runtime">
           <defs><marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
           <g stroke-width="2">
@@ -1403,18 +1399,18 @@
       </div>
     </div>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P3 · Feilin</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P3 · Feilin</span></div>
     <aside class="notes">
       <p><i>≈ 28 s · full script in script/P3.md</i></p>
       <p><b>E3</b>: does the <b>LP algorithm</b> matter? On TU graphs with tied optima, like C₄, the whole segment is optimal. Simplex returns an endpoint. Interior point without crossover returns the middle.</p>
-      <p><b>E4</b>: if the LP is exact, should we <b>just use it</b>? We give the same instances to the LP and to Dinic or Hopcroft–Karp. Same answer expected, but slower.</p>
+      <p><b>E4</b> compares a <b>generic</b> LP solver with <b>specialised</b> algorithms. On max-flow and matching, we run HiGHS against Dinic and Hopcroft–Karp. Same answer expected, but the specialised ones should be faster.</p>
       <p>Back to Daryl.</p>
     </aside>
   </section>
 
   <!-- ============ 7 · BIG PICTURE AND SCOPE (P4) ============ -->
   <section class="slide" data-owner="P4">
-    <div class="kicker">7 · Big picture and scope</div>
+    <div class="kicker">9 · Big picture and scope</div>
     <h1>One Property Ties It All Together</h1>
 
     <div class="map">
@@ -1487,7 +1483,7 @@
       <dd><span class="chip outline">Experiments · Week 11</span><span class="chip outline">Draft · Week 12</span><span class="chip outline">Report · 13 Nov</span></dd>
     </dl>
 
-    <div class="footer"><span>CS4234 Mini-Project · When is an LP enough?</span><span>P4 · Daryl</span></div>
+    <div class="footer"><span>CS4234 Mini-Project · Linear Programming and Total Unimodularity</span><span>P4 · Daryl</span></div>
     <aside class="notes">
       <p><i>≈ 60 s · full script in script/P4.md</i></p>
       <p>To finish, here is how the pieces fit. Everything hangs on <b>one property</b>: if A is TU and b is integral, the LP optimum <b>is</b> the integer optimum.</p>
