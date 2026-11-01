@@ -1,0 +1,48 @@
+{
+  "generated_utc": "2026-11-01T16:43:43.859169+00:00",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "scipy": "1.17.0",
+  "highs": "1.8.0",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+  "processor": "x86_64",
+  "seed": 20261102,
+  "n_values": [
+    10,
+    20,
+    40,
+    60
+  ],
+  "p_values": [
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.7
+  ],
+  "samples_per_cell": 50,
+  "repeats": 1,
+  "tolerance": 1e-06,
+  "lp_options": {
+    "presolve": false,
+    "primal_feasibility_tolerance": 1e-08,
+    "dual_feasibility_tolerance": 1e-08
+  },
+  "mip_options": {
+    "presolve": true,
+    "mip_rel_gap": 0.0,
+    "time_limit": 30.0
+  },
+  "sampling": "Independent G(n,p) draws, reject bipartite graphs, keep first samples per cell",
+  "cell_seed_rule": "seed + 1000003*n_index + 10007*p_index (zero-based CLI list indices)",
+  "solver_threads_and_seed": "HiGHS defaults; graph RNG seeded separately",
+  "source_sha256": "66aa483bbaa0ffb3448e9fbb8b17361f86b521c0d040135d891e5ddb6edf1a29",
+  "command": "python e1.py --seed 20261102 --samples 50 --n 10 20 40 60 --p 0.05 0.1 0.2 0.4 0.7 --repeats 1 --time-limit 30.0",
+  "input_file": "data/graphs.jsonl",
+  "input_sha256": "b78f0bc9b819e516f112eef4a65ab6154d23220bdeaabe324dbf82cd6806d17f",
+  "data_sha256": {
+    "results.csv": "53d20d7873688bcb36dcdc8024221f8b0faacc5c350077f43c85162d73b0c02d",
+    "summary.csv": "5f9f9aab8f5e37b93849002c6d1a957f1c9090aaad5505951e7f444d7a5dc5f6",
+    "solutions.jsonl": "9b95d307fec17f87e179f0ff4233e7267acab13f411eb27ccb3c55d9ff898a07"
+  }
+}
