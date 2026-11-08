@@ -1,0 +1,255 @@
+{
+  "family": "control",
+  "matrices": [
+{
+  "id": "control_000",
+  "group": "main",
+  "family": "control",
+  "rows": 1,
+  "columns": 1,
+  "nonzeros": 0,
+  "expected_tu": true,
+  "parameters": {
+    "name": "zero_1"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [0]
+  ]
+},
+{
+  "id": "control_001",
+  "group": "main",
+  "family": "control",
+  "rows": 2,
+  "columns": 3,
+  "nonzeros": 0,
+  "expected_tu": true,
+  "parameters": {
+    "name": "zero_rect"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [0, 0, 0],
+    [0, 0, 0]
+  ]
+},
+{
+  "id": "control_002",
+  "group": "main",
+  "family": "control",
+  "rows": 1,
+  "columns": 1,
+  "nonzeros": 1,
+  "expected_tu": true,
+  "parameters": {
+    "name": "identity_1"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [1]
+  ]
+},
+{
+  "id": "control_003",
+  "group": "main",
+  "family": "control",
+  "rows": 1,
+  "columns": 1,
+  "nonzeros": 1,
+  "expected_tu": true,
+  "parameters": {
+    "name": "negative_identity_1"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [-1]
+  ]
+},
+{
+  "id": "control_004",
+  "group": "main",
+  "family": "control",
+  "rows": 2,
+  "columns": 2,
+  "nonzeros": 2,
+  "expected_tu": true,
+  "parameters": {
+    "name": "identity_2"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [1, 0],
+    [0, 1]
+  ]
+},
+{
+  "id": "control_005",
+  "group": "main",
+  "family": "control",
+  "rows": 4,
+  "columns": 4,
+  "nonzeros": 4,
+  "expected_tu": true,
+  "parameters": {
+    "name": "identity_4"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+  ]
+},
+{
+  "id": "control_006",
+  "group": "main",
+  "family": "control",
+  "rows": 2,
+  "columns": 2,
+  "nonzeros": 2,
+  "expected_tu": true,
+  "parameters": {
+    "name": "signed_identity"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [1, 0],
+    [0, -1]
+  ]
+},
+{
+  "id": "control_007",
+  "group": "main",
+  "family": "control",
+  "rows": 2,
+  "columns": 3,
+  "nonzeros": 6,
+  "expected_tu": true,
+  "parameters": {
+    "name": "all_ones"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [1, 1, 1],
+    [1, 1, 1]
+  ]
+},
+{
+  "id": "control_008",
+  "group": "main",
+  "family": "control",
+  "rows": 1,
+  "columns": 4,
+  "nonzeros": 3,
+  "expected_tu": true,
+  "parameters": {
+    "name": "one_row"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": null,
+  "matrix": [
+    [1, -1, 0, 1]
+  ]
+},
+{
+  "id": "control_009",
+  "group": "main",
+  "family": "control",
+  "rows": 1,
+  "columns": 1,
+  "nonzeros": 1,
+  "expected_tu": false,
+  "parameters": {
+    "name": "entry_two"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": {
+    "rows": [
+      0
+    ],
+    "columns": [
+      0
+    ],
+    "absolute_determinant": 2
+  },
+  "matrix": [
+    [2]
+  ]
+},
+{
+  "id": "control_010",
+  "group": "main",
+  "family": "control",
+  "rows": 1,
+  "columns": 1,
+  "nonzeros": 1,
+  "expected_tu": false,
+  "parameters": {
+    "name": "entry_minus_two"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": {
+    "rows": [
+      0
+    ],
+    "columns": [
+      0
+    ],
+    "absolute_determinant": 2
+  },
+  "matrix": [
+    [-2]
+  ]
+},
+{
+  "id": "control_011",
+  "group": "main",
+  "family": "control",
+  "rows": 2,
+  "columns": 2,
+  "nonzeros": 4,
+  "expected_tu": false,
+  "parameters": {
+    "name": "signed_det_two"
+  },
+  "parent_id": null,
+  "transformation": null,
+  "known_witness": {
+    "rows": [
+      0,
+      1
+    ],
+    "columns": [
+      0,
+      1
+    ],
+    "absolute_determinant": 2
+  },
+  "matrix": [
+    [1, 1],
+    [1, -1]
+  ]
+}
+  ]
+}

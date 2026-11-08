@@ -1,0 +1,11 @@
+{
+  "generated_utc": "2026-11-08T10:33:32.588872+00:00",
+  "python": "3.14.3",
+  "source_sha256": "bdcbc3c0be65535d2829405895aa111c5ee801dbbba931056a668107e2115764",
+  "summarise_sha256": "b1fd0d62dbea14e6e16522b68388d3916b016221260c50734697a9d322b63163",
+  "raw_sha256": "c95456eba359f04879eabf2b3c04084393dc11301ae6c51719a08ea81ac29498",
+  "results_directory": "../results/main_run",
+  "plotted": true,
+  "matplotlib": "3.11.2",
+  "figures_reused_from": "2026-11-08T10:32:50.113302+00:00"
+}

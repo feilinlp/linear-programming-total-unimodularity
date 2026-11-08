@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "master_seed": 20261108,
+  "indexing": "zero-based",
+  "counts": {
+    "even_cycle": 10,
+    "odd_cycle": 10,
+    "bipartite": 120,
+    "interval": 120,
+    "embedded_triangle": 6,
+    "block_cycles": 22,
+    "control": 12,
+    "transformed": 40
+  },
+  "description": "Inputs and mathematical labels only; no recognition results.",
+  "files": [
+    {
+      "path": "even_cycle.json",
+      "family": "even_cycle",
+      "count": 10,
+      "sha256": "97259763e39739ee2665f90c89ee63f6f8ec04e7e480a95e64af5472c6d83b27"
+    },
+    {
+      "path": "odd_cycle.json",
+      "family": "odd_cycle",
+      "count": 10,
+      "sha256": "b569f4f417b29f9699f90c91652ac447b833b14e876ebbb1b535f07fb23d8485"
+    },
+    {
+      "path": "bipartite.json",
+      "family": "bipartite",
+      "count": 120,
+      "sha256": "c9f9296e064520c3d4b1d32a53e4f874fc3fc7d479a615d31752426daaf28a3a"
+    },
+    {
+      "path": "interval.json",
+      "family": "interval",
+      "count": 120,
+      "sha256": "854e6f90c2b06706fb49132d52810f84057fa8ee51c633d9490246aafc28bc90"
+    },
+    {
+      "path": "embedded_triangle.json",
+      "family": "embedded_triangle",
+      "count": 6,
+      "sha256": "836132dfde35ce07ac560477acb75bc26e4eb07598765539afd1b81e0bf80f3f"
+    },
+    {
+      "path": "block_cycles.json",
+      "family": "block_cycles",
+      "count": 22,
+      "sha256": "804335daefdd36516122f352b03ac39681dc13abb9a60b7da00403d9a08bf1ea"
+    },
+    {
+      "path": "control.json",
+      "family": "control",
+      "count": 12,
+      "sha256": "44ecc224aab7b23ea9f2182bb0054bb204fdf3c815636ad28e5940c746d61261"
+    },
+    {
+      "path": "transformed.json",
+      "family": "transformed",
+      "count": 40,
+      "sha256": "e6f4ca5caa033631807b71e53cadc31cd0111d3c0fc1449f8ebb88a21949f2e0"
+    }
+  ]
+}

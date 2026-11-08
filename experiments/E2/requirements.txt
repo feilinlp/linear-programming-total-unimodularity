@@ -1,0 +1,2 @@
+# Python >=3.10; standard library only.
+# CMR cmr-tu must be built separately. See README.md.

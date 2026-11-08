@@ -1,0 +1,8 @@
+# Python caches and local environments.
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+
+# Preliminary E2 controls are repeated in the full benchmark.
+/experiments/E2/results/pilot/

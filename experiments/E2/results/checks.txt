@@ -1,0 +1,2 @@
+Dataset construction checks: {'even_cycle': 10, 'odd_cycle': 10, 'bipartite': 120, 'interval': 120, 'embedded_triangle': 6, 'block_cycles': 22, 'control': 12, 'transformed': 40}
+Passed 512 binary 3x3 inputs and 12 analytical controls. CMR included: True
