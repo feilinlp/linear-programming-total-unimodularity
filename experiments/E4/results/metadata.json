@@ -1,0 +1,10 @@
+{
+  "python": "3.13.12",
+  "highspy": "1.15.1",
+  "networkx": "3.6.1",
+  "scipy": "1.18.1",
+  "numpy": "2.4.1",
+  "platform": "Darwin arm64",
+  "seed": 4234,
+  "repeats": 3
+}
