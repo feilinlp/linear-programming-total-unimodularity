@@ -168,7 +168,7 @@ Copied from the committed [results/results.md](results/results.md) (Daryl's MacB
 - **Unit costs in scheduling** (minimise the number of staff). Shift-dependent costs would change the numbers but not the TU argument.
 - **Node counts** in C1, C2 and the node check are all 1, so they don't distinguish TU from non-TU here (highlight 8).
 - **No specialised algorithm for scheduling.** The min-cost flow reformulation of day-shift scheduling (highlight 6) was not implemented.
-- **Own environment.** `requirements.txt` pins the versions E4 was run with (NumPy 2.4.1, SciPy 1.18.1). Other experiments pin different versions, so install each experiment's requirements in its own environment.
+- **Shared environment.** `requirements.txt` pins the versions shared by all four experiments (highspy 1.15.1, networkx 3.6.1, NumPy 2.5.4, SciPy 1.18.1). The committed run used NumPy 2.4.1; a rerun with the shared pins gave identical values, integrality results, iteration counts and node counts, including `--node-check`.
 - **Timing scope.** LP times exclude building the model in Python (under 5 ms everywhere). SciPy times exclude building the sparse matrix; networkx times exclude building the graph.
 
 ## 9. Files
