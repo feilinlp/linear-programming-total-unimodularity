@@ -40,6 +40,8 @@ Every instance is a **bipartite** graph, so its incidence matrix is TU (P1's bip
 | Controls | K₃,₄, K₃₀,₃₁, Davis Southern Women | unique minimum cover, so no ties: every solver should be integral |
 | Real (KONECT) | Unicode languages (small), Crime (small), arXiv cond-mat (large) | do real TU instances have ties, and how many? |
 
+**Why only even cycles and even grids.** Odd cycles are not bipartite, so their matrix is not TU; they belong to E1 (C₃ and C₅ are E1 controls). Odd grids are bipartite, but their smaller colour class is their only minimum cover, so there are no ties to test: they would behave like the controls.
+
 Real datasets (edge lists copied into [data/](data/); edge weights ignored because E3 uses unit costs):
 
 | Instance | Vertices / edges | What it is | Source |
@@ -59,7 +61,7 @@ Real datasets (edge lists copied into [data/](data/); edge weights ignored becau
 | `ipm+x` | `solver="ipm"`, `run_crossover="on"` |
 | `ipm` | `solver="ipm"`, `run_crossover="off"` |
 
-**Presolve is off in every run** (`presolve="off"`). Presolve is a clean-up step HiGHS runs before the algorithm. On graphs with leaf vertices it settles many ties by itself (a leaf u with neighbour v can always be set to x_u = 0, x_v = 1), so IPM never sees them. Turning it off means we compare simplex and IPM themselves. In an exploratory run, the default presolve hid most of the effect on the real graphs. That run is not part of this experiment.
+**Presolve is off in every run** (`presolve="off"`). Presolve is a clean-up step HiGHS runs before the algorithm. On graphs with leaf vertices it settles many ties by itself (a leaf u with neighbour v can always be set to x_u = 0, x_v = 1), so IPM never sees them. Turning it off means we compare simplex and IPM themselves.
 
 **What we measure, per instance and configuration:**
 - **Fractional count:** number of coordinates with |xᵥ − round(xᵥ)| > 10⁻⁶.
@@ -71,7 +73,7 @@ Real datasets (edge lists copied into [data/](data/); edge weights ignored becau
 - **Values of the free coordinates** in the `ipm` answer, and what L4's threshold rounding at ½ gives if applied to them.
 - **Iterations and runtime** (median of 3 solves, model building excluded).
 
-**Checks built into the script** (it stops if any fails): every graph is bipartite; every solve reports "optimal"; all three configurations reach the same optimal value (relative tolerance 10⁻⁶, because IPM alone stops slightly short, e.g. 12652.00001 vs 12652); the LP optimum equals the maximum matching size (König); and both free-set methods agree.
+**Checks built into the script** (it stops if any fails): every graph is bipartite; every solve reports "optimal"; all three configurations reach the same optimal value (relative tolerance 10⁻⁶, because IPM alone stops slightly short, e.g. 12652.00001 vs 12652); the LP optimum equals the maximum matching size (König); both free-set methods agree; and rounding the IPM-alone answer at ½ gives a valid cover.
 
 **Reproduce:**
 
@@ -115,7 +117,7 @@ From [results/results.md](results/results.md). "Free" is the prediction; the las
 - **Simplex** only visits basic solutions x_B = A_B⁻¹b, which are vertices. By Hoffman–Kruskal every vertex of a TU polytope with integral b is integral, so simplex can't return anything else.
 - **IPM** keeps every iterate strictly inside the polytope (that is what the barrier term does), and its central path ends at the centre of the optimal face (Güler–Ye 1993). A point in the interior of a face sits strictly between its bounds on every coordinate that varies across the face. Here those are exactly the free vertices. *(This goes beyond the lectures. Intuition: the midpoint of a segment is never one of its endpoints, and the same holds for the centre of a higher-dimensional face.)*
 - **Crossover** moves from the IPM point to an optimal vertex (Megiddo 1991), and every vertex is integral.
-- **Why ½ on symmetric graphs but not on real ones.** For every edge {u, w} of a maximum matching, every optimal solution has x_u + x_w = 1 (the matching edges alone already need OPT = |M|). Substituting x_w = 1 − x_u turns each other edge between free vertices into a constraint x_a ≥ x_b between two free vertices on the same side. On C₂ₖ these constraints go round the cycle, so all free coordinates on one side are equal, and the centre is the midpoint ½. On real graphs the constraints are lopsided, which pulls the centre away from ½. *(Beyond the lectures; this explanation is ours, not from a source.)*
+- **Why ½ on symmetric graphs but not on real ones.** For every edge {u, w} of a maximum matching, every optimal solution has x_u + x_w = 1 (the matching edges alone already need OPT = |M|). Substituting x_w = 1 − x_u turns each other edge between free vertices into a constraint x_a ≥ x_b between two free vertices on the same side. On C₂ₖ, K_{n,n} and the even grids, every edge lies in some perfect matching, so every edge is tight (x_u + x_w = 1) on the whole optimal face. In a connected bipartite graph this forces x = t on one colour class and 1 − t on the other. The face is the segment between the two colour classes, and its centre is t = ½. On real graphs the constraints are lopsided, which pulls the centre away from ½. *(Beyond the lectures; this explanation is ours, not from a source.)*
 
 ## 8. Limitations and notes
 

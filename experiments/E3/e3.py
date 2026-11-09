@@ -230,7 +230,9 @@ def run_instance(family, name, G):
     row["ipm_free_min"] = round(float(vals.min()), 4) if len(free) else ""
     row["ipm_free_max"] = round(float(vals.max()), 4) if len(free) else ""
     # L4's threshold rounding applied to the IPM answer: always a cover, but how big?
-    rounded = int(np.sum(sols["ipm"] >= 0.5 - FRAC_TOL))
+    chosen = sols["ipm"] >= 0.5 - FRAC_TOL
+    assert np.all(chosen[edges[:, 0]] | chosen[edges[:, 1]]), f"{name}: rounded IPM answer misses an edge"
+    rounded = int(np.sum(chosen))
     row["ipm_rounded_size"] = rounded
     row["ipm_rounded_ratio"] = round(rounded / opt, 3)
     return row
