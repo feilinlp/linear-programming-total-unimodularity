@@ -14,17 +14,17 @@ No timeout duration is substituted for an actual recognition time. Individual co
 
 ## Paired method comparisons
 
-Comparisons use the same inputs, with every repetition complete for both methods. Ratios are wall-time A/B; above 1 favours B.
+Comparisons use the same inputs, with every repetition complete for both methods. Brute/GH uses algorithm time, excluding worker startup and input/output; comparisons with CMR use end-to-end wall time. Ratios are A/B; above 1 favours B.
 Incomplete pairs are excluded explicitly; their unobserved speed ratios cannot be inferred.
 
-| Inputs | A | B | Eligible / shared | A faster | B faster | Median A/B |
-|---|---|---|---:|---:|---:|---:|
-| all | brute | gh | 160/340 | 27 | 133 | 1.060 |
-| main_only | brute | gh | 133/300 | 25 | 108 | 1.071 |
-| all | brute | cmr | 160/340 | 0 | 160 | 13.874 |
-| main_only | brute | cmr | 133/300 | 0 | 133 | 13.266 |
-| all | gh | cmr | 183/340 | 0 | 183 | 11.614 |
-| main_only | gh | cmr | 153/300 | 0 | 153 | 11.106 |
+| Inputs | A | B | Timing | Eligible / shared | A faster | B faster | Median A/B |
+|---|---|---|---|---:|---:|---:|---:|
+| all | brute | gh | algorithm | 160/340 | 8 | 151 | 13.937 |
+| main_only | brute | gh | algorithm | 133/300 | 8 | 124 | 10.449 |
+| all | brute | cmr | wall | 160/340 | 0 | 160 | 13.874 |
+| main_only | brute | cmr | wall | 133/300 | 0 | 133 | 13.266 |
+| all | gh | cmr | wall | 183/340 | 0 | 183 | 11.614 |
+| main_only | gh | cmr | wall | 153/300 | 0 | 153 | 11.106 |
 
 Controls and transformed copies are included in `all`; `main_only` excludes transformed copies but retains controls.
 The full family breakdown is in [paired.csv](paired.csv). Small timing differences are descriptive, not significance tests.
@@ -173,7 +173,8 @@ Individual transformations and paired ratios are in [transformed_pairs.csv](tran
 ## Figures
 
 Circles show fully completed input medians. Lines join cell medians only when the whole cell completed.
-Whiskers show the range of input medians. Triangles at the limit mark inputs with any timeout; they are not measured recognition times.
+Top panels use wall time for all methods; bottom panels use algorithm time for brute and GH only. CMR has no comparable saved algorithm time.
+Whiskers show the range of input medians. Triangles mark wall-clock timeouts; their vertical position is not a measured algorithm time or an algorithm-time lower bound.
 Colours identify methods. Horizontal offsets separate overlapping methods and are only visual.
 
 ![Cycle and obstruction scaling](figures/scaling.png)
@@ -186,7 +187,7 @@ Matching vector PDF files are available alongside each PNG for report export.
 
 ## Interpretation limits
 
-These are end-to-end timings of Python workers and a compiled C executable. Startup and input/output dominate some tiny cases.
+Property tables and representation checks use end-to-end wall time. Brute/GH paired comparisons and the algorithm-time figure panels exclude Python startup and input/output.
 Python-only algorithm timings must not be compared directly against CMR wall time. They do not resolve a tiny-input kernel crossover.
 The run establishes empirical behaviour on these synthetic inputs, not polynomial/exponential bounds.
 CMR may recognise these families by fast paths; a benefit from block structure alone does not identify which internal decomposition it used.

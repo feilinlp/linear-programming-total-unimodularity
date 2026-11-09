@@ -218,10 +218,12 @@ its parameter cell equal weight. A cell median is omitted when any input did
 not finish all repetitions; ranges show input variation, not confidence intervals.
 
 - Across the 160 inputs where both exhaustive methods finished, GH had the
-  lower median on 133 and brute force on 27. Excluding transformed copies gives
-  108 GH wins and 25 brute-force wins on 133 common main inputs. The median
-  brute/GH wall-time ratio was 1.060 over all eligible pairs; some differences
-  are small enough to be timing noise. No speed ratio is imputed for timeouts.
+  lower algorithm-time median on 151, brute force on 8, with one tie. The median
+  brute/GH algorithm-time ratio was 13.937. Excluding transformed copies gives
+  124 GH wins, 8 brute-force wins and one tie on 133 common main inputs, with
+  median ratio 10.449. These comparisons exclude Python worker startup and
+  input/output; the former wall-time ratio of 1.060 largely hid this difference.
+  Comparisons against CMR retain wall time. No speed ratio is imputed for timeouts.
 - At 12 graph vertices, GH's median across ten input medians was 43.9 ms at
   p=0.2 and 559.6 ms at p=0.6. Brute force completed 7/10 versus 0/10 inputs.
   Increasing p changes both density and the number of matrix rows, so this
@@ -238,7 +240,11 @@ not finish all repetitions; ranges show input variation, not confidence interval
 
 The cycle/obstruction figure addresses scaling, the random-family figure
 compares density and interval settings, and the block figure holds dimensions
-and nonzeros fixed. Controls and transformed-pair details are supporting
+and nonzeros fixed. Each figure includes wall-time panels for all methods and
+algorithm-time panels for brute force and GH, revealing scaling below the
+Python startup floor. Algorithm panels omit CMR because no comparable internal
+time was saved. Timeout markers indicate the external wall-clock limit, not
+measured algorithm times or algorithm-time lower bounds. Controls and transformed-pair details are supporting
 validation and can go in an appendix rather than the main report.
 
 These results agree with the expected practical advantage of structural
@@ -363,7 +369,8 @@ python3 -m venv /tmp/e2-analysis
 Neither analysis command calls a recogniser. `analyse.py` checks the raw result
 hash, dataset hashes and all planned repetitions before producing tables.
 The summary rejects missing or duplicate repetitions too. A table-only refresh
-retains existing figure links when their recorded raw-data hash matches.
+retains existing figure links only when the recorded raw-data and analysis-code
+hashes match.
 It records the analysis code hashes and plotting version separately from the
 original benchmark metadata. Figures include PNG previews and vector PDFs.
 
@@ -413,3 +420,7 @@ and paired comparisons, and documented inconclusive findings and timing limits.
 Recognition was not rerun for this analysis. The final file review checked
 links, Git exclusions, stored evidence and complete-repetition handling.
 
+
+Codex corrected brute/GH comparisons to use saved algorithm times and added
+algorithm-time figure panels alongside wall-time comparisons with CMR. Tables
+and figures were regenerated from the existing run without rerunning recognition.

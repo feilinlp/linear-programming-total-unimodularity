@@ -27,7 +27,7 @@ def sha(path):
 
 def write_csv(path, rows):
     with path.open('w', newline='') as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -76,6 +76,7 @@ def analyse(directory, data_path, plots, output=None):
     previous_metadata = output / 'analysis_metadata.json'
     previous = json.loads(previous_metadata.read_text()) if previous_metadata.exists() else {}
     reuse_figures = (not plots and previous.get('raw_sha256') == sha(directory / 'results.csv')
+                    and previous.get('source_sha256') == sha(Path(__file__))
                     and previous.get('plotted', False)
                     and all((output / 'figures' / f'{name}.{ext}').exists()
                             for name in ['scaling', 'properties', 'blocks'] for ext in ['png', 'pdf']))
@@ -96,6 +97,8 @@ def analyse(directory, data_path, plots, output=None):
     for (family, condition, size, method), group in sorted(cells.items()):
         finished = [r for r in group if r['median_wall_seconds']]
         times = [float(r['median_wall_seconds']) for r in finished]
+        algorithm_times = [float(r['median_algorithm_seconds']) for r in group if r['median_algorithm_seconds']]
+        algorithm_complete = len(algorithm_times) == len(group)
         all_complete = len(finished) == len(group)
         rr = [records[r['instance_id']] for r in group]
         cell_rows.append(dict(family=family, condition=condition, size=size, method=method,
@@ -104,6 +107,9 @@ def analyse(directory, data_path, plots, output=None):
             attempts=len(group)*repeats, rows_min=min(x['rows'] for x in rr),
             rows_max=max(x['rows'] for x in rr), columns=rr[0]['columns'],
             nonzeros_min=min(x['nonzeros'] for x in rr), nonzeros_max=max(x['nonzeros'] for x in rr),
+            median_algorithm_ms=1000*stats.median(algorithm_times) if algorithm_complete else '',
+            min_algorithm_ms=1000*min(algorithm_times) if algorithm_complete else '',
+            max_algorithm_ms=1000*max(algorithm_times) if algorithm_complete else '',
             median_wall_ms=1000*stats.median(times) if all_complete else '',
             min_instance_median_ms=1000*min(times) if all_complete else '',
             max_instance_median_ms=1000*max(times) if all_complete else ''))
@@ -113,6 +119,7 @@ def analyse(directory, data_path, plots, output=None):
 
     paired = []
     for a, b in itertools.combinations(METHODS, 2):
+        timing_scope = 'algorithm' if (a, b) == ('brute', 'gh') else 'wall'
         for family in ['all', 'main_only'] + sorted({r['family'] for r in records.values()}):
             eligible = []
             total = 0
@@ -125,13 +132,13 @@ def analyse(directory, data_path, plots, output=None):
                 if a not in methods or b not in methods:
                     continue
                 total += 1
-                x, y = methods[a]['median_wall_seconds'], methods[b]['median_wall_seconds']
+                x, y = methods[a][f'median_{timing_scope}_seconds'], methods[b][f'median_{timing_scope}_seconds']
                 if x and y:
                     eligible.append((float(x), float(y)))
             if not total:
                 continue
             ratios = [x/y for x, y in eligible]
-            paired.append(dict(family=family, method_a=a, method_b=b, shared_inputs=total,
+            paired.append(dict(family=family, method_a=a, method_b=b, timing_scope=timing_scope, shared_inputs=total,
                 both_fully_completed=len(eligible), excluded_incomplete=total-len(eligible),
                 a_faster=sum(x < y for x, y in eligible), b_faster=sum(y < x for x, y in eligible),
                 ties=sum(x == y for x, y in eligible),
@@ -166,14 +173,14 @@ def analyse(directory, data_path, plots, output=None):
         'The range is the minimum–maximum of input medians, not a confidence interval. Ten random draws are not thirty independent instances.',
         'No timeout duration is substituted for an actual recognition time. Individual completed points may still appear in plots.', '',
         '## Paired method comparisons', '',
-        'Comparisons use the same inputs, with every repetition complete for both methods. Ratios are wall-time A/B; above 1 favours B.',
+        'Comparisons use the same inputs, with every repetition complete for both methods. Brute/GH uses algorithm time, excluding worker startup and input/output; comparisons with CMR use end-to-end wall time. Ratios are A/B; above 1 favours B.',
         'Incomplete pairs are excluded explicitly; their unobserved speed ratios cannot be inferred.', '',
-        '| Inputs | A | B | Eligible / shared | A faster | B faster | Median A/B |',
-        '|---|---|---|---:|---:|---:|---:|']
+        '| Inputs | A | B | Timing | Eligible / shared | A faster | B faster | Median A/B |',
+        '|---|---|---|---|---:|---:|---:|---:|']
     for r in paired:
         if r['family'] in ['all', 'main_only']:
             ratio = f"{r['median_a_over_b']:.3f}" if r['median_a_over_b'] != '' else '—'
-            lines.append(f"| {r['family']} | {r['method_a']} | {r['method_b']} | {r['both_fully_completed']}/{r['shared_inputs']} | {r['a_faster']} | {r['b_faster']} | {ratio} |")
+            lines.append(f"| {r['family']} | {r['method_a']} | {r['method_b']} | {r['timing_scope']} | {r['both_fully_completed']}/{r['shared_inputs']} | {r['a_faster']} | {r['b_faster']} | {ratio} |")
     lines += ['', 'Controls and transformed copies are included in `all`; `main_only` excludes transformed copies but retains controls.',
         'The full family breakdown is in [paired.csv](paired.csv). Small timing differences are descriptive, not significance tests.', '',
         '## Findings from the property comparisons', '']
@@ -250,14 +257,15 @@ def analyse(directory, data_path, plots, output=None):
     if plots or reuse_figures:
         lines += ['## Figures', '',
             'Circles show fully completed input medians. Lines join cell medians only when the whole cell completed.',
-            'Whiskers show the range of input medians. Triangles at the limit mark inputs with any timeout; they are not measured recognition times.',
+            'Top panels use wall time for all methods; bottom panels use algorithm time for brute and GH only. CMR has no comparable saved algorithm time.',
+            'Whiskers show the range of input medians. Triangles mark wall-clock timeouts; their vertical position is not a measured algorithm time or an algorithm-time lower bound.',
             'Colours identify methods. Horizontal offsets separate overlapping methods and are only visual.', '',
             '![Cycle and obstruction scaling](figures/scaling.png)', '',
             '![Bipartite density and interval length](figures/properties.png)', '',
             '![Fixed-size block comparison](figures/blocks.png)', '',
             'Matching vector PDF files are available alongside each PNG for report export.', '']
     lines += ['## Interpretation limits', '',
-        'These are end-to-end timings of Python workers and a compiled C executable. Startup and input/output dominate some tiny cases.',
+        'Property tables and representation checks use end-to-end wall time. Brute/GH paired comparisons and the algorithm-time figure panels exclude Python startup and input/output.',
         'Python-only algorithm timings must not be compared directly against CMR wall time. They do not resolve a tiny-input kernel crossover.',
         'The run establishes empirical behaviour on these synthetic inputs, not polynomial/exponential bounds.',
         'CMR may recognise these families by fast paths; a benefit from block structure alone does not identify which internal decomposition it used.', '']
@@ -285,8 +293,12 @@ def make_plots(directory, cells, summaries, records, limit):
     figures = directory / 'figures'
     figures.mkdir(exist_ok=True)
 
-    def panel(ax, family, condition, title):
-        for index, method in enumerate(METHODS):
+    def panel(ax, family, condition, title, scope='wall'):
+        plotted_methods = METHODS if scope == 'wall' else METHODS[:2]
+        median_key = f'median_{scope}_ms'
+        low_key = 'min_instance_median_ms' if scope == 'wall' else 'min_algorithm_ms'
+        high_key = 'max_instance_median_ms' if scope == 'wall' else 'max_algorithm_ms'
+        for index, method in enumerate(plotted_methods):
             factor = 1 + (index - 1)*0.025
             selected = sorted([r for r in cells if (r['family'], r['condition'], r['method']) ==
                                (family, condition, method)], key=lambda r:r['size'])
@@ -294,29 +306,31 @@ def make_plots(directory, cells, summaries, records, limit):
             for r in selected:
                 x = r['size']*factor
                 xs.append(x)
-                ys.append(r['median_wall_ms'] if r['median_wall_ms'] != '' else np.nan)
-                if r['median_wall_ms'] != '':
-                    ax.vlines(x, r['min_instance_median_ms'], r['max_instance_median_ms'], color=colours[method], alpha=.6)
+                ys.append(r[median_key] if r[median_key] != '' else np.nan)
+                if r[median_key] != '':
+                    ax.vlines(x, r[low_key], r[high_key], color=colours[method], alpha=.6)
             ax.plot(xs, ys, color=colours[method], linewidth=1.2)
             for r in summaries:
                 rec = records[r['instance_id']]
                 if rec['family'] != family or r['method'] != method or cell(rec)[0] != condition:
                     continue
                 x = cell(rec)[1]*factor
-                if r['median_wall_seconds']:
-                    ax.scatter(x, float(r['median_wall_seconds'])*1000, s=15, color=colours[method], alpha=.55)
+                if r[f'median_{scope}_seconds']:
+                    ax.scatter(x, float(r[f'median_{scope}_seconds'])*1000, s=15, color=colours[method], alpha=.55)
                 elif int(r['timeouts']):
                     ax.scatter(x, limit*1000, marker='^', s=35, color=colours[method], alpha=.7)
-        ax.axhline(limit*1000, linestyle=':', color='0.4', linewidth=.8)
+        if scope == 'wall':
+            ax.axhline(limit*1000, linestyle=':', color='0.4', linewidth=.8)
         ax.set_xscale('log', base=2)
         ax.set_yscale('log')
         ticks = sorted({r['size'] for r in cells if (r['family'], r['condition']) == (family, condition)})
         ax.set_xticks(ticks, labels=[str(x) for x in ticks], rotation=30 if len(ticks) > 7 else 0)
         ax.tick_params(axis='x', labelsize=9)
-        ax.set_ylim(2, limit*1500)
+        if scope == 'wall':
+            ax.set_ylim(2, limit*1500)
         ax.set_title(title)
         ax.set_xlabel('Graph vertices' if family == 'bipartite' else 'Matrix order')
-        ax.set_ylabel('End-to-end wall time (ms)')
+        ax.set_ylabel('End-to-end wall time (ms)' if scope == 'wall' else 'Python algorithm time (ms)')
         ax.grid(alpha=.15, which='both')
 
     groups = [
@@ -329,11 +343,12 @@ def make_plots(directory, cells, summaries, records, limit):
                                ('interval','long','Long column intervals (TU)')]),
         ('blocks', (1,3), [('block_cycles',f'blocks={count}',f'{count} cycle block(s) (TU)') for count in [1,2,4]])]
     for name, shape, specs in groups:
-        fig, axes = plt.subplots(*shape, figsize=(5*shape[1], 3.8*shape[0]), squeeze=False)
-        for ax, spec in zip(axes.flat, specs):
-            panel(ax, *spec)
+        fig, axes = plt.subplots(2*shape[0], shape[1], figsize=(5*shape[1], 7.6*shape[0]), squeeze=False)
+        for scope, panel_axes in [('wall', axes[:shape[0]]), ('algorithm', axes[shape[0]:])]:
+            for ax, spec in zip(panel_axes.flat, specs):
+                panel(ax, *spec, scope=scope)
         handles = [Line2D([0],[0],color=colours[m],marker='o',label=m) for m in METHODS]
-        handles.append(Line2D([0],[0],color='0.4',marker='^',linestyle='none',label='Timeout (censored)'))
+        handles.append(Line2D([0],[0],color='0.4',marker='^',linestyle='none',label='Wall timeout (position is not algorithm time)'))
         fig.legend(handles=handles, loc='lower center', ncol=4)
         fig.tight_layout(rect=(0,.10,1,1))
         for extension in ['png','pdf']:
