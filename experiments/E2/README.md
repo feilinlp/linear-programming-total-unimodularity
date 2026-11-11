@@ -410,17 +410,8 @@ Google Scholar was attempted but was inaccessible through the research tool.
 Project-required Scholar verification and review of historical theorem sources
 remain outstanding; no unchecked historical reference is marked verified.
 
-
-OpenAI Codex assisted with design, dataset generation, implementation and
-instructions, reorganised the dataset into family files and aligned the documentation with E1/E3.
-Repeated prose reasons were removed; matrices, labels and witnesses were preserved. The user subsequently authorised execution; Codex built CMR, fixed its non-ternary
-CLI response handling, and ran the correctness suite, pilot and benchmark.
-Codex subsequently analysed the saved data, generated scaling/property figures
-and paired comparisons, and documented inconclusive findings and timing limits.
-Recognition was not rerun for this analysis. The final file review checked
-links, Git exclusions, stored evidence and complete-repetition handling.
-
-
-Codex corrected brute/GH comparisons to use saved algorithm times and added
-algorithm-time figure panels alongside wall-time comparisons with CMR. Tables
-and figures were regenerated from the existing run without rerunning recognition.
+E2 was developed with assistance from OpenAI Codex, guided by the user's
+instructions and feedback. This included preparing synthetic inputs,
+implementing and running the benchmarks, and analysing and documenting the
+saved results. The group remains responsible for checking and understanding
+the code, results and claims.
