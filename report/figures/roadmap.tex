@@ -1,0 +1,18 @@
+% Figure~\ref{fig:roadmap}: questions, theory and experiments.
+% Input by sections/01-introduction.tex.
+\begin{tikzpicture}[font=\small,
+    q/.style={rectangle, rounded corners=2pt, fill=accent!12, draw=accent!60,
+              text width=4.85cm, align=center, inner sep=3pt, minimum height=7mm},
+    th/.style={rectangle, draw=black!25, text width=4.85cm, align=flush left,
+               inner sep=3pt, minimum height=13mm},
+    ex/.style={rectangle, rounded corners=2pt, fill=black!6, draw=black!25,
+               text width=4.85cm, align=flush left, inner sep=3pt, minimum height=10.5mm}]
+  \foreach \x/\name/\qq/\theory/\exper in {
+      0/1/{\textbf{When} is the LP exact?}/{\S\ref{sec:tu}: Hoffman--Kruskal \cite{hoffman1956}, TU families, half-integrality \cite{nemhauser1975}}/{\textbf{E1}: is TU necessary?},
+      5.35/2/{\textbf{How} do we recognise TU?}/{\S\ref{sec:recognise}: brute force, Ghouila-Houri \cite{ghouilahouri1962}, Seymour \cite{seymour1980}}/{\textbf{E2}: how costly is recognition?},
+      10.7/3/{Does the \textbf{algorithm} matter?}/{\S\ref{sec:solve}: simplex \cite{dantzig1951}, ellipsoid \cite{khachiyan1979}, IPM \cite{karmarkar1984}, crossover \cite{megiddo1991}}/{\textbf{E3}: which optimal point?\\ \textbf{E4}: LP or specialised code?}} {
+    \node[q]  (q\name) at (\x, 0) {\qq};
+    \node[th, below=1mm of q\name.south, anchor=north] (t\name) {\theory};
+    \node[ex, below=1mm of t\name.south, anchor=north] (e\name) {\exper};
+  }
+\end{tikzpicture}%

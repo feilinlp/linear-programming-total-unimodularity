@@ -1,0 +1,121 @@
+% CS4234 mini-project report: Linear Programming and Total Unimodularity.
+% Format (course rule, do not change): single column, 11pt, main body at most
+% 10 pages; anything beyond goes in the appendix.
+% Build (from this folder): tectonic -k -o build main.tex  ->  build/main.pdf
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{enumitem}
+\usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage{float}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+% Colours with the same meaning as on the slides (slides/theme.css).
+\definecolor{good}{HTML}{1F7A4D}    % integral / TU / works
+\definecolor{warn}{HTML}{B4531A}    % fractional / not TU / fails
+\definecolor{accent}{HTML}{2457C5}  % highlights
+\definecolor{muted}{HTML}{5F6368}   % secondary text
+% Chart series (validated categorical palette): LP, compiled, pure Python.
+\definecolor{series1}{HTML}{2A78D6}
+\definecolor{series2}{HTML}{EB6834}
+\definecolor{series3}{HTML}{1BAF7A}
+% Legend sample for the E4 plot: \legline{colour}{mark}.
+\newcommand{\legline}[2]{\tikz[baseline=-0.6ex]{%
+  \draw[#1, line width=1pt] (0,0) -- (0.6,0);
+  \draw[#1] plot[only marks, mark=#2, mark size=2pt] coordinates {(0.3,0)};}}
+
+% Notation (README Section 4).
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\optlp}{\mathrm{OPT}_{\mathrm{LP}}}
+\newcommand{\optilp}{\mathrm{OPT}_{\mathrm{ILP}}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\setlist{itemsep=2pt,topsep=4pt}
+% Compact bullets for the experiment setups (E1--E4).
+\newlist{setup}{itemize}{1}
+\setlist[setup]{label=\textbullet, leftmargin=1.2em, topsep=1pt, itemsep=0pt, parsep=0pt}
+
+% Compact, uniform spacing for run-in paragraph headings and floats.
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {1.6ex \@plus .4ex \@minus .2ex}{-1em}{\normalfont\normalsize\bfseries}}
+\makeatother
+\setlength{\textfloatsep}{12pt plus 2pt minus 4pt}
+\setlength{\floatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
+\captionsetup{skip=6pt}
+\captionsetup[table]{position=top}
+
+% Pseudocode: every algorithm is a ruled box set with \captionof, so that two
+% can sit side by side inside one figure. Usage: \begin{algobox}{Title}{label}.
+\captionsetup[algorithm]{labelsep=colon,singlelinecheck=false}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+\algrenewcommand\algorithmiccomment[1]{\hfill\textcolor{muted}{$\triangleright$ #1}}
+\newenvironment{algobox}[2]{%
+  \par\noindent\rule{\linewidth}{0.8pt}\par\vspace{-4pt}
+  \captionof{algorithm}{#1}\label{#2}\vspace{-9pt}
+  \noindent\rule{\linewidth}{0.4pt}\par\vspace{-4pt}
+  \small\begin{algorithmic}[1]}{%
+  \end{algorithmic}\vspace{-6pt}\noindent\rule{\linewidth}{0.8pt}\par}
+
+\title{Linear Programming and Total Unimodularity\\[4pt]
+  \large When does an LP relaxation solve an integer program exactly?}
+% Authors in presenter order (P1-P4), each with their student number.
+\author{%
+  \begin{tabular}{@{}cccc@{}}
+    Wong Yee Hern & Teo Yock Cheng & Feilin Liangga Putri & Daryl Koh Han Boon \\
+    \small A0307067E & \small A0271666W & \small A0307092J & \small A0272260M
+  \end{tabular}\\[8pt]
+  \small CS4234 Optimization Algorithms, National University of Singapore, AY2026/27 Semester~1}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\input{sections/01-introduction}
+\input{sections/02-preliminaries}
+\input{sections/03-tu-integrality}
+\input{sections/04-recognising-tu}
+\input{sections/05-solving-lp}
+\input{sections/06-conclusion}
+\label{end-of-main-body}
+
+% References start on a new page so that the main body is exactly pages 1-10.
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\clearpage
+\appendix
+\input{sections/appendix}
+
+% Flush all floats so that the AI Disclosure comes last.
+\clearpage
+\input{sections/ai-disclosure}
+
+\end{document}

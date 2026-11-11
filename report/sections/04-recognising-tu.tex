@@ -1,0 +1,94 @@
+\section{Recognising total unimodularity}\label{sec:recognise}
+
+Overnight shifts show that TU must be checked, not assumed. For the VC LP the check is a bipartiteness test (Theorem~\ref{thm:bip}), $O(n+m)$ by breadth-first search; for a general matrix we compare three methods.
+
+\subsection{Three recognition methods}\label{sec:methods}
+
+\paragraph{Brute force.} Algorithm~\ref{alg:brute} computes the determinant of every square submatrix with exact integer arithmetic. An $m\times n$ matrix has $\sum_{k\ge1}\binom{m}{k}\binom{n}{k} = \binom{m+n}{m}-1$ square submatrices, about $4^n$ for $m=n$. A TU matrix forces the full enumeration. A non-TU matrix is rejected at the first bad submatrix, so its cost depends on where that submatrix comes in the enumeration order.
+
+\paragraph{Ghouila-Houri.} Instead of determinants, this test asks for a signing of rows (Algorithm~\ref{alg:gh}).
+
+\begin{theorem}[Ghouila-Houri \cite{ghouilahouri1962}]\label{thm:gh}
+  A matrix $A$ is TU if and only if every subset $R$ of its rows can be split into $R^+$ and $R^-$ such that $\sum_{i\in R^+} a_i - \sum_{i\in R^-} a_i$ has every entry in $\{-1,0,1\}$, where $a_i$ is row~$i$.
+\end{theorem}
+\begin{proof}[Proof of ``only if'']
+  This direction follows from Hoffman--Kruskal. Let $A$ be TU, $R$ a set of rows with submatrix $A_R$, and $d = \mathbf 1^\top A_R$ the vector of column sums over~$R$. The polytope $\{z\in\R^R : 0\le z\le 1,\ \lfloor d/2\rfloor \le z^\top A_R \le \lceil d/2\rceil\}$ contains $z=\tfrac12\mathbf 1$, and its constraint matrix is TU by Lemma~\ref{lem:ops}, so it has an integral vertex $z\in\{0,1\}^R$. With $R^+=\{i : z_i=1\}$, the signed sum is $2z^\top A_R - d$, which lies in $\{-1,0,1\}$ entrywise. The converse is harder, and we omit it \cite{schrijver1986}.
+\end{proof}
+
+This proves that interval matrices are TU. Order any set of rows by hour and sign them $+,-,+,\dots$ (Figure~\ref{fig:families}c): each column's $1$s among them are consecutive, so its signed sum is $0$ or $\pm1$. Checking the condition directly is still exponential: each row is omitted, positive or negative, giving $3^m$ combinations ($3^{\min(m,n)}$ after transposing if needed).
+
+\begin{figure}[H]
+  \begin{minipage}[t]{0.485\textwidth}
+    \begin{algobox}{Brute-force TU test}{alg:brute}
+      \Require integer matrix $A\in\Z^{m\times n}$
+      \Ensure TU, or a submatrix with $|\det|>1$
+      \If{some entry $a_{ij}\notin\{-1,0,1\}$}
+        \State \Return not TU
+      \EndIf
+      \For{$k = 1,\dots,\min(m,n)$}
+        \For{every $k$-set $R$ of rows}
+          \For{every $k$-set $J$ of columns}
+            \State $d\gets\det A_{R,J}$ \Comment{exact}
+            \If{$|d|>1$}
+              \State \Return not TU, with $(R,J)$
+            \EndIf
+          \EndFor
+        \EndFor
+      \EndFor
+      \State \Return TU
+    \end{algobox}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.485\textwidth}
+    \begin{algobox}{Ghouila-Houri test}{alg:gh}
+      \Require $A\in\{-1,0,1\}^{m\times n}$, transposed if $m>n$
+      \Ensure TU, or a row set with no valid signing
+      \For{every nonempty row set $R$, by size}
+        \State $\mathit{found}\gets$ false
+        \For{every $\sigma\in\{\pm1\}^R$ with $\sigma_{\min R}=+1$}
+          \If{$\sum_{i\in R}\sigma_i a_i\in\{-1,0,1\}^n$}
+            \State $\mathit{found}\gets$ true; \textbf{break}
+          \EndIf
+        \EndFor
+        \If{not $\mathit{found}$}
+          \State \Return not TU, with $R$
+        \EndIf
+      \EndFor
+      \State \Return TU
+    \end{algobox}
+  \end{minipage}
+\end{figure}
+
+\paragraph{Seymour's decomposition.} The polynomial-time route is structural. A \emph{network matrix} comes from a directed tree $T$: each arc $(u,v)$ gives a column with $\pm1$ on the tree arcs of the $u$--$v$ path in $T$, signed by direction. Network matrices are TU (interval matrices are those of a directed path). Seymour's theorem \cite{seymour1980} builds every TU matrix, up to simple operations, from network matrices, their transposes and two exceptional $5\times5$ matrices by gluing along small interfaces (1-, 2- and 3-sums), and running it in reverse gives a polynomial-time test \cite{truemper1990}. We did not implement this test: E2 runs the CMR library's implementation \cite{walter2013,cmr} and records its yes/no answer and running time, not which decomposition steps it took.
+
+\subsection{E2: How costly is recognising TU?}\label{sec:e2}
+
+\paragraph{Setup.}
+\begin{setup}
+  \item \emph{Instances:} 340 matrices with known answers: the six families of Table~\ref{tab:e2}, where the ``embedded triangle'' is a $C_3$ block in the top-left corner beside an even cycle; 12 small controls; and 40 transposed, permuted or sign-flipped copies, which must keep their parent's answer.
+  \item \emph{Methods:} Algorithms~\ref{alg:brute} and~\ref{alg:gh} in Python (exact integer arithmetic); CMR~1.4 in compiled C.
+  \item \emph{Measured:} answer and running time, in three runs per method and matrix with a one-second limit; for Python also \emph{algorithm time}, which excludes about 42\,ms of start-up.
+\end{setup}
+
+\paragraph{Results.} Every completed decision was correct, and every finished transformed copy kept its parent's answer. CMR decided all 340 matrices in every repetition, the largest (160 vertices, up to 3,871 rows) in about 31\,ms; most calls took 3--7\,ms, mainly start-up. The exhaustive methods hit the limit early (Table~\ref{tab:e2}; plots in Appendix~\ref{app:e2fig}). On even cycles, brute force's algorithm time grew about 21-fold per two extra rows, to $652$\,ms at order~10, where it checks 184,755 submatrices. GH grew about 9-fold per two rows, the $3^2$ factor of its row choices, and reached $153$\,ms at order~12. Where both finished, GH was faster on 151 of 160 inputs (median factor 14).
+
+\begin{table}[H]
+  \centering\small
+  \caption{E2: largest size at which each method finished every input, in all three runs, within one second.}
+  \label{tab:e2}
+  \begin{tabular}{@{}llcrrr@{}}
+    \toprule
+    & & & \multicolumn{3}{c}{Largest completed size} \\
+    \cmidrule(l){4-6}
+    Family & TU & Sizes tested & Brute & GH & CMR \\
+    \midrule
+    Even cycle (order) & yes & 4--160 & 10 & 12 & all \\
+    Odd cycle (order) & no & 3--159 & 9 & 11 & all \\
+    Embedded triangle (order) & no & 7--131 & 35 & all & all \\
+    Bipartite, $p=0.2$ and $0.6$ (vertices) & yes & 8--160 & 8 & 12 & all \\
+    Interval, short and long (order) & yes & 4--32 & 10 & 10 & all \\
+    Block-diagonal cycles (order) & yes & 8--96 & 8 & 12 & all \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Negative answers depend on structure. An odd cycle's only obstruction is the full matrix, so both exhaustive methods search everything first and fail at similar sizes to even cycles. The embedded triangle's obstruction is a $3\times3$ corner: GH reaches it after the one- and two-row subsets and rejected even the order-131 matrix in $290$\,ms, while brute force must first check every $2\times2$ submatrix (72.5 million at order~131) and timed out from order~67. It timed out on all three permuted copies of the order-35 matrix it had rejected, where the triangle comes later.

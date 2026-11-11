@@ -1,0 +1,19 @@
+% Figure~\ref{fig:paths}b: tree with free vertices.
+% Input by sections/05-solving-lp.tex.
+\begin{tikzpicture}[
+    vtx/.style={circle, draw, minimum size=6.5mm, inner sep=0pt, font=\small},
+    nm/.style={font=\scriptsize, text=muted}]
+  \foreach \xs/\title/\cv/\dv/\cf/\df in {
+      0/{simplex}/{$1$}/{$0$}/{good!22}/{white},
+      4.1/{IPM alone}/{$t$}/{$1{-}t$}/{warn!18}/{warn!18}} {
+    \begin{scope}[xshift=\xs cm]
+      \node[vtx, label={[nm]left:$a$}]  (a) at (0, 0.55) {$0$};
+      \node[vtx, label={[nm]left:$e$}]  (e) at (0,-0.55) {$0$};
+      \node[vtx, fill=good!22, label={[nm]above:$b$}] (b) at (0.95,0) {$1$};
+      \node[vtx, fill=\cf, label={[nm]above:$c$}] (c) at (1.95,0) {\cv};
+      \node[vtx, fill=\df, label={[nm]above:$d$}] (d) at (2.95,0) {\dv};
+      \draw (a) -- (b) -- (e); \draw (b) -- (c) -- (d);
+      \node[font=\small] at (1.5,-1.05) {\title};
+    \end{scope}
+  }
+\end{tikzpicture}%

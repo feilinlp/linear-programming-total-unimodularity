@@ -1,0 +1,33 @@
+\section{Introduction}\label{sec:intro}
+
+Many optimisation problems are \emph{integer linear programs} (ILPs): a linear objective and linear constraints over integer variables. Solving an ILP is NP-hard in general \cite{karp1972}, whereas a \emph{linear program} (LP) can be solved in polynomial time \cite{khachiyan1979}. A standard approximation recipe exploits this gap: write the problem as an ILP, drop integrality to get the \emph{LP relaxation}, solve it and round. For a minimisation problem the relaxation can only lower the optimum, $\optlp \le \optilp$, so rounding usually costs something. For vertex cover, rounding at $\tfrac12$ only guarantees a factor of~2 \cite{hochbaum1982}.
+
+Sometimes rounding costs nothing. The \emph{vertex cover LP} (VC LP) of a graph $G=(V,E)$ is
+\[
+  \min \sum_{v\in V} x_v
+  \quad\text{s.t.}\quad x_u + x_v \ge 1 \ \text{ for every } \{u,v\}\in E,
+  \qquad 0 \le x \le 1 .
+\]
+On the triangle $C_3$ the all-$\tfrac12$ point is optimal with value $1.5$ (summing the edge constraints gives $2\sum_v x_v\ge3$), but every cover needs two vertices. On the 4-cycle $C_4$ the LP optimum is~$2$, and simplex returns an integral cover (Figure~\ref{fig:running}). This report asks three questions:
+
+\begin{quote}\itshape
+  When does solving an LP give an integer optimum? How do we recognise such problems? Does the LP algorithm we use matter?
+\end{quote}
+
+\begin{figure}[H]
+  \centering
+  \input{figures/running-example}
+  \caption{The running example, labelled with optimal LP solutions $x_v$. On $C_3$ the LP optimum is fractional and below the integer optimum; on $C_4$ simplex returns an integral optimal cover.}
+  \label{fig:running}
+\end{figure}
+
+The answer centres on \emph{total unimodularity} (TU): every square submatrix of the constraint matrix $A$ has determinant $-1$, $0$ or~$1$. If $A$ is TU and the right-hand side $b$ is integral, every vertex of the feasible region is integral \cite{hoffman1956}, so the LP has an integral optimum. The matrix of $C_4$ is TU because $C_4$ is bipartite; that of $C_3$ is not, since its determinant is~$2$.
+
+\paragraph{Scope and outline.} Figure~\ref{fig:roadmap} maps the questions to our sections and experiments. We prove the direction of the Hoffman--Kruskal theorem that we use, derive the main TU families, compare three ways to recognise TU, and study how LP algorithms behave on these LPs. We state Seymour's theorem \cite{seymour1980} without proof and use an existing implementation of its test, and only mention total dual integrality and the non-bipartite matching polytope. All code, data and raw results are in our repository.\footnote{\url{https://github.com/feilinlp/linear-programming-total-unimodularity}} Every number in this report was produced there, and each experiment reruns with one command (Appendix~\ref{app:repro}).
+
+\begin{figure}[H]
+  \centering
+  \input{figures/roadmap}
+  \caption{Roadmap: the three questions, the theory and main papers that answer each, and the experiments that test them.}
+  \label{fig:roadmap}
+\end{figure}

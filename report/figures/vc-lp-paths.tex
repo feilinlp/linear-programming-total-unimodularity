@@ -1,0 +1,26 @@
+% Figure~\ref{fig:paths}a: where simplex, IPM and crossover stop.
+% Input by sections/05-solving-lp.tex.
+\begin{tikzpicture}[scale=2.6, font=\footnotesize,
+    lat/.style={circle, fill=black!40, inner sep=0pt, minimum size=2.5pt},
+    gv/.style={circle, fill=good, inner sep=0pt, minimum size=5pt},
+    wv/.style={circle, fill=warn, inner sep=0pt, minimum size=5pt}]
+  \fill[black!6] (1,0) -- (1,1) -- (0,1) -- cycle;
+  \draw[black!40] (1,0) -- (1,1) -- (0,1);
+  \draw[accent, line width=1.8pt] (1,0) -- (0,1);
+  \draw[->, black!70] (-0.06,0) -- (1.2,0) node[right] {$x_u$};
+  \draw[->, black!70] (0,-0.06) -- (0,1.2) node[above] {$x_v$};
+  \foreach \p in {(0,0),(1,0),(0,1),(1,1)} \node[lat] at \p {};
+  % simplex: from vertex (1,1) to vertex (1,0)
+  \draw[good!80!black, thick, -{Stealth}] (1.07,0.95) -- (1.07,0.07);
+  \node[good!70!black, anchor=west] at (1.09,0.5) {simplex};
+  % IPM: central path along the diagonal to the centre of the face
+  \draw[warn, thick, -{Stealth}] (0.74,0.74) -- (0.535,0.535);
+  \node[warn, anchor=west] at (0.74,0.74) {IPM};
+  \node[wv] at (0.5,0.5) {};
+  \node[warn, anchor=east, inner sep=2pt] at (0.45,0.5) {$(\tfrac12,\tfrac12)$};
+  % crossover: along the face to a vertex
+  \draw[good!80!black, thick, dashed, -{Stealth}] (0.5,0.58) -- (0.1,0.98);
+  \node[good!70!black, anchor=west] at (0.28,0.86) {crossover};
+  \node[gv] at (1,0) {};
+  \node[gv] at (0,1) {};
+\end{tikzpicture}%

@@ -1,0 +1,140 @@
+\section{Solving the LP: does the algorithm matter?}\label{sec:solve}
+
+Corollary~\ref{cor:lp-exact} guarantees an integral optimal \emph{vertex}. When vertices tie, every point of the face between them is optimal, and which one a solver returns depends on the algorithm (Figure~\ref{fig:paths}).
+
+\subsection{Where LP algorithms stop}\label{sec:algorithms}
+
+\paragraph{The simplex method.} Simplex \cite{dantzig1951} (Algorithm~\ref{alg:simplex}) pivots between adjacent bases without worsening the objective (a \emph{degenerate} pivot changes the basis but not the vertex). With an anti-cycling rule such as Bland's \cite{bland1977} it stops at an optimal vertex, which on a TU instance is integral. Dual simplex \cite{lemke1954} keeps optimality and restores feasibility instead, also ending at a vertex. The \emph{pivot rule} chooses $j$ in line~6. Dantzig's rule, the largest $c_j-y^\top a_j$, visits all $2^n$ vertices of the Klee--Minty cube \cite{kleeminty1972}, and no rule is known to be polynomial. HiGHS \cite{huangfu2018}, which we use, defaults to weighted rules: \emph{steepest edge} \cite{forrestgoldfarb1992} in dual simplex (possibly switching to Devex) and its approximation \emph{Devex} \cite{harris1973} in primal simplex.
+
+\paragraph{The ellipsoid method.} Khachiyan's method \cite{khachiyan1979} first put LP in P but is slow in practice, and its bound grows with the bit length $L$ (\emph{weakly} polynomial). For matrices with small integer entries, TU ones included, LP is strongly polynomial \cite{tardos1986}.
+
+\paragraph{Interior point methods.} IPMs \cite{karmarkar1984} are polynomial ($O(n^{3.5}L)$ for Karmarkar's method) and fast in practice. A path-following IPM (Algorithm~\ref{alg:ipm}, a schematic without centrality control or a stopping test) adds a barrier $\mu\sum_i\log s_i$ on the slacks $s_i$, including those of $x\ge0$, which keeps iterates strictly inside the polyhedron, and follows the maximisers (the \emph{central path}) as $\mu\to0$. The central path ends in the relative interior of the optimal face \cite{guler1993}: at a vertex if the optimum is unique, and otherwise strictly between the extremes of every coordinate that varies over the face. A finite run stops near this point. For the VC LP on bipartite graphs, whose optimal vertices are $0/1$ covers, the IPM answer is fractional on exactly the \emph{free} vertices, those in some but not all minimum covers (Figure~\ref{fig:paths}b). Intuitively, a segment's midpoint is never an endpoint. \emph{Crossover} \cite{megiddo1991} then recovers an optimal vertex.
+
+\begin{figure}[H]
+  \begin{minipage}[t]{0.485\textwidth}
+    \begin{algobox}{Simplex method}{alg:simplex}
+      \Require $[A\ \ I]$, $b$, $c$; a feasible basis $B$
+      \Ensure an optimal vertex, or ``unbounded''
+      \Loop
+        \State $x_B\gets A_B^{-1}b$,\ \ $x_j\gets 0$ for every $j\notin B$
+        \State $y\gets (A_B^{-1})^{\top} c_B$ \Comment{prices}
+        \If{$c_j - y^\top a_j\le 0$ for every $j\notin B$}
+          \State \Return $x$ \Comment{optimal vertex}
+        \EndIf
+        \State pick an improving $j\notin B$ \Comment{anti-cycling rule}
+        \State $d\gets A_B^{-1}a_j$ \Comment{edge direction}
+        \If{$d\le 0$} \Return unbounded \EndIf
+        \State $i\gets\arg\min\{x_{B_i}/d_i : d_i>0\}$ \Comment{ratio test}
+        \State $B\gets B\setminus\{B_i\}\cup\{j\}$ \Comment{pivot}
+      \EndLoop
+    \end{algobox}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.485\textwidth}
+    \begin{algobox}{IPM and crossover (schematic)}{alg:ipm}
+      \Require $A$, $b$, $c$; $x$ with all slacks $s(x)>0$; $\mu>0$
+      \Ensure a near-optimal point; with crossover, an optimal vertex
+      \While{$\mu>\varepsilon$}
+        \State Newton step on $\max\ c^\top x+\mu\textstyle\sum_i\log s_i(x)$,
+        \Statex \hspace{\algorithmicindent}\hspace{\algorithmicindent}shortened so that $s(x)>0$
+        \State $\mu\gets\theta\mu$ \Comment{$0<\theta<1$}
+      \EndWhile
+      \If{crossover}
+        \State find a basis near $x$ \Comment{basis recovery}
+        \State $x\gets$ simplex from that basis \Comment{certify}
+      \EndIf
+      \State \Return $x$
+    \end{algobox}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.38\textwidth}\centering
+    \input{figures/vc-lp-paths}\\[2pt]
+    (a) VC LP of one edge $\{u,v\}$
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.58\textwidth}\centering
+    \input{figures/free-vertices-tree}\\[2pt]
+    (b) a tree with free vertices $c$ and $d$; $0<t<1$
+  \end{minipage}
+  \caption{Which optimal point each algorithm returns. (a)~The optimal face (thick) joins the covers $(1,0)$ and $(0,1)$. Simplex walks along edges to a vertex; the IPM follows the central path to the face's centre $(\tfrac12,\tfrac12)$; crossover moves on to a vertex. (b)~$b$ is in every minimum cover, $a$ and $e$ in none, $c$ and $d$ in some (free). Simplex returns $\{b,c\}$ or $\{b,d\}$; IPM alone is fractional on exactly $c$ and~$d$.}
+  \label{fig:paths}
+\end{figure}
+
+\subsection{E3: Does the LP algorithm matter?}\label{sec:e3}
+
+\paragraph{Setup.}
+\begin{setup}
+  \item \emph{Instances:} the 18 bipartite (so TU), unit-cost graphs of Table~\ref{tab:e3}: symmetric families (every vertex free), three controls with one minimum cover and three KONECT networks \cite{kunegis2013}.
+  \item \emph{Methods:} dual simplex, IPM with crossover, and IPM alone (HiGHS~1.15.1), all with presolve off, so that HiGHS's clean-up pass cannot settle ties before the algorithm runs.
+  \item \emph{Measured:} which coordinates are fractional, meaning more than $10^{-6}$ from an integer, compared with the free vertices found by König's construction (Algorithm~\ref{alg:free}).
+  \item \emph{Checks:} free set confirmed by a second method on the 16 graphs with $n\le 2{,}000$ (Table~\ref{tab:instances}).
+\end{setup}
+
+\paragraph{Results.} The prediction held on all 18 instances (Table~\ref{tab:e3}). Simplex and IPM with crossover always returned integral vertices. IPM alone was fractional on exactly the free vertices: the same set, not just the same number, up to the 7,934 free vertices of the arXiv graph. The tolerance does not matter: every free coordinate was at least $0.018$ from an integer, and every other one within $3.4\times10^{-8}$. On the symmetric families IPM returned exactly $\tfrac12$ everywhere: every edge lies in a perfect matching, so every edge is tight on the whole optimal face, the segment between the two sides, whose centre is all-$\tfrac12$. On the real graphs free values ranged from $0.019$ to $0.981$, and only 5--11\% were within $10^{-4}$ of $\tfrac12$ (Lemma~\ref{lem:half} is about vertices, and the IPM point is not one). Ties are common in real data: 10\%, 25\% and 20\% of vertices were free.
+
+\begin{figure}[H]
+  \begin{minipage}[c]{0.475\textwidth}
+    \begin{algobox}{Free vertices via König}{alg:free}
+      \Require bipartite graph $G$
+      \State $M\gets$ maximum matching \cite{hopcroft1973}
+      \State $O\gets$ vertices unmatched by $M$
+      \While{a neighbour $w$ of $O$ has $M(w)\notin O$}
+        \State $O\gets O\cup\{M(w)\}$
+      \EndWhile
+      \State \Return $\{v \text{ matched}: v\notin O,\ M(v)\notin O\}$
+    \end{algobox}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.495\textwidth}\small\raggedright
+    $O$ is the set of vertices in \emph{no} minimum cover. A minimum cover takes one endpoint of each matching edge (König), so:
+    \begin{itemize}[leftmargin=1.2em, itemsep=0pt, parsep=0pt, topsep=1pt]
+      \item unmatched vertices are in $O$;
+      \item neighbours $w$ of $O$ are in every cover, so $M(w)\in O$;
+      \item the rest are free: no edge joins them to $O$, or $O$ to $O$ ($M$ is maximum), so the neighbours of $O$ plus the left (or right) ends of the other matching edges are two covers of size $|M|$.
+    \end{itemize}
+    Figure~\ref{fig:paths}b: $O=\{e,a\}$, free $=\{c,d\}$.
+  \end{minipage}
+\end{figure}
+
+\begin{table}[H]
+  \centering\small
+  \caption{E3: predicted free vertices and the number of fractional coordinates returned by each configuration. In every row, the fractional coordinates of IPM alone are exactly the free vertices.}
+  \label{tab:e3}
+  \begin{tabular}{@{}lrrrrr@{}}
+    \toprule
+    & & & \multicolumn{3}{c}{Fractional coordinates} \\
+    \cmidrule(l){4-6}
+    Instances & Vertices $n$ & Free & Simplex & IPM + crossover & IPM alone \\
+    \midrule
+    $C_4,\ C_{20},\ C_{100},\ C_{1000}$ & 4--1,000 & $n$ & 0 & 0 & $n$ \\
+    $K_{3,3}$ to $K_{100,100}$ & 6--200 & $n$ & 0 & 0 & $n$ \\
+    grids $4\times4$ to $100\times100$ & 16--10,000 & $n$ & 0 & 0 & $n$ \\
+    controls ($K_{3,4}$, $K_{30,31}$, Davis \cite{davis1941}) & 7--61 & 0 & 0 & 0 & 0 \\
+    Unicode languages & 868 & 90 & 0 & 0 & 90 \\
+    Crime & 1,380 & 348 & 0 & 0 & 348 \\
+    arXiv cond-mat \cite{newman2001} & 38,741 & 7,934 & 0 & 0 & 7,934 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+So the algorithm matters for the \emph{answer} even when the LP is exact. Rounding the IPM point at $\tfrac12$ always gave a valid cover, but of size exactly $2\optilp$ on every symmetric instance and $1.6$--$3.3\%$ above the optimum on the real graphs. Crossover turns ``the LP is exact'' into ``the solver's answer is exact'', at a cost: IPM needed 5--17 iterations on every instance, while crossover added up to 6,896 (on the $100\times100$ grid).
+
+\subsection{E4: Should we just solve the LP?}\label{sec:e4}
+
+\paragraph{Setup.}
+\begin{setup}
+  \item \emph{Instances:} max-flow on random networks and grids; bipartite matching on random graphs and E3's real graphs; shift scheduling. Up to 10,000 nodes or vertices per side (Table~\ref{tab:instances}).
+  \item \emph{Methods:} HiGHS dual and primal simplex against Edmonds--Karp \cite{edmondskarp1972} and Dinic \cite{dinitz1970} (flow) and Hopcroft--Karp \cite{hopcroft1973} (matching), each in compiled (SciPy) and pure-Python (networkx) code to separate algorithm from language; for scheduling, the LP against HiGHS B\&B.
+  \item \emph{Measured:} for flow and matching, solve time without model building (under 5\,ms); for scheduling, time including it. Median of up to three runs on one laptop; runs over 2\,s not repeated.
+\end{setup}
+
+\paragraph{Results.} Every method agreed on all 13 flow and matching instances, and both simplex variants returned integral optima. The specialised algorithms were far faster (Figure~\ref{fig:e4}). On the 10,000-node network the LP took 10.1\,s (dual) or 4.7\,s (primal) against 15.5\,ms for compiled Dinic, a factor of 300--650; on the arXiv matching instance it took 0.31\,s against 2.4\,ms for Hopcroft--Karp. From 1,000 to 10,000 nodes, dual simplex time grew 120-fold and Dinic's 13-fold, and the pivot count 15-fold. One possible reason, which we did not measure, is degeneracy: flow LPs have many bases per vertex, so many pivots may not move the vertex, while the specialised algorithms run a few graph searches per round. Implementation matters as much as the algorithm: pure-Python Dinic took 19.4\,s on the largest network, longer than the LP. Ratios vary by instance, simplex variant and run (Appendix~\ref{app:e4}): compiled specialised code always won, by 2--3 orders of magnitude on the largest random instances but 13--31 times on grids.
+
+For day-shift scheduling the LP was integral and equal to the ILP optimum on all 15 instances, and 3--16 times faster than the ILP solver. (Interval matrices also reduce to min-cost flow \cite{veinott1962a,veinott1962b}, which we did not try.) With overnight shifts, the LP was fractional and strictly below the integer optimum on 24 of 200 instances (12\%), by 0.33 to 0.75 staff, and the integer optimum was always the LP value rounded up: losing TU allows $\optlp<\optilp$ but does not force it, as in E1.
+
+\begin{figure}[H]
+  \centering
+  \input{figures/e4-timings}
+  \caption{E4: solve times (log--log) of the LP against Dinic (max-flow) and Hopcroft--Karp (HK, matching). Primal simplex, Edmonds--Karp, grids and real graphs are in Appendix~\ref{app:e4}.}
+  \label{fig:e4}
+\end{figure}

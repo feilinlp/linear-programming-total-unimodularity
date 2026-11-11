@@ -6,3 +6,6 @@ __pycache__/
 
 # Preliminary E2 controls are repeated in the full benchmark.
 /experiments/E2/results/pilot/
+
+# LaTeX build output (tectonic -k -o build).
+/report/build/

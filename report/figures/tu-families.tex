@@ -1,0 +1,37 @@
+% Figure~\ref{fig:families}: the three TU matrix families.
+% Input by sections/03-tu-integrality.tex.
+\renewcommand{\arraystretch}{1.1}\setlength{\arraycolsep}{3.5pt}
+\begin{minipage}[b]{0.30\textwidth}\centering
+  $\begin{array}{r|cc|cc}
+     & \color{accent}v_1 & \color{accent}v_3 & v_2 & v_4\\ \hline
+    v_1v_2 & \color{accent}1 & 0 & 1 & 0\\
+    v_2v_3 & 0 & \color{accent}1 & 1 & 0\\
+    v_3v_4 & 0 & \color{accent}1 & 0 & 1\\
+    v_4v_1 & \color{accent}1 & 0 & 0 & 1\\
+    \multicolumn{5}{c}{}
+  \end{array}$\\[2pt]
+  (a) $A_{C_4}$, columns by side
+\end{minipage}\hfill
+\begin{minipage}[b]{0.36\textwidth}\centering
+  $\begin{array}{r|ccccc}
+     & sa & sb & ab & at & bt\\ \hline
+    s & -1 & -1 & 0 & 0 & 0\\
+    a & +1 & 0 & -1 & -1 & 0\\
+    b & 0 & +1 & +1 & 0 & -1\\
+    t & 0 & 0 & 0 & +1 & +1\\
+    \multicolumn{6}{c}{}
+  \end{array}$\\[2pt]
+  (b) node--arc incidence of a digraph
+\end{minipage}\hfill
+\begin{minipage}[b]{0.30\textwidth}\centering
+  $\begin{array}{cc|cccc}
+     & t & S_1 & S_2 & S_3 & S_4\\ \hline
+    \color{accent}+ & 1 & 1 & 0 & 0 & 0\\
+    \color{accent}- & 2 & 1 & 1 & 0 & 0\\
+    \color{accent}+ & 3 & 1 & 1 & 1 & 0\\
+    \color{accent}- & 4 & 0 & 1 & 1 & 1\\
+    \color{accent}+ & 5 & 0 & 0 & 1 & 1\\ \hline
+    \multicolumn{2}{c|}{\color{accent}\Sigma_\pm} & 1 & -1 & 1 & 0
+  \end{array}$\\[2pt]
+  (c) interval matrix
+\end{minipage}%

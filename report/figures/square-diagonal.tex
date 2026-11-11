@@ -1,0 +1,19 @@
+% Figure~\ref{fig:diag}: square with a diagonal (E1).
+% Input by sections/03-tu-integrality.tex.
+\begin{tikzpicture}[
+    vtx/.style={circle, draw, minimum size=6.5mm, inner sep=0pt, font=\small}]
+  \begin{scope}
+    \node[vtx, fill=good!22, label={[font=\scriptsize]left:$v_1$}]  (a) at (0,1.2) {$1$};
+    \node[vtx,               label={[font=\scriptsize]right:$v_2$}] (b) at (1.2,1.2) {$0$};
+    \node[vtx, fill=good!22, label={[font=\scriptsize]right:$v_3$}] (c) at (1.2,0) {$1$};
+    \node[vtx,               label={[font=\scriptsize]left:$v_4$}]  (d) at (0,0) {$0$};
+    \draw (a) -- (b) -- (c) -- (d) -- (a) -- (c);
+  \end{scope}
+  \begin{scope}[xshift=2.9cm]
+    \node[vtx, fill=warn!18] (a) at (0,1.2) {$\tfrac12$};
+    \node[vtx, fill=warn!18] (b) at (1.2,1.2) {$\tfrac12$};
+    \node[vtx, fill=warn!18] (c) at (1.2,0) {$\tfrac12$};
+    \node[vtx, fill=warn!18] (d) at (0,0) {$\tfrac12$};
+    \draw (a) -- (b) -- (c) -- (d) -- (a) -- (c);
+  \end{scope}
+\end{tikzpicture}%

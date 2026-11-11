@@ -287,6 +287,7 @@ def make_plots(directory, cells, summaries, records, limit):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
+    import matplotlib.ticker
     from matplotlib.lines import Line2D
     import numpy as np
     colours = dict(brute='#c44e52', gh='#dd9c26', cmr='#2878b5')
@@ -323,14 +324,23 @@ def make_plots(directory, cells, summaries, records, limit):
             ax.axhline(limit*1000, linestyle=':', color='0.4', linewidth=.8)
         ax.set_xscale('log', base=2)
         ax.set_yscale('log')
-        ticks = sorted({r['size'] for r in cells if (r['family'], r['condition']) == (family, condition)})
-        ax.set_xticks(ticks, labels=[str(x) for x in ticks], rotation=30 if len(ticks) > 7 else 0)
-        ax.tick_params(axis='x', labelsize=9)
+        sizes = sorted({r['size'] for r in cells if (r['family'], r['condition']) == (family, condition)})
+        # Label only sizes at least ~1.37x apart on the log axis (always keep the largest),
+        # so small orders such as 8, 10 and 12 do not crowd together.
+        ticks = []
+        for x in sizes:
+            if not ticks or np.log2(x) - np.log2(ticks[-1]) >= 0.45:
+                ticks.append(x)
+        if ticks[-1] != sizes[-1]:
+            ticks[-1] = sizes[-1]
+        ax.set_xticks(ticks, labels=[str(x) for x in ticks])
+        ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+        ax.tick_params(axis='both', labelsize=10)
         if scope == 'wall':
             ax.set_ylim(2, limit*1500)
-        ax.set_title(title)
-        ax.set_xlabel('Graph vertices' if family == 'bipartite' else 'Matrix order')
-        ax.set_ylabel('End-to-end wall time (ms)' if scope == 'wall' else 'Python algorithm time (ms)')
+        ax.set_title(title, fontsize=13)
+        ax.set_xlabel('Graph vertices' if family == 'bipartite' else 'Matrix order', fontsize=11)
+        ax.set_ylabel('End-to-end wall time (ms)' if scope == 'wall' else 'Python algorithm time (ms)', fontsize=11)
         ax.grid(alpha=.15, which='both')
 
     groups = [

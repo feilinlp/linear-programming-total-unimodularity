@@ -1,7 +1,7 @@
 {
-  "generated_utc": "2026-11-09T10:24:54.736449+00:00",
-  "python": "3.14.3",
-  "source_sha256": "499e9997923bd1602cdc4767734ded74944757a53ac69628dee3f25e2aeab399",
+  "generated_utc": "2026-11-11T18:05:38.322257+00:00",
+  "python": "3.13.9",
+  "source_sha256": "f8e7c13729ee693ec8d5c163ceaa2999aafc3c0c11e96d517a6cb44ea2d820fa",
   "summarise_sha256": "b1fd0d62dbea14e6e16522b68388d3916b016221260c50734697a9d322b63163",
   "raw_sha256": "c95456eba359f04879eabf2b3c04084393dc11301ae6c51719a08ea81ac29498",
   "results_directory": "../results/main_run",

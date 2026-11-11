@@ -1,0 +1,21 @@
+% Figure~\ref{fig:running}: VC LP on C_3 and C_4.
+% Input by sections/01-introduction.tex.
+\begin{tikzpicture}[
+    vtx/.style={circle, draw, minimum size=6.5mm, inner sep=0pt, font=\small},
+    lbl/.style={font=\small}]
+  \begin{scope}
+    \node[vtx, fill=warn!18] (a) at (90:0.85)  {$\tfrac12$};
+    \node[vtx, fill=warn!18] (b) at (210:0.85) {$\tfrac12$};
+    \node[vtx, fill=warn!18] (c) at (330:0.85) {$\tfrac12$};
+    \draw (a) -- (b) -- (c) -- (a);
+    \node[lbl, anchor=west] at (1.25,0) {$C_3$: \textcolor{warn}{$\optlp = 1.5$}, $\optilp = 2$};
+  \end{scope}
+  \begin{scope}[xshift=8.2cm]
+    \node[vtx, fill=good!22] (p) at (-0.6, 0.6) {$1$};
+    \node[vtx]               (q) at ( 0.6, 0.6) {$0$};
+    \node[vtx, fill=good!22] (r) at ( 0.6,-0.6) {$1$};
+    \node[vtx]               (s) at (-0.6,-0.6) {$0$};
+    \draw (p) -- (q) -- (r) -- (s) -- (p);
+    \node[lbl, anchor=west] at (1.05,0) {$C_4$: \textcolor{good}{$\optlp = \optilp = 2$}};
+  \end{scope}
+\end{tikzpicture}%

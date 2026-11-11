@@ -1,0 +1,114 @@
+\section{Total unimodularity and integral optima}\label{sec:tu}
+
+\subsection{The Hoffman--Kruskal theorem}\label{sec:hk}
+
+Real LPs add bounds, equalities and sign constraints to $A$. The first lemma shows that these keep a matrix TU.
+
+\begin{lemma}\label{lem:ops}
+  If $A$ is TU, then so are $A^\top$, any matrix obtained from $A$ by permuting or negating rows or columns, and $A$ with an extra row that is a unit vector $e_j^\top$ or $\pm$ a copy of a row of $A$. In particular, $\bigl[A;\,-A;\,I;\,-I\bigr]$ is TU, so equalities $Ax=b$ and bounds $\ell\le x\le u$ keep a system TU.
+\end{lemma}
+\begin{proof}
+  Transposing and permuting do not change $|\det|$, and negating a row or column flips its sign. In a square submatrix $M$ of the extended matrix, a part of a unit row lets us expand along it (induction on the size of $M$); a row together with $\pm$ its copy gives $\det M=0$; otherwise $M$ is, up to row signs, a submatrix of~$A$.
+\end{proof}
+
+\begin{theorem}[Hoffman--Kruskal \cite{hoffman1956}]\label{thm:hk}
+  Let $A$ be an integral matrix. Then $A$ is TU if and only if, for every integral vector $b$, every vertex of $\{x : Ax\le b,\ x\ge 0\}$ is integral.
+\end{theorem}
+\begin{proof}[Proof of ``only if'']
+  Let $A$ be TU and $b$ integral. By Lemma~\ref{lem:ops} we may fold $x\ge 0$ into the rows, so let $x^*$ be a vertex of $P=\{x : Ax\le b\}$. Then $x^*$ is the unique solution of $A'x=b'$, where $A'$ consists of $n$ linearly independent rows of $A$ tight at $x^*$ and $b'$ is the matching part of $b$. As a nonsingular square submatrix of a TU matrix, $A'$ has $\det A'=\pm1$. By Cramer's rule, $x^*_j = \det A'_j / \det A'$, where $A'_j$ is $A'$ with column $j$ replaced by $b'$. Since $A'_j$ is integral, $x^*_j = \pm\det A'_j\in\Z$.
+\end{proof}
+
+We omit the converse \cite{schrijver1986}. It needs integral vertices for \emph{every} integral $b$, so a non-TU matrix can still give an integral optimum for one particular $b$ and $c$ (Section~\ref{sec:e1}). Figure~\ref{fig:hk} shows the difference, and the consequence we use throughout is:
+
+\begin{corollary}\label{cor:lp-exact}
+  If $A$ is TU and $b$, $\ell$, $u$ are integral, then for every objective $c$, the LP $\max\{c^\top x : Ax\le b,\ \ell\le x\le u\}$, if it has an optimum, has an integral optimal vertex. Simplex returns a vertex, so it returns an integral optimum, and the relaxation is exact.
+\end{corollary}
+
+\begin{figure}[H]
+  \centering
+  \input{figures/hk-polytopes}
+  \caption{What Hoffman--Kruskal guarantees, for $\max\ x_1+x_2$ (direction $c$). Left: a TU system; every vertex is a lattice point, though points inside the optimal face (thick), such as $(2.5,1.5)$, are fractional (Section~\ref{sec:solve}). Right: a non-TU system (entries~2) has fractional vertices, and the hull of its integer points (dashed) is smaller.}
+  \label{fig:hk}
+\end{figure}
+
+\subsection{Which matrices are TU?}\label{sec:families}
+
+Bipartite graphs and flows follow from one lemma about sparse matrices (Figure~\ref{fig:families}); interval matrices need Ghouila-Houri (Section~\ref{sec:recognise}).
+
+\begin{lemma}\label{lem:two}
+  Let $A$ have entries in $\{0,\pm1\}$ and at most two nonzeros per row. Suppose the columns can be split into two groups such that, in every row with two nonzeros, the two entries have the same sign if their columns lie in different groups, and opposite signs if they lie in the same group. Then $A$ is TU.
+\end{lemma}
+\begin{proof}
+  Every square submatrix $M$ inherits the property; we use induction on its size. If a row of $M$ is zero, $\det M=0$. If a row has one nonzero, expanding along it gives $\pm$ a smaller determinant, in $\{-1,0,1\}$ by induction. Otherwise every row has two nonzeros, and by the sign condition the sum of the columns in the first group minus the sum of those in the second is zero, so $\det M=0$.
+\end{proof}
+
+\begin{figure}[H]
+  \centering\small
+  \input{figures/tu-families}
+  \caption{The three TU families. (a)~Each row has one $1$ in each side: Lemma~\ref{lem:two} with the sides as groups. (b)~Each arc has $+1$ at its head and $-1$ at its tail: Lemma~\ref{lem:two} on the transpose, one group. (c)~Shifts cover consecutive hours; alternating row signs give signed column sums $\Sigma_\pm$ in $\{-1,0,1\}$ (Ghouila-Houri, Section~\ref{sec:recognise}).}
+  \label{fig:families}
+\end{figure}
+
+\paragraph{Bipartite graphs and vertex cover.} In a bipartite incidence matrix, each row has one $1$ in each side (Figure~\ref{fig:families}a), so Lemma~\ref{lem:two} applies.
+
+\begin{theorem}\label{thm:bip}
+  The incidence matrix of a graph $G$ is TU if and only if $G$ is bipartite.
+\end{theorem}
+\begin{proof}
+  ``If'' is Lemma~\ref{lem:two}. If $G$ is not bipartite, it contains an odd cycle $C_k$. The rows of its $k$ edges and the columns of its $k$ vertices form $A_{C_k}$ (up to permutation), and expanding along the first column gives $\det A_{C_k} = 1 + (-1)^{k+1} = 2$ for odd~$k$.
+\end{proof}
+
+With the bounds $0\le x\le 1$ (Lemma~\ref{lem:ops}), Corollary~\ref{cor:lp-exact} makes the VC LP exact on every bipartite graph, for any vertex costs.
+
+\paragraph{Max-flow.} In the node--arc incidence matrix of a directed graph, each arc has $+1$ at its head and $-1$ at its tail (Figure~\ref{fig:families}b), so it is TU by Lemma~\ref{lem:two} applied to its transpose. The flow conservation rows of the max-flow LP are rows of this matrix and the capacities are bounds, so integral capacities give an integral maximum flow: the integrality theorem for flows, which Ford and Fulkerson proved with augmenting paths \cite{fordfulkerson1957}, is a special case of Hoffman--Kruskal.
+
+\paragraph{Bipartite matching and König's theorem.} The matching LP $\max \mathbf 1^\top x$ s.t.\ $A^\top x\le \mathbf 1$, $x\ge 0$ has one variable per edge and one constraint per vertex, and $A^\top$ is TU. Its dual is the VC LP without the bound $y\le 1$, which an optimum never needs. Both LPs have integral optima, and strong duality makes their values equal. This is König's theorem \cite{konig1931}: in a bipartite graph, a maximum matching and a minimum vertex cover have the same size. On $C_3$ it fails: the matching LP has value $1.5$, but a matching has one edge.
+
+\paragraph{Interval matrices and shift scheduling.} Rows are hours $t$ with demand $d_t$, and columns are shifts, each covering consecutive hours (Figure~\ref{fig:families}c). We minimise the number of staff $\sum_j x_j$ subject to $\sum_{j \text{ covers } t} x_j \ge d_t$ and integral $x\ge 0$. Interval matrices are TU (Section~\ref{sec:recognise}), so the LP alone gives an optimal schedule. If shifts may wrap past midnight, TU can fail: three 2-hour shifts on a 3-hour day, with demand~1, give the rows of $A_{C_3}$, and the LP value is $1.5$ instead of~$2$.
+
+\subsection{E1: Is TU necessary?}\label{sec:e1}
+
+Corollary~\ref{cor:lp-exact} guarantees exactness for \emph{every} objective and right-hand side. E1 asks whether a single LP can be exact without it. The square with a diagonal (Figure~\ref{fig:diag}) shows that it can: its triangle makes the matrix non-TU, but the cover $\{v_1,v_3\}$ attains the bound $\optlp \ge 2$ given by the disjoint edges $\{v_1,v_2\}$ and $\{v_3,v_4\}$. The all-$\tfrac12$ vector is also an optimal \emph{vertex}: the triangle's three tight rows force $x_1=x_2=x_3=\tfrac12$, and the tight edge $\{v_3,v_4\}$ fixes $x_4$. So even simplex may return a fractional answer on an exact instance. Fractional vertices still have a rigid structure:
+
+\begin{lemma}[Half-integrality \cite{nemhauser1975}]\label{lem:half}
+  Every vertex $x$ of the VC LP has $x_v\in\{0,\tfrac12,1\}$ for every $v$.
+\end{lemma}
+\begin{proof}
+  The intuition is that only an odd cycle can pin a fractional vertex in place. Let $F=\{v : 0<x_v<1\}$. If an edge $\{u,v\}$ with $u\in F$ is tight, then $x_v = 1-x_u$, so $v\in F$; let $H$ be the graph of these tight edges on $F$. If a component of $H$ were bipartite with sides $K_1,K_2$, adding $\varepsilon$ on $K_1$ and subtracting it on $K_2$ (or the reverse) would keep its tight edges tight and, for small $\varepsilon>0$, all other constraints satisfied, making $x$ the midpoint of two feasible points. So every component of $H$ contains an odd cycle. Along a tight edge the values are $a$ and $1-a$, so around an odd cycle $a=1-a$, giving $a=\tfrac12$ on the whole component.
+\end{proof}
+
+So rounding any LP optimum up at $\tfrac12$ gives a cover of size at most $2\optlp$.
+
+\paragraph{Setup.}
+\begin{setup}
+  \item \emph{Instances:} Erd\H{o}s--Rényi graphs $G(n,p)$, each edge present independently with probability $p$, for $n\in\{10,20,40,60\}$ and $p\in\{0.05,0.1,0.2,0.4,0.7\}$: the first 50 non-bipartite (so non-TU) graphs for each pair, 1,000 in all, with unit costs.
+  \item \emph{Methods:} LP by HiGHS dual simplex \cite{huangfu2018} with presolve off, so the reported vertex is simplex's own; ILP by HiGHS branch-and-bound (B\&B), proven optimal with zero gap.
+  \item \emph{Measured:} whether the LP is \emph{exact}, and whether the vector it returns is \emph{integral}.
+  \item \emph{Checks:} every answer verified independently (Table~\ref{tab:instances}).
+\end{setup}
+
+\begin{figure}[H]
+  \begin{minipage}[b]{0.40\textwidth}\centering
+    \input{figures/square-diagonal}
+    \captionof{figure}{The square with a diagonal: non-TU, yet exact. Both labellings are optimal vertices of value~2.}
+    \label{fig:diag}
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.56\textwidth}\centering\small
+    \captionof{table}{E1: exact instances out of 50 non-bipartite graphs per cell; in parentheses, those where simplex returned an integral vector.}
+    \label{tab:e1}
+    \begin{tabular}{@{}r*{5}{c}@{}}
+      \toprule
+      & \multicolumn{5}{c}{edge probability $p$} \\
+      \cmidrule(l){2-6}
+      $n$ & 0.05 & 0.1 & 0.2 & 0.4 & 0.7 \\
+      \midrule
+      10 & 32 (26) & 39 (36) & 33 (30) & 21 (12) & 0 \\
+      20 & 34 (30) & 42 (41) & 11 \phantom{0}(6) & 0 & 0 \\
+      40 & 46 (43) & \phantom{0}9 \phantom{0}(7) & 0 & 0 & 0 \\
+      60 & 21 (11) & 0 & 0 & 0 & 0 \\
+      \bottomrule
+    \end{tabular}
+  \end{minipage}
+\end{figure}
+
+\paragraph{Results.} The relaxation was exact on 288 of the 1,000 non-TU instances (28.8\%, Table~\ref{tab:e1}), so \textbf{TU is sufficient but not necessary} for one particular LP to be exact. Exactness was common on sparse graphs (46 of 50 at $n=40$, $p=0.05$) and disappeared on dense ones, though not monotonically: 32, 39 and 33 exact graphs for $p=0.05$, $0.1$, $0.2$ at $n=10$. On 46 exact instances simplex nevertheless returned a fractional optimal vertex, as the square with a diagonal predicts. Every fractional coordinate that simplex returned, on any instance, was exactly $\tfrac12$, as Lemma~\ref{lem:half} requires. Where the LP was not exact, the ratio $\optilp/\optlp$ mostly rose with the edge probability~$p$: the largest was $55/30 \approx 1.83$, and the mean at $n=60$, $p=0.7$ was $1.82$. Complete graphs show the extreme: on $K_n$ the all-$\tfrac12$ vector is optimal (sum the edge constraints) at $n/2$, but a cover needs $n-1$ vertices, a ratio of $2-2/n$.
