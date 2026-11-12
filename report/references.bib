@@ -1,19 +1,20 @@
 % References for the CS4234 report.
 %
-% Verification (9 and 11 Nov 2026): bibliographic details of every entry with a
-% DOI were checked against Crossref (api.crossref.org). Entries without a DOI
-% were checked against web sources: Ghouila-Houri (AMS citation in Camion 1965;
-% later sources give the end page as 1193 or 1194, so only the first page is
-% given), Klee-Minty (MathWorld, Wikipedia), Khachiyan and Dinitz (Math-Net.ru
+% Verification (9, 11 and 12 Nov 2026): bibliographic details of every entry
+% with a DOI were checked against Crossref (api.crossref.org). Entries without a
+% DOI were checked against web sources: Ghouila-Houri (zbMATH Zbl 0114.25102,
+% pages 1192-1194, matching Walter-Truemper's reference list), Klee-Minty (MathWorld, Wikipedia), Khachiyan and Dinitz (Math-Net.ru
 % records of the Russian originals), Konig (Szeged scan and the 2020 English
-% translation, arXiv:2009.03780), Dantzig (NAS memoir; page range NOT
-% confirmed, so omitted), Bertsimas-Tsitsiklis and Schrijver (library
+% translation, arXiv:2009.03780), Dantzig (zbMATH Zbl 0045.09802: Chap. XXI,
+% pp. 339-347), Bertsimas-Tsitsiklis and Schrijver (library
 % catalogues), Davis et al. (library catalogues), CMR (GitHub repository).
 % These are metadata checks, not full readings of the papers. The project brief
 % also asks for a Google Scholar check before submission.
 % Notes: Crossref dates the Hoffman-Kruskal chapter 1957 (De Gruyter record);
-% the volume is conventionally cited as 1956. Huangfu-Hall and Walter-Truemper
-% appeared online a year before their print volumes; print years are used.
+% the volume is conventionally cited as 1956. Huangfu-Hall, Walter-Truemper and
+% Nagele et al. appeared online before their print volumes; print years are
+% used. FOCS 2021 met in February 2022 and its proceedings appeared then, so
+% Fiorini et al. is dated 2022. Edmonds 1965 runs to page 130 (NIST scan; Crossref lists only page 125).
 
 @incollection{hoffman1956,
   author    = {Hoffman, Alan J. and Kruskal, Joseph B.},
@@ -32,8 +33,9 @@
   title   = {Caract{\'e}risation des matrices totalement unimodulaires},
   journal = {Comptes Rendus de l'Acad{\'e}mie des Sciences, Paris},
   volume  = {254},
-  pages   = {1192},
+  pages   = {1192--1194},
   year    = {1962},
+  url     = {https://zbmath.org/?q=an:0114.25102},
 }
 
 @article{seymour1980,
@@ -85,7 +87,8 @@
   title   = {Maximum matching and a polyhedron with $0,1$-vertices},
   journal = {Journal of Research of the National Bureau of Standards, Section B},
   volume  = {69B},
-  pages   = {125},
+  number  = {1--2},
+  pages   = {125--130},
   year    = {1965},
   doi     = {10.6028/jres.069B.013},
 }
@@ -125,6 +128,7 @@
   editor    = {Koopmans, Tjalling C.},
   publisher = {Wiley},
   address   = {New York},
+  pages     = {339--347},
   year      = {1951},
 }
 
@@ -310,9 +314,9 @@
 @inproceedings{fiorini2021,
   author    = {Fiorini, Samuel and Joret, Gwena{\"e}l and Weltge, Stefan and Yuditsky, Yelena},
   title     = {Integer programs with bounded subdeterminants and two nonzeros per row},
-  booktitle = {Proceedings of the 62nd IEEE Annual Symposium on Foundations of Computer Science (FOCS)},
+  booktitle = {2021 IEEE 62nd Annual Symposium on Foundations of Computer Science (FOCS)},
   pages     = {13--24},
-  year      = {2021},
+  year      = {2022},
   doi       = {10.1109/FOCS52979.2021.00011},
 }
 
@@ -321,8 +325,9 @@
   title   = {Advances on strictly {$\Delta$}-modular {IPs}},
   journal = {Mathematical Programming},
   volume  = {210},
+  number  = {1--2},
   pages   = {731--760},
-  year    = {2024},
+  year    = {2025},
   doi     = {10.1007/s10107-024-02148-2},
 }
 
